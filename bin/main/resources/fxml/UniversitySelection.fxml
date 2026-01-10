@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.UniversitySelectionController"
+           prefWidth="900" prefHeight="600"
+           alignment="CENTER"
+           style="-fx-background-color: linear-gradient(to bottom right, #141423, #4C1D95);">
+
+    <!-- CARD -->
+    <VBox alignment="CENTER"
+          spacing="28"
+          prefWidth="450"
+          style="-fx-background-color: #1F1F33; -fx-padding: 40 35; -fx-background-radius: 22;">
+        
+        <effect>
+            <DropShadow radius="30" offsetY="14" color="#000000AA"/>
+        </effect>
+
+        <!-- HEADING -->
+        <VBox alignment="CENTER" spacing="8">
+            <Label text="Select Your University"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Choose from pre-loaded universities or create your own"
+                   style="-fx-font-size: 13px; -fx-text-fill: #A5A3C7; -fx-wrap-text: true; -fx-text-alignment: center;"
+                   maxWidth="380"/>
+        </VBox>
+
+        <!-- UNIVERSITY SELECTION -->
+        <VBox spacing="8" alignment="CENTER">
+            <Label text="University" 
+                   style="-fx-text-fill: #BDB7E2; -fx-font-size: 13px;"/>
+            <ComboBox fx:id="universityCombo"
+                      promptText="Select your university"
+                      prefHeight="40"
+                      prefWidth="320"
+                      style="-fx-background-color: #2B2B44; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 14px;"/>
+        </VBox>
+
+        <!-- ERROR LABEL -->
+        <Label fx:id="errorLabel" 
+               style="-fx-text-fill: #FB7185; -fx-font-size: 13px;"
+               wrapText="true"
+               maxWidth="350"
+               alignment="CENTER"/>
+
+        <!-- BUTTONS -->
+        <VBox spacing="12" alignment="CENTER">
+            <!-- Next Button -->
+            <Button fx:id="nextButton"
+                    text="Next"
+                    prefHeight="42"
+                    prefWidth="320"
+                    onAction="#handleNext"
+                    style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-background-radius: 14;"/>
+
+            <!-- Divider -->
+            <HBox alignment="CENTER" spacing="10" prefWidth="320">
+                <Separator prefWidth="140" style="-fx-background-color: #3A3A54;"/>
+                <Label text="OR" style="-fx-text-fill: #7D7A9C; -fx-font-size: 12px;"/>
+                <Separator prefWidth="140" style="-fx-background-color: #3A3A54;"/>
+            </HBox>
+
+            <!-- Create New Button -->
+            <Button fx:id="createButton"
+                    text="My University Isn't Listed"
+                    prefHeight="42"
+                    prefWidth="320"
+                    onAction="#handleCreateNew"
+                    style="-fx-background-color: transparent; -fx-border-color: #7C3AED; -fx-border-width: 2; -fx-border-radius: 14; -fx-background-radius: 14; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+        </VBox>
+
+    </VBox>
+
+</StackPane>
