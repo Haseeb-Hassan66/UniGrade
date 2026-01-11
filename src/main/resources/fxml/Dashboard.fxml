@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
+
 <?import javafx.scene.control.*?>
-<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
 
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
@@ -10,23 +11,78 @@
            alignment="CENTER"
            style="-fx-background-color: linear-gradient(to bottom right, #141423, #4C1D95);">
 
-    <!-- Center content only (card) -->
-    <VBox alignment="CENTER" spacing="20"
-          style="-fx-background-color: #1F1F33; -fx-padding: 36 30; -fx-background-radius: 22;">
+    <!-- Main Container -->
+    <VBox alignment="TOP_CENTER" spacing="20" prefWidth="750" VBox.vgrow="ALWAYS">
         
-        <effect>
-            <DropShadow radius="30" offsetY="14" color="#000000AA"/>
-        </effect>
+        <padding>
+            <Insets top="30" bottom="30" left="20" right="20"/>
+        </padding>
 
-        <Label fx:id="welcomeLabel" text="Welcome, User!"
-               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        <!-- Welcome Card -->
+        <VBox alignment="CENTER" spacing="10"
+              style="-fx-background-color: #1F1F33; -fx-padding: 24 30; -fx-background-radius: 18;">
+            
+            <effect>
+                <DropShadow radius="20" offsetY="8" color="#00000066"/>
+            </effect>
 
-        <HBox alignment="CENTER" spacing="20">
-            <Button text="Add Grade"
-                    style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 8 25;"/>
-            <Button text="View Reports"
-                    style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-background-radius: 14; -fx-padding: 8 25;"/>
-        </HBox>
+            <Label fx:id="welcomeLabel" text="Welcome, User!"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            
+            <!-- CGPA Display -->
+            <HBox alignment="CENTER" spacing="8">
+                <Label text="Overall CGPA:"
+                       style="-fx-font-size: 15px; -fx-text-fill: #A5A3C7;"/>
+                <Label fx:id="cgpaLabel" text="0.00"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #A78BFA;"/>
+            </HBox>
+        </VBox>
+
+        <!-- Semesters Section -->
+        <VBox spacing="15" VBox.vgrow="ALWAYS">
+            
+            <!-- Section Header -->
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <Label text="My Semesters"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <!-- Add Semester Button -->
+                <Button fx:id="addSemesterButton"
+                        text="+ Add Semester"
+                        onAction="#handleAddSemester"
+                        style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 8 20;"/>
+            </HBox>
+
+            <!-- Semester List -->
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                        style="-fx-background: transparent; -fx-background-color: transparent;">
+                
+                <VBox fx:id="semesterListContainer" spacing="12">
+                    <!-- Semesters will be dynamically added here -->
+                    
+                    <!-- Empty State (shown when no semesters) -->
+                    <VBox fx:id="emptyState" alignment="CENTER" spacing="15"
+                          prefHeight="200"
+                          style="-fx-background-color: #1F1F33; -fx-padding: 40; -fx-background-radius: 18;">
+                        
+                        <effect>
+                            <DropShadow radius="15" offsetY="6" color="#00000044"/>
+                        </effect>
+                        
+                        <Label text="📚"
+                               style="-fx-font-size: 48px;"/>
+                        <Label text="No semesters yet!"
+                               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #A5A3C7;"/>
+                        <Label text="Click 'Add Semester' to get started"
+                               style="-fx-font-size: 14px; -fx-text-fill: #7D7A9C;"/>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+        </VBox>
+
     </VBox>
 
 </StackPane>
