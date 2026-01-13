@@ -1,16 +1,13 @@
 package ui;
 
 import java.util.List;
-import java.util.Optional;
 
 import dao.SemesterDAO;
 import dao.UserProfileDAO;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
@@ -64,44 +61,60 @@ public class DashboardController {
 
     @FXML
     private void handleAddSemester() {
-        // Create dialog for semester name input
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Add Semester");
-        dialog.setHeaderText("Create New Semester");
-        dialog.setContentText("Enter semester name:");
-
-        // Show dialog and wait for result
-        Optional<String> result = dialog.showAndWait();
-        
-        result.ifPresent(semesterName -> {
-            String trimmedName = semesterName.trim();
+        try {
+            // Load custom dialog
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/fxml/AddSemesterDialog.fxml")
+            );
+            javafx.scene.Parent root = loader.load();
             
-            // Validation
-            if (trimmedName.isEmpty()) {
-                showError("Semester name cannot be empty!");
-                return;
-            }
+            // Get controller
+            AddSemesterDialogController dialogController = loader.getController();
+            
+            // Create stage
+            javafx.stage.Stage dialogStage = new javafx.stage.Stage();
+            dialogStage.setTitle("Add Semester");
+            dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialogStage.initOwner(addSemesterButton.getScene().getWindow());
+            dialogStage.setScene(new javafx.scene.Scene(root));
+            dialogStage.setResizable(false);
+            
+            // Set stage in controller
+            dialogController.setDialogStage(dialogStage);
+            
+            // Show dialog and wait
+            dialogStage.showAndWait();
+            
+            // Get result
+            String semesterName = dialogController.getSemesterName();
+            
+            if (semesterName != null) {
+                // Check if semester already exists
+                if (semesterDAO.exists(currentUser.getId(), semesterName)) {
+                    showError("A semester with this name already exists!");
+                    return;
+                }
 
-            // Check if semester already exists
-            if (semesterDAO.exists(currentUser.getId(), trimmedName)) {
-                showError("A semester with this name already exists!");
-                return;
-            }
+                // Create and save semester
+                Semester semester = new Semester(currentUser.getId(), semesterName);
+                int semesterId = semesterDAO.save(semester);
 
-            // Create and save semester
-            Semester semester = new Semester(currentUser.getId(), trimmedName);
-            int semesterId = semesterDAO.save(semester);
-
-            if (semesterId != -1) {
-                semester.setId(semesterId);
-                showInfo("Semester '" + trimmedName + "' created successfully!");
-                
-                // Reload semesters
-                loadSemesters();
-            } else {
-                showError("Failed to create semester. Please try again.");
+                if (semesterId != -1) {
+                    semester.setId(semesterId);
+                    showInfo("Semester '" + semesterName + "' created successfully!");
+                    
+                    // Reload semesters
+                    loadSemesters();
+                    updateCGPA();
+                } else {
+                    showError("Failed to create semester. Please try again.");
+                }
             }
-        });
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Failed to open dialog: " + e.getMessage());
+        }
     }
 
     private void loadSemesters() {
@@ -198,15 +211,15 @@ public class DashboardController {
     }
 
     private void handleDeleteSemester(Semester semester) {
-        // Confirmation dialog
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Semester");
-        alert.setHeaderText("Delete " + semester.getSemesterName() + "?");
-        alert.setContentText("This will delete all subjects and marks in this semester. This action cannot be undone.");
-
-        Optional<ButtonType> result = alert.showAndWait();
+        // Custom confirmation dialog
+        boolean confirmed = util.DialogUtil.showConfirmation(
+            (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
+            "Delete Semester",
+            "Are you sure you want to delete '" + semester.getSemesterName() + "'?\n\n" +
+            "This will delete all subjects and marks in this semester.\nThis action cannot be undone."
+        );
         
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (confirmed) {
             semesterDAO.delete(semester.getId());
             showInfo("Semester deleted successfully!");
             loadSemesters();
@@ -221,18 +234,18 @@ public class DashboardController {
     }
 
     private void showError(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        util.DialogUtil.showError(
+            (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
+            "Error",
+            message
+        );
     }
 
     private void showInfo(String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+        util.DialogUtil.showInfo(
+            (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
+            "Success",
+            message
+        );
     }
 }

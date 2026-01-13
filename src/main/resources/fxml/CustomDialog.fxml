@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.CustomDialogController"
+           prefWidth="450" prefHeight="280"
+           alignment="CENTER"
+           style="-fx-background-color: rgba(20, 20, 35, 0.95);">
+
+    <!-- Dialog Card -->
+    <VBox alignment="CENTER"
+          spacing="24"
+          prefWidth="400"
+          style="-fx-background-color: #1F1F33; -fx-padding: 36 30; -fx-background-radius: 22;">
+        
+        <effect>
+            <DropShadow radius="30" offsetY="14" color="#000000AA"/>
+        </effect>
+
+        <!-- ICON (optional, dynamically set) -->
+        <Label fx:id="iconLabel"
+               style="-fx-font-size: 48px;"
+               managed="false"
+               visible="false"/>
+
+        <!-- TITLE -->
+        <Label fx:id="titleLabel" text="Dialog"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+
+        <!-- MESSAGE -->
+        <Label fx:id="messageLabel" text="Message goes here"
+               wrapText="true"
+               maxWidth="350"
+               alignment="CENTER"
+               style="-fx-font-size: 15px; -fx-text-fill: #BDB7E2; -fx-text-alignment: center;"/>
+
+        <!-- BUTTONS -->
+        <HBox fx:id="buttonBox" spacing="12" alignment="CENTER">
+            <!-- Buttons will be added dynamically -->
+        </HBox>
+
+    </VBox>
+
+</StackPane>

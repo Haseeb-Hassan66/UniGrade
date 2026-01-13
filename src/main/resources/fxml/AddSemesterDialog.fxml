@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.AddSemesterDialogController"
+           prefWidth="450" prefHeight="300"
+           alignment="CENTER"
+           style="-fx-background-color: rgba(20, 20, 35, 0.95);">
+
+    <!-- Dialog Card -->
+    <VBox alignment="CENTER"
+          spacing="24"
+          prefWidth="400"
+          style="-fx-background-color: #1F1F33; -fx-padding: 36 30; -fx-background-radius: 22;">
+        
+        <effect>
+            <DropShadow radius="30" offsetY="14" color="#000000AA"/>
+        </effect>
+
+        <!-- HEADING -->
+        <Label text="Add New Semester"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+
+        <!-- INPUT GROUP -->
+        <VBox spacing="8" alignment="CENTER">
+            <Label text="Semester Name" 
+                   style="-fx-text-fill: #BDB7E2; -fx-font-size: 13px;"/>
+            <TextField fx:id="semesterNameField"
+                       promptText="e.g., Fall 2024, 1st Semester"
+                       prefHeight="40"
+                       prefWidth="320"
+                       style="-fx-background-color: #2B2B44; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-padding: 0 12; -fx-font-size: 14px;"/>
+        </VBox>
+
+        <!-- ERROR LABEL -->
+        <Label fx:id="errorLabel" 
+               style="-fx-text-fill: #FB7185; -fx-font-size: 13px;"
+               wrapText="true"
+               maxWidth="320"
+               alignment="CENTER"/>
+
+        <!-- BUTTONS -->
+        <HBox spacing="12" alignment="CENTER">
+            <!-- Cancel Button -->
+            <Button fx:id="cancelButton"
+                    text="Cancel"
+                    prefHeight="40"
+                    prefWidth="150"
+                    onAction="#handleCancel"
+                    style="-fx-background-color: transparent; -fx-border-color: #7C3AED; -fx-border-width: 2; -fx-border-radius: 12; -fx-background-radius: 12; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+            
+            <!-- Create Button -->
+            <Button fx:id="createButton"
+                    text="Create"
+                    prefHeight="40"
+                    prefWidth="150"
+                    onAction="#handleCreate"
+                    style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12;"/>
+        </HBox>
+
+    </VBox>
+
+</StackPane>
