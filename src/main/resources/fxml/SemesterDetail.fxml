@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.SemesterDetailController"
+           alignment="CENTER"
+           style="-fx-background-color: linear-gradient(to bottom right, #141423, #4C1D95);">
+
+    <!-- Main Container -->
+    <VBox alignment="TOP_CENTER" spacing="20" prefWidth="750" VBox.vgrow="ALWAYS">
+        
+        <padding>
+            <Insets top="30" bottom="30" left="20" right="20"/>
+        </padding>
+
+        <!-- Header Card -->
+        <VBox alignment="CENTER" spacing="15"
+              style="-fx-background-color: #1F1F33; -fx-padding: 24 30; -fx-background-radius: 18;">
+            
+            <effect>
+                <DropShadow radius="20" offsetY="8" color="#00000066"/>
+            </effect>
+
+            <!-- Back Button + Semester Name + GPA -->
+            <HBox alignment="CENTER_LEFT" spacing="15" prefWidth="690">
+                <Button fx:id="backButton"
+                        text="← Back"
+                        onAction="#handleBack"
+                        style="-fx-background-color: transparent; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <Label fx:id="semesterNameLabel" text="Semester Name"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <HBox alignment="CENTER" spacing="8">
+                    <Label text="GPA:"
+                           style="-fx-font-size: 15px; -fx-text-fill: #A5A3C7;"/>
+                    <Label fx:id="gpaLabel" text="0.00"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #A78BFA;"/>
+                </HBox>
+            </HBox>
+
+            <!-- Total Credits Display -->
+            <HBox alignment="CENTER" spacing="8">
+                <Label text="Total Credits:"
+                       style="-fx-font-size: 14px; -fx-text-fill: #A5A3C7;"/>
+                <Label fx:id="totalCreditsLabel" text="0"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #DDD6FE;"/>
+                <Label fx:id="creditsBreakdownLabel" text="(0 Theory + 0 Practical)"
+                       style="-fx-font-size: 13px; -fx-text-fill: #7D7A9C;"/>
+            </HBox>
+        </VBox>
+
+        <!-- Subjects Section -->
+        <VBox spacing="15" VBox.vgrow="ALWAYS">
+            
+            <!-- Section Header -->
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <Label text="Subjects"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <!-- Add Subject Button -->
+                <Button fx:id="addSubjectButton"
+                        text="+ Add Subject"
+                        onAction="#handleAddSubject"
+                        style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 8 20;"/>
+            </HBox>
+
+            <!-- Subject List -->
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                        style="-fx-background: transparent; -fx-background-color: transparent;">
+                
+                <VBox fx:id="subjectListContainer" spacing="12">
+                    <!-- Subjects will be dynamically added here -->
+                </VBox>
+            </ScrollPane>
+
+        </VBox>
+
+    </VBox>
+
+</StackPane>

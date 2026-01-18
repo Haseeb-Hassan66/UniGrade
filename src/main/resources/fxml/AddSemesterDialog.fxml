@@ -10,18 +10,13 @@
            fx:controller="ui.AddSemesterDialogController"
            prefWidth="450" prefHeight="300"
            alignment="CENTER"
-           style="-fx-background-color: rgba(20, 20, 35, 0.95);">
+           style="-fx-background-color: transparent;">
 
     <!-- Dialog Card -->
     <VBox alignment="CENTER"
           spacing="24"
           prefWidth="400"
-          style="-fx-background-color: #1F1F33; -fx-padding: 36 30; -fx-background-radius: 22;">
-        
-        <effect>
-            <DropShadow radius="30" offsetY="14" color="#000000AA"/>
-        </effect>
-
+          style="-fx-background-color: #1F1F33; -fx-padding: 36 30; -fx-background-radius: 22; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0, 0, 8);">
         <!-- HEADING -->
         <Label text="Add New Semester"
                style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>

@@ -40,7 +40,7 @@ public class DialogUtil {
     }
 
     /**
-     * Generic dialog method
+     * Generic dialog method with blur backdrop
      */
     private static boolean showDialog(Stage owner, String title, String message, String icon, String... buttons) {
         try {
@@ -55,8 +55,12 @@ public class DialogUtil {
             dialogStage.setTitle(title);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(owner);
-            dialogStage.initStyle(StageStyle.UNDECORATED);  // Remove default window frame
-            dialogStage.setScene(new Scene(root));
+            dialogStage.initStyle(StageStyle.TRANSPARENT);  // Changed to TRANSPARENT for blur effect
+            
+            // Create scene with transparent background
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            dialogStage.setScene(scene);
             dialogStage.setResizable(false);
 
             controller.setDialogStage(dialogStage);
@@ -64,6 +68,21 @@ public class DialogUtil {
             controller.setMessage(message);
             controller.setIcon(icon);
             controller.setButtons(buttons);
+
+            // Apply backdrop blur effect to owner window
+            if (owner != null && owner.getScene() != null) {
+                javafx.scene.Node ownerRoot = owner.getScene().getRoot();
+                javafx.scene.effect.GaussianBlur blur = new javafx.scene.effect.GaussianBlur(8);
+                
+                // Store original effect
+                javafx.scene.effect.Effect originalEffect = ownerRoot.getEffect();
+                
+                // Apply blur when dialog opens
+                ownerRoot.setEffect(blur);
+                
+                // Remove blur when dialog closes
+                dialogStage.setOnHidden(e -> ownerRoot.setEffect(originalEffect));
+            }
 
             dialogStage.showAndWait();
 

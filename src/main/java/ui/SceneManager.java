@@ -12,6 +12,10 @@ public class SceneManager {
         rootLayout = root;
     }
 
+    public static BorderPane getRootLayout() {
+        return rootLayout;
+    }
+
     public static void loadCenter(String fxmlFile) {
         try {
             if (rootLayout == null) {

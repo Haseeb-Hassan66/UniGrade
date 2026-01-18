@@ -1,13 +1,18 @@
 package ui;
 
+import javafx.scene.layout.BorderPane;
+
 import java.util.List;
+import java.util.Optional;
 
 import dao.SemesterDAO;
 import dao.UserProfileDAO;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.DropShadow;
@@ -57,6 +62,15 @@ public class DashboardController {
 
         // Calculate and display CGPA (placeholder for now)
         updateCGPA();
+
+        // Style scrollpane when scene is ready (after a short delay)
+        javafx.application.Platform.runLater(() -> {
+            if (semesterListContainer.getParent() instanceof javafx.scene.control.ScrollPane) {
+                javafx.scene.control.ScrollPane scrollPane = 
+                    (javafx.scene.control.ScrollPane) semesterListContainer.getParent();
+                util.UIUtil.styleScrollPane(scrollPane);
+            }
+        });
     }
 
     @FXML
@@ -76,11 +90,24 @@ public class DashboardController {
             dialogStage.setTitle("Add Semester");
             dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialogStage.initOwner(addSemesterButton.getScene().getWindow());
-            dialogStage.setScene(new javafx.scene.Scene(root));
+            dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+            
+            // Create scene with transparent background
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            dialogStage.setScene(scene);
             dialogStage.setResizable(false);
             
             // Set stage in controller
             dialogController.setDialogStage(dialogStage);
+            
+            // Apply blur to background
+            javafx.stage.Stage ownerStage = (javafx.stage.Stage) addSemesterButton.getScene().getWindow();
+            javafx.scene.Node ownerRoot = ownerStage.getScene().getRoot();
+            javafx.scene.effect.GaussianBlur blur = new javafx.scene.effect.GaussianBlur(8);
+            javafx.scene.effect.Effect originalEffect = ownerRoot.getEffect();
+            ownerRoot.setEffect(blur);
+            dialogStage.setOnHidden(e -> ownerRoot.setEffect(originalEffect));
             
             // Show dialog and wait
             dialogStage.showAndWait();
@@ -206,8 +233,24 @@ public class DashboardController {
     }
 
     private void handleViewSemester(Semester semester) {
-        // TODO: Navigate to semester view (Phase 4)
-        showInfo("Semester view coming in Phase 4: Subject Management!");
+        try {
+            // Load Semester Detail screen
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                getClass().getResource("/fxml/SemesterDetail.fxml")
+            );
+            javafx.scene.Parent root = loader.load();
+            
+            // Get controller and pass semester data
+            SemesterDetailController controller = loader.getController();
+            controller.setSemester(semester);
+            
+            // Load into center
+            SceneManager.getRootLayout().setCenter(root);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Failed to open semester details: " + e.getMessage());
+        }
     }
 
     private void handleDeleteSemester(Semester semester) {

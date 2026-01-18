@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.EditSubjectDialogController"
+           prefWidth="500" prefHeight="450"
+           alignment="CENTER"
+           style="-fx-background-color: transparent;">
+
+    <!-- Dialog Card -->
+    <VBox alignment="CENTER"
+          spacing="20"
+          prefWidth="450"
+          style="-fx-background-color: #1F1F33; -fx-padding: 36 30; -fx-background-radius: 22; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0, 0, 8);">
+        <!-- HEADING -->
+        <Label text="Edit Subject"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+
+        <!-- INPUT GROUPS -->
+        <VBox spacing="18" alignment="CENTER">
+
+            <!-- Subject Name -->
+            <VBox spacing="6" alignment="CENTER_LEFT" prefWidth="360">
+                <Label text="Subject Name" 
+                       style="-fx-text-fill: #BDB7E2; -fx-font-size: 13px;"/>
+                <TextField fx:id="subjectNameField"
+                           promptText="e.g., Data Structures"
+                           prefHeight="38"
+                           style="-fx-background-color: #2B2B44; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-padding: 0 12; -fx-font-size: 14px;"/>
+            </VBox>
+
+            <!-- Theory Credit Hours -->
+            <VBox spacing="6" alignment="CENTER_LEFT" prefWidth="360">
+                <Label text="Theory Credit Hours" 
+                       style="-fx-text-fill: #BDB7E2; -fx-font-size: 13px;"/>
+                <ComboBox fx:id="theoryCreditsCombo"
+                          promptText="Select credit hours"
+                          prefHeight="38"
+                          prefWidth="360"
+                          style="-fx-background-color: #2B2B44; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 14px;"/>
+            </VBox>
+
+            <!-- Has Practical Checkbox -->
+            <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="360">
+                <CheckBox fx:id="hasPracticalCheckbox"
+                          text="Has Practical Component"
+                          style="-fx-text-fill: #BDB7E2; -fx-font-size: 14px;"
+                          onAction="#handlePracticalToggle"/>
+            </HBox>
+
+            <!-- Practical Credit Hours (initially hidden) -->
+            <VBox fx:id="practicalCreditsBox" spacing="6" alignment="CENTER_LEFT" prefWidth="360"
+                  managed="false" visible="false">
+                <Label text="Practical Credit Hours" 
+                       style="-fx-text-fill: #BDB7E2; -fx-font-size: 13px;"/>
+                <ComboBox fx:id="practicalCreditsCombo"
+                          promptText="Select credit hours"
+                          prefHeight="38"
+                          prefWidth="360"
+                          style="-fx-background-color: #2B2B44; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 14px;"/>
+            </VBox>
+
+        </VBox>
+
+        <!-- ERROR LABEL -->
+        <Label fx:id="errorLabel" 
+               style="-fx-text-fill: #FB7185; -fx-font-size: 13px;"
+               wrapText="true"
+               maxWidth="360"
+               alignment="CENTER"/>
+
+        <!-- BUTTONS -->
+        <HBox spacing="12" alignment="CENTER">
+            <!-- Cancel Button -->
+            <Button fx:id="cancelButton"
+                    text="Cancel"
+                    prefHeight="40"
+                    prefWidth="170"
+                    onAction="#handleCancel"
+                    style="-fx-background-color: transparent; -fx-border-color: #7C3AED; -fx-border-width: 2; -fx-border-radius: 12; -fx-background-radius: 12; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+            
+            <!-- Save Button -->
+            <Button fx:id="saveButton"
+                    text="Save Changes"
+                    prefHeight="40"
+                    prefWidth="170"
+                    onAction="#handleSave"
+                    style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12;"/>
+        </HBox>
+
+    </VBox>
+
+</StackPane>
