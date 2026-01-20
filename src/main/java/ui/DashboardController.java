@@ -49,7 +49,7 @@ public class DashboardController {
         // Load user profile
         UserProfileDAO userDAO = new UserProfileDAO();
         currentUser = userDAO.getUser();
-        
+
         if (currentUser != null) {
             welcomeLabel.setText("Welcome, " + currentUser.getName() + " from " + currentUser.getDepartment() + "!");
         }
@@ -66,8 +66,8 @@ public class DashboardController {
         // Style scrollpane when scene is ready (after a short delay)
         javafx.application.Platform.runLater(() -> {
             if (semesterListContainer.getParent() instanceof javafx.scene.control.ScrollPane) {
-                javafx.scene.control.ScrollPane scrollPane = 
-                    (javafx.scene.control.ScrollPane) semesterListContainer.getParent();
+                javafx.scene.control.ScrollPane scrollPane = (javafx.scene.control.ScrollPane) semesterListContainer
+                        .getParent();
                 util.UIUtil.styleScrollPane(scrollPane);
             }
         });
@@ -76,68 +76,56 @@ public class DashboardController {
     @FXML
     private void handleAddSemester() {
         try {
-            // Load custom dialog
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/fxml/AddSemesterDialog.fxml")
-            );
+                    getClass().getResource("/fxml/AddSemesterDialog.fxml"));
             javafx.scene.Parent root = loader.load();
-            
-            // Get controller
+
             AddSemesterDialogController dialogController = loader.getController();
-            
-            // Create stage
+
             javafx.stage.Stage dialogStage = new javafx.stage.Stage();
             dialogStage.setTitle("Add Semester");
             dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialogStage.initOwner(addSemesterButton.getScene().getWindow());
             dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
-            
-            // Create scene with transparent background
+
             javafx.scene.Scene scene = new javafx.scene.Scene(root);
             scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
-            
-            // Set stage in controller
+
             dialogController.setDialogStage(dialogStage);
-            
-            // Apply blur to background
+
+            // Apply blur using shared utility
             javafx.stage.Stage ownerStage = (javafx.stage.Stage) addSemesterButton.getScene().getWindow();
             javafx.scene.Node ownerRoot = ownerStage.getScene().getRoot();
-            javafx.scene.effect.GaussianBlur blur = new javafx.scene.effect.GaussianBlur(8);
-            javafx.scene.effect.Effect originalEffect = ownerRoot.getEffect();
-            ownerRoot.setEffect(blur);
-            dialogStage.setOnHidden(e -> ownerRoot.setEffect(originalEffect));
-            
-            // Show dialog and wait
+            util.UIUtil.applyModalBlur(ownerRoot);
+
+            dialogStage.setOnHidden(e -> util.UIUtil.removeModalBlur(ownerRoot));
+
             dialogStage.showAndWait();
-            
-            // Get result
+
             String semesterName = dialogController.getSemesterName();
-            
+
             if (semesterName != null) {
-                // Check if semester already exists
                 if (semesterDAO.exists(currentUser.getId(), semesterName)) {
                     showError("A semester with this name already exists!");
                     return;
                 }
 
-                // Create and save semester
                 Semester semester = new Semester(currentUser.getId(), semesterName);
                 int semesterId = semesterDAO.save(semester);
 
                 if (semesterId != -1) {
                     semester.setId(semesterId);
                     showInfo("Semester '" + semesterName + "' created successfully!");
-                    
-                    // Reload semesters
+
                     loadSemesters();
                     updateCGPA();
                 } else {
                     showError("Failed to create semester. Please try again.");
                 }
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             showError("Failed to open dialog: " + e.getMessage());
@@ -169,7 +157,7 @@ public class DashboardController {
         emptyBox.setAlignment(Pos.CENTER);
         emptyBox.setPrefHeight(200);
         emptyBox.setStyle("-fx-background-color: #1F1F33; -fx-padding: 40; -fx-background-radius: 18;");
-        
+
         DropShadow shadow = new DropShadow();
         shadow.setRadius(15);
         shadow.setOffsetY(6);
@@ -192,7 +180,7 @@ public class DashboardController {
     private VBox createSemesterCard(Semester semester) {
         VBox card = new VBox(12);
         card.setStyle("-fx-background-color: #1F1F33; -fx-padding: 20; -fx-background-radius: 16;");
-        
+
         DropShadow shadow = new DropShadow();
         shadow.setRadius(15);
         shadow.setOffsetY(6);
@@ -219,11 +207,13 @@ public class DashboardController {
         actions.setAlignment(Pos.CENTER_RIGHT);
 
         Button viewButton = new Button("View Subjects");
-        viewButton.setStyle("-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 6 16;");
+        viewButton.setStyle(
+                "-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 6 16;");
         viewButton.setOnAction(e -> handleViewSemester(semester));
 
         Button deleteButton = new Button("Delete");
-        deleteButton.setStyle("-fx-background-color: transparent; -fx-border-color: #F87171; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #F87171; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 6 16;");
+        deleteButton.setStyle(
+                "-fx-background-color: transparent; -fx-border-color: #F87171; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #F87171; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 6 16;");
         deleteButton.setOnAction(e -> handleDeleteSemester(semester));
 
         actions.getChildren().addAll(viewButton, deleteButton);
@@ -236,17 +226,16 @@ public class DashboardController {
         try {
             // Load Semester Detail screen
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                getClass().getResource("/fxml/SemesterDetail.fxml")
-            );
+                    getClass().getResource("/fxml/SemesterDetail.fxml"));
             javafx.scene.Parent root = loader.load();
-            
+
             // Get controller and pass semester data
             SemesterDetailController controller = loader.getController();
             controller.setSemester(semester);
-            
+
             // Load into center
             SceneManager.getRootLayout().setCenter(root);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             showError("Failed to open semester details: " + e.getMessage());
@@ -256,12 +245,11 @@ public class DashboardController {
     private void handleDeleteSemester(Semester semester) {
         // Custom confirmation dialog
         boolean confirmed = util.DialogUtil.showConfirmation(
-            (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
-            "Delete Semester",
-            "Are you sure you want to delete '" + semester.getSemesterName() + "'?\n\n" +
-            "This will delete all subjects and marks in this semester.\nThis action cannot be undone."
-        );
-        
+                (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
+                "Delete Semester",
+                "Are you sure you want to delete '" + semester.getSemesterName() + "'?\n\n" +
+                        "This will delete all subjects and marks in this semester.\nThis action cannot be undone.");
+
         if (confirmed) {
             semesterDAO.delete(semester.getId());
             showInfo("Semester deleted successfully!");
@@ -278,17 +266,15 @@ public class DashboardController {
 
     private void showError(String message) {
         util.DialogUtil.showError(
-            (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
-            "Error",
-            message
-        );
+                (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
+                "Error",
+                message);
     }
 
     private void showInfo(String message) {
         util.DialogUtil.showInfo(
-            (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
-            "Success",
-            message
-        );
+                (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
+                "Success",
+                message);
     }
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="650.0" prefWidth="500.0" style="-fx-background-color: #1F1F33; -fx-background-radius: 20; -fx-border-color: #3B3B55; -fx-border-width: 1; -fx-border-radius: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MarksEntryController">
+   <children>
+      <!-- Header -->
+      <VBox style="-fx-padding: 24 24 16 24;">
+         <children>
+            <Label text="Marks Entry" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label fx:id="subjectNameLabel" text="Data Structures (3 + 1)" textFill="#a5a3c7">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="4.0" />
+               </VBox.margin>
+            </Label>
+            <Separator style="-fx-background-color: #3B3B55; -fx-opacity: 0.5;">
+               <VBox.margin>
+                  <Insets top="16.0" />
+               </VBox.margin>
+            </Separator>
+         </children>
+      </VBox>
+
+      <!-- Scrollable Content -->
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent; -fx-background: transparent;" stylesheets="@../css/styles.css" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox spacing="24.0" style="-fx-padding: 0 24 24 24;">
+               <children>
+                  <!-- Theory Section -->
+                  <VBox fx:id="theorySection" spacing="12.0">
+                     <children>
+                        <Label text="Theory Marks" textFill="#a78bfa">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <VBox fx:id="theoryContainer" spacing="12.0" />
+                        
+                        <!-- Theory Summary -->
+                        <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #2D2D44; -fx-background-radius: 8; -fx-padding: 12;">
+                           <children>
+                               <Label text="Total:" textFill="#a5a3c7" />
+                               <Label fx:id="theoryTotalLabel" text="0.0 / 100.0" textFill="WHITE" style="-fx-font-weight: bold;" />
+                               <Region HBox.hgrow="ALWAYS" />
+                               <Label text="Grade:" textFill="#a5a3c7" />
+                               <Label fx:id="theoryGradeLabel" text="N/A" textFill="#10b981" style="-fx-font-weight: bold;" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <!-- Practical Section (Dynamically shown) -->
+                  <VBox fx:id="practicalSection" spacing="12.0">
+                     <children>
+                        <Label text="Practical Marks" textFill="#a78bfa">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <VBox fx:id="practicalContainer" spacing="12.0" />
+
+                        <!-- Practical Summary -->
+                         <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #2D2D44; -fx-background-radius: 8; -fx-padding: 12;">
+                           <children>
+                               <Label text="Total:" textFill="#a5a3c7" />
+                               <Label fx:id="practicalTotalLabel" text="0.0 / 50.0" textFill="WHITE" style="-fx-font-weight: bold;" />
+                               <Region HBox.hgrow="ALWAYS" />
+                               <Label text="Grade:" textFill="#a5a3c7" />
+                               <Label fx:id="practicalGradeLabel" text="N/A" textFill="#10b981" style="-fx-font-weight: bold;" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+
+      <!-- Footer Buttons -->
+      <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 16 24 24 24; -fx-background-color: #1F1F33; -fx-background-radius: 0 0 20 20;">
+         <children>
+            <Button mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: transparent; -fx-text-fill: #A5A3C7; -fx-font-size: 14px; -fx-cursor: hand;" text="Cancel" />
+            <Button mnemonicParsing="false" onAction="#handleSave" style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 8; -fx-padding: 8 24; -fx-cursor: hand;" text="Save Marks" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

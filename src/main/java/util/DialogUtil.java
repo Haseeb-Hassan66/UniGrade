@@ -45,8 +45,7 @@ public class DialogUtil {
     private static boolean showDialog(Stage owner, String title, String message, String icon, String... buttons) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                DialogUtil.class.getResource("/fxml/CustomDialog.fxml")
-            );
+                    DialogUtil.class.getResource("/fxml/CustomDialog.fxml"));
             Parent root = loader.load();
 
             CustomDialogController controller = loader.getController();
@@ -55,8 +54,8 @@ public class DialogUtil {
             dialogStage.setTitle(title);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(owner);
-            dialogStage.initStyle(StageStyle.TRANSPARENT);  // Changed to TRANSPARENT for blur effect
-            
+            dialogStage.initStyle(StageStyle.TRANSPARENT); // Changed to TRANSPARENT for blur effect
+
             // Create scene with transparent background
             javafx.scene.Scene scene = new javafx.scene.Scene(root);
             scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
@@ -69,19 +68,15 @@ public class DialogUtil {
             controller.setIcon(icon);
             controller.setButtons(buttons);
 
-            // Apply backdrop blur effect to owner window
+            // Add darker overlay and blur to owner window
             if (owner != null && owner.getScene() != null) {
                 javafx.scene.Node ownerRoot = owner.getScene().getRoot();
-                javafx.scene.effect.GaussianBlur blur = new javafx.scene.effect.GaussianBlur(8);
-                
-                // Store original effect
-                javafx.scene.effect.Effect originalEffect = ownerRoot.getEffect();
-                
-                // Apply blur when dialog opens
-                ownerRoot.setEffect(blur);
-                
-                // Remove blur when dialog closes
-                dialogStage.setOnHidden(e -> ownerRoot.setEffect(originalEffect));
+
+                // Apply blur using shared utility
+                util.UIUtil.applyModalBlur(ownerRoot);
+
+                // Restore when dialog closes
+                dialogStage.setOnHidden(e -> util.UIUtil.removeModalBlur(ownerRoot));
             }
 
             dialogStage.showAndWait();

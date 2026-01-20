@@ -7,14 +7,17 @@ public class Subject {
     private String subjectName;
     private boolean hasPractical;
     private int theoryCreditHours;
-    private Integer practicalCreditHours;  // Integer (nullable) instead of int
+    private Integer practicalCreditHours; // Integer (nullable) instead of int
     private String theoryGrade;
     private String practicalGrade;
+    private Double theoryGradePoint;
+    private Double practicalGradePoint;
 
     // Constructor with all fields
     public Subject(int id, int semesterId, String subjectName, boolean hasPractical,
-                   int theoryCreditHours, Integer practicalCreditHours,
-                   String theoryGrade, String practicalGrade) {
+            int theoryCreditHours, Integer practicalCreditHours,
+            String theoryGrade, String practicalGrade,
+            Double theoryGradePoint, Double practicalGradePoint) {
         this.id = id;
         this.semesterId = semesterId;
         this.subjectName = subjectName;
@@ -23,11 +26,24 @@ public class Subject {
         this.practicalCreditHours = practicalCreditHours;
         this.theoryGrade = theoryGrade;
         this.practicalGrade = practicalGrade;
+        this.theoryGradePoint = theoryGradePoint;
+        this.practicalGradePoint = practicalGradePoint;
+    }
+
+    // Kept for backward compatibility if needed, or we can update callers.
+    // Ideally we update all callers, but for safety in this refactor I'll keep the
+    // old constructor
+    // and chain it or set defaults.
+    public Subject(int id, int semesterId, String subjectName, boolean hasPractical,
+            int theoryCreditHours, Integer practicalCreditHours,
+            String theoryGrade, String practicalGrade) {
+        this(id, semesterId, subjectName, hasPractical, theoryCreditHours, practicalCreditHours,
+                theoryGrade, practicalGrade, null, null);
     }
 
     // Constructor without ID (for creating new records)
     public Subject(int semesterId, String subjectName, boolean hasPractical,
-                   int theoryCreditHours, Integer practicalCreditHours) {
+            int theoryCreditHours, Integer practicalCreditHours) {
         this.semesterId = semesterId;
         this.subjectName = subjectName;
         this.hasPractical = hasPractical;
@@ -35,6 +51,8 @@ public class Subject {
         this.practicalCreditHours = practicalCreditHours;
         this.theoryGrade = null;
         this.practicalGrade = null;
+        this.theoryGradePoint = null;
+        this.practicalGradePoint = null;
     }
 
     // No-arg constructor
@@ -106,6 +124,22 @@ public class Subject {
         this.practicalGrade = practicalGrade;
     }
 
+    public Double getTheoryGradePoint() {
+        return theoryGradePoint;
+    }
+
+    public void setTheoryGradePoint(Double theoryGradePoint) {
+        this.theoryGradePoint = theoryGradePoint;
+    }
+
+    public Double getPracticalGradePoint() {
+        return practicalGradePoint;
+    }
+
+    public void setPracticalGradePoint(Double practicalGradePoint) {
+        this.practicalGradePoint = practicalGradePoint;
+    }
+
     // Helper method: Get total credit hours
     public int getTotalCreditHours() {
         int total = theoryCreditHours;
@@ -129,11 +163,29 @@ public class Subject {
         if (theoryGrade == null) {
             return "Not yet entered";
         }
-        if (hasPractical && practicalGrade != null) {
-            return theoryGrade + " / " + practicalGrade;
-        } else {
-            return theoryGrade;
+
+        String tDisplay = theoryGrade;
+        if (theoryGradePoint != null) {
+            tDisplay += " (" + String.format("%.2f", theoryGradePoint) + ")";
         }
+
+        if (hasPractical && practicalGrade != null) {
+            String pDisplay = practicalGrade;
+            if (practicalGradePoint != null) {
+                pDisplay += " (" + String.format("%.2f", practicalGradePoint) + ")";
+            }
+            return tDisplay + " / " + pDisplay;
+        } else {
+            return tDisplay;
+        }
+    }
+
+    public boolean isGraded() {
+        if (theoryGrade == null)
+            return false;
+        if (hasPractical && practicalGrade == null)
+            return false;
+        return true;
     }
 
     @Override

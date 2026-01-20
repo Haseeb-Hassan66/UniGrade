@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class CustomDialogController {
@@ -22,9 +23,21 @@ public class CustomDialogController {
 
     private Stage dialogStage;
     private boolean confirmed = false;
+    private VBox dialogCard;
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
+        
+        // Clip to remove light corners
+        if (titleLabel != null && titleLabel.getParent() != null) {
+            javafx.scene.Node parent = titleLabel.getParent();
+            while (parent != null && !(parent instanceof VBox && parent.getStyleClass().isEmpty())) {
+                parent = parent.getParent();
+            }
+            if (parent instanceof VBox) {
+                util.UIUtil.clipToRoundedRectangle((VBox) parent, 22);
+            }
+        }
     }
 
     public void setTitle(String title) {
