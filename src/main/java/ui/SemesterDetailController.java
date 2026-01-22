@@ -68,15 +68,32 @@ public class SemesterDetailController {
         if (currentSemester == null)
             return;
 
-        // Set semester name and GPA
+        // Set semester name
         semesterNameLabel.setText(currentSemester.getSemesterName());
-        gpaLabel.setText(String.format("%.2f", currentSemester.getGpa()));
+
+        // Refresh GPA from database
+        refreshGPA();
 
         // Load credit hours
         updateCreditHoursDisplay();
 
         // Load subjects
         loadSubjects();
+    }
+
+    // ===== PHASE 6: REFRESH GPA FROM DATABASE =====
+    private void refreshGPA() {
+        // Reload semester from database to get latest GPA
+        Semester updatedSemester = semesterDAO.getById(currentSemester.getId());
+
+        if (updatedSemester != null && updatedSemester.getGpa() != null) {
+            currentSemester.setGpa(updatedSemester.getGpa());
+            gpaLabel.setText(String.format("%.2f", updatedSemester.getGpa()));
+            gpaLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #A78BFA;");
+        } else {
+            gpaLabel.setText("N/A");
+            gpaLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #7D7A9C;");
+        }
     }
 
     private void updateCreditHoursDisplay() {
@@ -288,7 +305,11 @@ public class SemesterDetailController {
 
             dialogStage.setOnHidden(e -> {
                 util.UIUtil.removeModalBlur(ownerRoot);
-                // Refresh to show updated grades
+
+                // ===== PHASE 6: REFRESH GPA AFTER MARKS ENTRY =====
+                refreshGPA(); // Refresh GPA in real-time!
+
+                // Refresh subjects and credit hours
                 loadSubjects();
                 updateCreditHoursDisplay();
             });
@@ -371,6 +392,9 @@ public class SemesterDetailController {
                     "Subject deleted successfully!");
             loadSubjects();
             updateCreditHoursDisplay();
+
+            // ===== PHASE 6: REFRESH GPA AFTER DELETION =====
+            refreshGPA(); // Recalculate GPA after subject deletion
         }
     }
 }

@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.Semester;
 import model.UserProfile;
+import util.ResultCalculator;
 
 public class DashboardController {
 
@@ -60,10 +61,10 @@ public class DashboardController {
         // Load semesters
         loadSemesters();
 
-        // Calculate and display CGPA (placeholder for now)
+        // Calculate and display CGPA
         updateCGPA();
 
-        // Style scrollpane when scene is ready (after a short delay)
+        // Style scrollpane when scene is ready
         javafx.application.Platform.runLater(() -> {
             if (semesterListContainer.getParent() instanceof javafx.scene.control.ScrollPane) {
                 javafx.scene.control.ScrollPane scrollPane = (javafx.scene.control.ScrollPane) semesterListContainer
@@ -95,7 +96,7 @@ public class DashboardController {
 
             dialogController.setDialogStage(dialogStage);
 
-            // Apply blur using shared utility
+            // Apply blur
             javafx.stage.Stage ownerStage = (javafx.stage.Stage) addSemesterButton.getScene().getWindow();
             javafx.scene.Node ownerRoot = ownerStage.getScene().getRoot();
             util.UIUtil.applyModalBlur(ownerRoot);
@@ -133,7 +134,7 @@ public class DashboardController {
     }
 
     private void loadSemesters() {
-        // Clear existing items (except empty state)
+        // Clear existing items
         semesterListContainer.getChildren().clear();
 
         // Get all semesters for user
@@ -144,7 +145,7 @@ public class DashboardController {
             VBox emptyBox = createEmptyState();
             semesterListContainer.getChildren().add(emptyBox);
         } else {
-            // Hide empty state and show semesters
+            // Show semesters
             for (Semester semester : semesters) {
                 VBox semesterCard = createSemesterCard(semester);
                 semesterListContainer.getChildren().add(semesterCard);
@@ -197,7 +198,8 @@ public class DashboardController {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        Label gpaLabel = new Label(String.format("GPA: %.2f", semester.getGpa()));
+        // ===== PHASE 6: DISPLAY SEMESTER GPA =====
+        Label gpaLabel = new Label(formatGPA(semester.getGpa()));
         gpaLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #A78BFA;");
 
         header.getChildren().addAll(nameLabel, spacer, gpaLabel);
@@ -243,7 +245,6 @@ public class DashboardController {
     }
 
     private void handleDeleteSemester(Semester semester) {
-        // Custom confirmation dialog
         boolean confirmed = util.DialogUtil.showConfirmation(
                 (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
                 "Delete Semester",
@@ -258,10 +259,32 @@ public class DashboardController {
         }
     }
 
+    // ===== PHASE 6: CGPA CALCULATION =====
     private void updateCGPA() {
-        // TODO: Calculate actual CGPA in Phase 7 (GPA Engine)
-        // For now, show 0.00
-        cgpaLabel.setText("0.00");
+        Double cgpa = semesterDAO.getCGPA(currentUser.getId());
+
+        if (cgpa != null) {
+            cgpaLabel.setText(String.format("%.2f", cgpa));
+
+            // Optional: Show grade classification
+            String gradeClass = ResultCalculator.getGradeClass(cgpa);
+            cgpaLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #A78BFA;");
+
+            // You can add a tooltip or secondary label to show classification
+            // For now, just display the number
+        } else {
+            cgpaLabel.setText("N/A");
+            cgpaLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #7D7A9C;");
+        }
+    }
+
+    // Helper to format GPA display
+    private String formatGPA(Double gpa) {
+        if (gpa != null) {
+            return String.format("GPA: %.2f", gpa);
+        } else {
+            return "GPA: Not Calculated";
+        }
     }
 
     private void showError(String message) {

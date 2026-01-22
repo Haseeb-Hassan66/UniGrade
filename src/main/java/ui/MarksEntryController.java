@@ -59,7 +59,7 @@ public class MarksEntryController {
     private final MarksDAO marksDAO = new MarksDAO();
     private final GradingPolicyDAO gradingDAO = new GradingPolicyDAO();
     private final SemesterDAO semesterDAO = new SemesterDAO();
-    private final UserProfileDAO userDAO = new UserProfileDAO(); // Need this to find universityId
+    private final UserProfileDAO userDAO = new UserProfileDAO();
 
     // Map to store text fields for saving later: Category -> Component -> TextField
     private final Map<String, Map<String, TextField>> inputsMap = new HashMap<>();
@@ -82,10 +82,10 @@ public class MarksEntryController {
         this.currentSubject = subject;
         subjectNameLabel.setText(subject.getSubjectName() + " (" + subject.getCreditHoursDisplay() + ")");
 
-        loadUniversityIdAndPolicies();
+        ltc1qs49erv7pzeczp5qlnxd46aufzapsmzpa7y73ct();
     }
 
-    private void loadUniversityIdAndPolicies() {
+    private void ltc1qs49erv7pzeczp5qlnxd46aufzapsmzpa7y73ct() {
         // Fetch University ID chain: Subject -> Semester -> User -> University
         Semester semester = semesterDAO.getById(currentSubject.getSemesterId());
         if (semester != null) {
@@ -167,7 +167,7 @@ public class MarksEntryController {
 
         // Input Field
         TextField inputField = new TextField();
-        inputField.setPromptText("0-" + ((int) maxMarks)); // Simple prompt
+        inputField.setPromptText("0-" + ((int) maxMarks));
         inputField.setPrefWidth(80);
         inputField.setStyle("-fx-background-color: #2D2D44; -fx-text-fill: white; -fx-background-radius: 6;");
 
@@ -235,15 +235,6 @@ public class MarksEntryController {
             TextField field = entry.getValue();
             double max = maxes.get(component);
 
-            // Only add to totalMax if we are calculating what user entered?
-            // Actually, for "Grade", we usually want absolute percentage (Obtained / 100).
-            // But per specs: "Partial Entry: Calculate grade based on entered marks only"
-            // (Optional)
-            // Or "Example 2: All Components -> 85/100".
-            // Implementation: We sum up obtained.
-            // If we want "Partial Entry" logic (e.g. 25/30 + 18/20 = 43/50 = 86%), we sum
-            // max only for entered fields.
-
             String text = field.getText().trim();
             if (!text.isEmpty()) {
                 try {
@@ -268,18 +259,13 @@ public class MarksEntryController {
         double percentage = (totalObtained / totalMax) * 100;
 
         // Find Grade
-        // Note: GradingPolicy usually maps MinMarks-MaxMarks for 100 total.
-        // If we are doing partial (e.g. 86%), we act as if 86 is the mark out of 100.
-        // Find Grade
-        // Note: GradingPolicy usually maps MinMarks-MaxMarks for 100 total.
-        // If we are doing partial (e.g. 86%), we act as if 86 is the mark out of 100.
         GradingPolicy gradePolicy = gradingDAO.findGradeForMarks(universityId, category, percentage);
 
         String grade = (gradePolicy != null) ? gradePolicy.getGradeName() : "F";
         Double gradePoint = (gradePolicy != null) ? gradePolicy.getGradePoint() : 0.0;
 
         if (hasError)
-            grade = "Error"; // Or handle gracefully
+            grade = "Error";
 
         updateLabels(category, totalObtained, totalMax, grade, gradePoint);
     }
@@ -293,12 +279,10 @@ public class MarksEntryController {
         if ("Theory".equals(category)) {
             theoryTotalLabel.setText(String.format("%.1f / %.1f", obtained, max));
             theoryGradeLabel.setText(gradeDisplay);
-            // Store point for saving
             theoryGradeLabel.setUserData(gradePoint);
         } else {
             practicalTotalLabel.setText(String.format("%.1f / %.1f", obtained, max));
             practicalGradeLabel.setText(gradeDisplay);
-            // Store point for saving
             practicalGradeLabel.setUserData(gradePoint);
         }
     }
@@ -316,30 +300,18 @@ public class MarksEntryController {
             saveCategory("Practical");
         }
 
-        // Also update Subject's cached grade string?
-        // Phase 5 requirements say "Total marks display... Automatic grade assignment".
-        // We calculate grade on the fly here.
-        // We probably should update `Subject` table with the final grade letters if we
-        // want them to show on dashboard.
-        // `Subject.java` has setTheoryGrade / setPracticalGrade.
-
+        // Update Subject's grades in database
         updateSubjectGrades();
 
-        DialogUtil.showInfo(dialogStage, "Success", "Marks saved successfully!");
+        // ===== PHASE 6: AUTO-CALCULATE SEMESTER GPA =====
+        semesterDAO.calculateAndUpdateGPA(currentSubject.getSemesterId());
+        System.out.println("Phase 6: GPA auto-calculated for semester ID: " + currentSubject.getSemesterId());
+
+        DialogUtil.showInfo(dialogStage, "Success", "Marks saved and GPA calculated successfully!");
         dialogStage.close();
     }
 
     private void updateSubjectGrades() {
-        // Calculate final grade letters (without points for DB column 1,2)
-        // Wait, UI shows "A (4.0)". We need to extract just "A" or store "A" and "4.0"
-        // separately.
-        // updateLabels stores display string "A (4.0)" in label.
-
-        // Let's re-parse or store raw values.
-        // I added setUserData in updateLabels to store the point.
-        // But what about the Letter?
-        // theoryGradeLabel.getText() might be "A (4.0)" or "Error".
-
         String tLabel = theoryGradeLabel.getText();
         String pLabel = practicalGradeLabel.getText();
 
@@ -358,7 +330,7 @@ public class MarksEntryController {
             pPoint = null;
         }
 
-        // Update model object for UI consistency if needed
+        // Update model object
         currentSubject.setTheoryGrade(tGrade);
         currentSubject.setPracticalGrade(pGrade);
         currentSubject.setTheoryGradePoint(tPoint);
@@ -368,7 +340,6 @@ public class MarksEntryController {
         new dao.SubjectDAO().updateGrades(currentSubject.getId(), tGrade, pGrade, tPoint, pPoint);
     }
 
-    // Helper to extract "A" from "A (4.0)"
     private String extractGradeLetter(String labelText) {
         if (labelText == null || labelText.contains("N/A") || labelText.contains("Error"))
             return null;
@@ -402,10 +373,9 @@ public class MarksEntryController {
     }
 
     private boolean validateBeforeSave() {
-        // Basic check: no red fields
         for (Map<String, TextField> map : inputsMap.values()) {
             for (TextField tf : map.values()) {
-                if (tf.getStyle().contains("#451a1a")) { // Check for error color
+                if (tf.getStyle().contains("#451a1a")) {
                     DialogUtil.showError(dialogStage, "Invalid Input", "Please correct the highlighted fields.");
                     return false;
                 }

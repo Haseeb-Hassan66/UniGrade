@@ -4,11 +4,11 @@ public class Semester {
 
     private int id;
     private int userId;
-    private String semesterName;  // "Fall 2024", "1st Semester", etc.
-    private double gpa;           // Computed GPA (auto-calculated)
+    private String semesterName; // "Fall 2024", "1st Semester", etc.
+    private Double gpa; // Computed GPA (nullable - can be null if not calculated yet)
 
     // Constructor with all fields
-    public Semester(int id, int userId, String semesterName, double gpa) {
+    public Semester(int id, int userId, String semesterName, Double gpa) {
         this.id = id;
         this.userId = userId;
         this.semesterName = semesterName;
@@ -16,7 +16,7 @@ public class Semester {
     }
 
     // Constructor without ID (for creating new records)
-    public Semester(int userId, String semesterName, double gpa) {
+    public Semester(int userId, String semesterName, Double gpa) {
         this.userId = userId;
         this.semesterName = semesterName;
         this.gpa = gpa;
@@ -26,7 +26,7 @@ public class Semester {
     public Semester(int userId, String semesterName) {
         this.userId = userId;
         this.semesterName = semesterName;
-        this.gpa = 0.0;  // Default GPA
+        this.gpa = null; // GPA not calculated yet
     }
 
     // No-arg constructor
@@ -58,17 +58,21 @@ public class Semester {
         this.semesterName = semesterName;
     }
 
-    public double getGpa() {
+    public Double getGpa() {
         return gpa;
     }
 
-    public void setGpa(double gpa) {
+    public void setGpa(Double gpa) {
         this.gpa = gpa;
     }
 
     // Override toString for display
     @Override
     public String toString() {
-        return semesterName + " (GPA: " + String.format("%.2f", gpa) + ")";
+        if (gpa != null) {
+            return semesterName + " (GPA: " + String.format("%.2f", gpa) + ")";
+        } else {
+            return semesterName + " (GPA: Not Calculated)";
+        }
     }
 }
