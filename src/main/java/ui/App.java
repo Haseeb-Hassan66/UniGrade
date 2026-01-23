@@ -1,7 +1,7 @@
 package ui;
 
 import dao.UserProfileDAO;
-import model.UserProfile;  // ← REMOVE "main.java." prefix
+import model.UserProfile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -34,7 +34,7 @@ public class App extends Application {
         UserProfileDAO dao = new UserProfileDAO();
         if (dao.exists()) {
             UserProfile user = dao.getUser();
-            
+
             // ← ADD THIS CHECK (for Phase 2)
             if (user.getUniversityId() == 0) {
                 // No university selected yet → go to university selection
