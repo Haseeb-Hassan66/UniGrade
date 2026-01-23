@@ -69,6 +69,11 @@
                 
                 <Region HBox.hgrow="ALWAYS"/>
                 
+                <!-- ===== PHASE 7: VIEW RESULT BUTTON ===== -->
+                <Button text="📊 View Result"
+                        onAction="#handleViewResult"
+                        style="-fx-background-color: #10B981; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 8 20; -fx-cursor: hand;"/>
+                
                 <!-- Add Subject Button -->
                 <Button fx:id="addSubjectButton"
                         text="+ Add Subject"

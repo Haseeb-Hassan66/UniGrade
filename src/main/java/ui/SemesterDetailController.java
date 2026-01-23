@@ -397,4 +397,25 @@ public class SemesterDetailController {
             refreshGPA(); // Recalculate GPA after subject deletion
         }
     }
+
+    @FXML
+    private void handleViewResult() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/fxml/SemesterResult.fxml"));
+            javafx.scene.Parent root = loader.load();
+
+            SemesterResultController controller = loader.getController();
+            controller.setSemester(currentSemester);
+
+            SceneManager.getRootLayout().setCenter(root);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            util.DialogUtil.showError(
+                    (javafx.stage.Stage) backButton.getScene().getWindow(),
+                    "Error",
+                    "Failed to open result view: " + e.getMessage());
+        }
+    }
 }
