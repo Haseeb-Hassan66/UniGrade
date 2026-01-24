@@ -20,6 +20,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.layout.StackPane;
 import model.AssessmentPolicy;
 import model.GradingPolicy;
 import model.Marks;
@@ -53,6 +54,7 @@ public class MarksEntryController {
     private Subject currentSubject;
     private int universityId;
     private boolean isDataLoaded = false;
+    private StackPane loadingOverlay;
 
     // DAOs
     private final AssessmentPolicyDAO assessmentDAO = new AssessmentPolicyDAO();
@@ -72,6 +74,10 @@ public class MarksEntryController {
         // Initially hide practical section
         practicalSection.setVisible(false);
         practicalSection.setManaged(false);
+
+        // Create loading overlay (but don't add to scene yet - will be added when
+        // dialog shows)
+        loadingOverlay = util.LoadingIndicator.createLoadingOverlay("Saving marks...");
     }
 
     public void setDialogStage(Stage dialogStage) {
@@ -292,23 +298,60 @@ public class MarksEntryController {
         if (!validateBeforeSave())
             return;
 
-        // Save Theory
-        saveCategory("Theory");
-
-        // Save Practical
-        if (currentSubject.isHasPractical()) {
-            saveCategory("Practical");
+        // Add loading overlay to dialog
+        if (dialogStage != null && dialogStage.getScene() != null) {
+            javafx.scene.layout.Pane root = (javafx.scene.layout.Pane) dialogStage.getScene().getRoot();
+            if (root instanceof javafx.scene.layout.StackPane) {
+                ((javafx.scene.layout.StackPane) root).getChildren().add(loadingOverlay);
+            }
         }
 
-        // Update Subject's grades in database
-        updateSubjectGrades();
+        // Show loading
+        util.LoadingIndicator.show(loadingOverlay);
 
-        // ===== PHASE 6: AUTO-CALCULATE SEMESTER GPA =====
-        semesterDAO.calculateAndUpdateGPA(currentSubject.getSemesterId());
-        System.out.println("Phase 6: GPA auto-calculated for semester ID: " + currentSubject.getSemesterId());
+        // Run save operation in background
+        javafx.concurrent.Task<Void> saveTask = new javafx.concurrent.Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // Save Theory
+                saveCategory("Theory");
 
-        DialogUtil.showInfo(dialogStage, "Success", "Marks saved and GPA calculated successfully!");
-        dialogStage.close();
+                // Save Practical
+                if (currentSubject.isHasPractical()) {
+                    saveCategory("Practical");
+                }
+
+                // Update Subject's grades in database
+                updateSubjectGrades();
+
+                // Calculate GPA
+                semesterDAO.calculateAndUpdateGPA(currentSubject.getSemesterId());
+
+                Thread.sleep(300); // Small delay for smooth UX
+
+                return null;
+            }
+        };
+
+        saveTask.setOnSucceeded(e -> {
+            util.LoadingIndicator.hide(loadingOverlay);
+
+            javafx.application.Platform.runLater(() -> {
+                DialogUtil.showInfo(dialogStage, "Success", "Marks saved and GPA calculated successfully!");
+                dialogStage.close();
+            });
+        });
+
+        saveTask.setOnFailed(e -> {
+            util.LoadingIndicator.hide(loadingOverlay);
+
+            javafx.application.Platform.runLater(() -> {
+                DialogUtil.showError(dialogStage, "Error",
+                        "Failed to save marks: " + saveTask.getException().getMessage());
+            });
+        });
+
+        new Thread(saveTask).start();
     }
 
     private void updateSubjectGrades() {
