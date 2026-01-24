@@ -48,11 +48,17 @@
                 
                 <Region HBox.hgrow="ALWAYS"/>
                 
-                <!-- Add Semester Button -->
-                <Button fx:id="addSemesterButton"
-                        text="+ Add Semester"
-                        onAction="#handleAddSemester"
-                        style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 8 20;"/>
+                <!-- Actions -->
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="📊 Analysis"
+                            onAction="#handleViewReport"
+                            style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 12; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 6 18;"/>
+                    
+                    <Button fx:id="addSemesterButton"
+                            text="+ Add Semester"
+                            onAction="#handleAddSemester"
+                            style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 8 20;"/>
+                </HBox>
             </HBox>
 
             <!-- Semester List -->

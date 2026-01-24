@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+    fx:controller="ui.AcademicReportController"
+    style="-fx-background-color: #14142B;">
+
+    <!-- Top Bar -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15"
+            style="-fx-background-color: #1F1F33; -fx-padding: 20;">
+            <Button fx:id="backButton" text="← Back" onAction="#handleBack"
+                style="-fx-background-color: transparent; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand;" />
+
+            <Region HBox.hgrow="ALWAYS" />
+
+            <Label text="Academic Report"
+                style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+
+            <Region HBox.hgrow="ALWAYS" />
+        </HBox>
+    </top>
+
+    <!-- Main Content -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;">
+            <VBox spacing="25" style="-fx-padding: 30;">
+
+                <!-- Student Info Header -->
+                <VBox spacing="15"
+                    style="-fx-background-color: #1F1F33; -fx-padding: 25; -fx-background-radius: 18;">
+                    
+                    <HBox alignment="CENTER" spacing="40">
+                        <!-- Student Info -->
+                        <VBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="Student Information"
+                                style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px; -fx-font-weight: bold;" />
+                            <Label fx:id="studentNameLabel" text="Student Name"
+                                style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" />
+                            <Label fx:id="departmentLabel" text="Department"
+                                style="-fx-text-fill: #BDB7E2; -fx-font-size: 14px;" />
+                        </VBox>
+
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <!-- CGPA Display -->
+                        <VBox spacing="8" alignment="CENTER">
+                            <Label text="Cumulative GPA"
+                                style="-fx-text-fill: #A5A3C7; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                            <Label fx:id="cgpaLabel" text="0.00"
+                                style="-fx-text-fill: #A78BFA; -fx-font-size: 48px; -fx-font-weight: bold;" />
+                            <Label fx:id="cgpaClassLabel" text="First Class"
+                                style="-fx-text-fill: #10B981; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                        </VBox>
+
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <!-- Total Credits -->
+                        <VBox spacing="8" alignment="CENTER_RIGHT">
+                            <Label text="Total Credits Earned"
+                                style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px; -fx-font-weight: bold;" />
+                            <Label fx:id="totalCreditsLabel" text="0"
+                                style="-fx-text-fill: white; -fx-font-size: 32px; -fx-font-weight: bold;" />
+                            <Label fx:id="semesterCountLabel" text="0 Semesters"
+                                style="-fx-text-fill: #7D7A9C; -fx-font-size: 12px;" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Performance Statistics -->
+                <HBox spacing="20" alignment="CENTER">
+                    <!-- Best Semester -->
+                    <VBox spacing="8" alignment="CENTER" HBox.hgrow="ALWAYS"
+                        style="-fx-background-color: #1F1F33; -fx-padding: 20; -fx-background-radius: 12;">
+                        <Label text="Best Semester"
+                            style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px; -fx-font-weight: bold;" />
+                        <Label fx:id="bestSemesterNameLabel" text="N/A"
+                            style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;" />
+                        <Label fx:id="bestSemesterGPALabel" text="GPA: 0.00"
+                            style="-fx-text-fill: #10B981; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                    </VBox>
+
+                    <!-- Average GPA Trend -->
+                    <VBox spacing="8" alignment="CENTER" HBox.hgrow="ALWAYS"
+                        style="-fx-background-color: #1F1F33; -fx-padding: 20; -fx-background-radius: 12;">
+                        <Label text="Average Performance"
+                            style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px; -fx-font-weight: bold;" />
+                        <Label fx:id="avgGPALabel" text="0.00"
+                            style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" />
+                        <Label text="Across all semesters"
+                            style="-fx-text-fill: #7D7A9C; -fx-font-size: 11px;" />
+                    </VBox>
+
+                    <!-- Completed Semesters -->
+                    <VBox spacing="8" alignment="CENTER" HBox.hgrow="ALWAYS"
+                        style="-fx-background-color: #1F1F33; -fx-padding: 20; -fx-background-radius: 12;">
+                        <Label text="Progress"
+                            style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px; -fx-font-weight: bold;" />
+                        <Label fx:id="completedSemestersLabel" text="0/0"
+                            style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" />
+                        <Label text="Semesters completed"
+                            style="-fx-text-fill: #7D7A9C; -fx-font-size: 11px;" />
+                    </VBox>
+                </HBox>
+
+                <!-- Semester-wise Breakdown -->
+                <VBox spacing="15"
+                    style="-fx-background-color: #1F1F33; -fx-padding: 25; -fx-background-radius: 18;">
+                    
+                    <Label text="Semester-wise Performance"
+                        style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" />
+
+                    <!-- Table Header -->
+                    <HBox spacing="10" style="-fx-padding: 10 0;">
+                        <Label text="Semester" prefWidth="180"
+                            style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="Credits" prefWidth="80" alignment="CENTER"
+                            style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                        <Label text="GPA" prefWidth="80" alignment="CENTER"
+                            style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                        <Label text="Status" prefWidth="120" alignment="CENTER"
+                            style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                        <Label text="Action" prefWidth="100" alignment="CENTER"
+                            style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                    </HBox>
+
+                    <!-- Divider -->
+                    <Separator style="-fx-background-color: #2D2D44;" />
+
+                    <!-- Dynamic Semester Rows -->
+                    <VBox fx:id="semesterRowsContainer" spacing="10" />
+                </VBox>
+
+                <!-- Grade Distribution (Optional - can add later) -->
+                <VBox spacing="15"
+                    style="-fx-background-color: #1F1F33; -fx-padding: 25; -fx-background-radius: 18;">
+                    
+                    <Label text="Grade Distribution"
+                        style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" />
+
+                    <HBox spacing="15" alignment="CENTER">
+                        <VBox spacing="5" alignment="CENTER" fx:id="gradeACount" HBox.hgrow="ALWAYS"
+                            style="-fx-background-color: #10B98120; -fx-padding: 15; -fx-background-radius: 8;">
+                            <Label text="A Grades"
+                                style="-fx-text-fill: #10B981; -fx-font-size: 11px; -fx-font-weight: bold;" />
+                            <Label fx:id="gradeALabel" text="0"
+                                style="-fx-text-fill: #10B981; -fx-font-size: 24px; -fx-font-weight: bold;" />
+                        </VBox>
+
+                        <VBox spacing="5" alignment="CENTER" fx:id="gradeBCount" HBox.hgrow="ALWAYS"
+                            style="-fx-background-color: #3B82F620; -fx-padding: 15; -fx-background-radius: 8;">
+                            <Label text="B Grades"
+                                style="-fx-text-fill: #3B82F6; -fx-font-size: 11px; -fx-font-weight: bold;" />
+                            <Label fx:id="gradeBLabel" text="0"
+                                style="-fx-text-fill: #3B82F6; -fx-font-size: 24px; -fx-font-weight: bold;" />
+                        </VBox>
+
+                        <VBox spacing="5" alignment="CENTER" fx:id="gradeCCount" HBox.hgrow="ALWAYS"
+                            style="-fx-background-color: #F59E0B20; -fx-padding: 15; -fx-background-radius: 8;">
+                            <Label text="C Grades"
+                                style="-fx-text-fill: #F59E0B; -fx-font-size: 11px; -fx-font-weight: bold;" />
+                            <Label fx:id="gradeCLabel" text="0"
+                                style="-fx-text-fill: #F59E0B; -fx-font-size: 24px; -fx-font-weight: bold;" />
+                        </VBox>
+
+                        <VBox spacing="5" alignment="CENTER" fx:id="gradeDFCount" HBox.hgrow="ALWAYS"
+                            style="-fx-background-color: #EF444420; -fx-padding: 15; -fx-background-radius: 8;">
+                            <Label text="D/F Grades"
+                                style="-fx-text-fill: #EF4444; -fx-font-size: 11px; -fx-font-weight: bold;" />
+                            <Label fx:id="gradeDFLabel" text="0"
+                                style="-fx-text-fill: #EF4444; -fx-font-size: 24px; -fx-font-weight: bold;" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

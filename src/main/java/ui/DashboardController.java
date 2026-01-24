@@ -133,6 +133,24 @@ public class DashboardController {
         }
     }
 
+    // ===== PHASE 7 PART 2: VIEW ACADEMIC REPORT =====
+    @FXML
+    private void handleViewReport() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/fxml/AcademicReport.fxml"));
+            javafx.scene.Parent root = loader.load();
+
+            AcademicReportController controller = loader.getController();
+
+            SceneManager.getRootLayout().setCenter(root);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Failed to open academic report: " + e.getMessage());
+        }
+    }
+
     private void loadSemesters() {
         // Clear existing items
         semesterListContainer.getChildren().clear();
