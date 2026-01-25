@@ -26,7 +26,7 @@ public class App extends Application {
     private void showSplashScreen() throws Exception {
         // Load splash screen
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SplashScreen.fxml"));
-        BorderPane splashRoot = loader.load(); // Changed from StackPane to BorderPane
+        StackPane splashRoot = loader.load(); // Changed back to StackPane
 
         SplashScreenController controller = loader.getController();
         controller.setStage(primaryStage);

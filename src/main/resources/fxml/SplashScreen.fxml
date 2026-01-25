@@ -5,96 +5,69 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.effect.DropShadow?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-    fx:controller="ui.SplashScreenController"
-    style="-fx-background-color: linear-gradient(to bottom right, #141423, #4C1D95);"
-    prefWidth="900" prefHeight="600">
+<StackPane fx:id="root"
+           xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.SplashScreenController"
+           prefWidth="900" prefHeight="600"
+           style="-fx-background-color: linear-gradient(to bottom right, #141423, #4C1D95);">
 
-    <center>
-        <!-- Main Content -->
-        <VBox alignment="CENTER" spacing="50">
-            
-            <!-- Logo Circle -->
-            <VBox alignment="CENTER">
-                <StackPane prefWidth="200" prefHeight="200"
-                    style="-fx-background-color: linear-gradient(to bottom right, #7C3AED, #5B21B6); -fx-background-radius: 100;">
-                    
-                    <effect>
-                        <DropShadow radius="30" offsetY="12" color="#7C3AED66"/>
-                    </effect>
-                    
-                    <!-- UG Text -->
-                    <Label text="UG"
-                        style="-fx-font-size: 70px; -fx-font-weight: bold; -fx-text-fill: white;"
-                        translateY="5"/>
-                </StackPane>
-            </VBox>
-            
-            <!-- App Name -->
-            <VBox alignment="CENTER" spacing="12">
-                <Label text="UniGrade"
-                    style="-fx-font-size: 64px; -fx-font-weight: bold; -fx-text-fill: white;"/>
-                
-                <Label text="Academic Performance Tracker"
-                    style="-fx-font-size: 18px; -fx-text-fill: #A78BFA; -fx-font-weight: 600;"/>
-            </VBox>
+    <!-- Glass Card -->
+    <VBox alignment="CENTER" spacing="35" maxWidth="520"
+          style="-fx-background-color: rgba(31,31,51,0.88);
+                 -fx-background-radius: 25;
+                 -fx-padding: 45 55;">
+        <effect>
+            <DropShadow radius="30" offsetY="12" color="rgba(0,0,0,0.45)"/>
+        </effect>
 
-            <!-- Loading Card -->
-            <VBox alignment="CENTER" spacing="20" prefWidth="450">
-                <VBox alignment="CENTER" spacing="25"
-                    style="-fx-background-color: #1F1F33; -fx-background-radius: 18; -fx-padding: 35 45;">
-                    
-                    <effect>
-                        <DropShadow radius="20" offsetY="8" color="#00000066"/>
-                    </effect>
-                    
-                    <!-- Progress Container -->
-                    <VBox alignment="CENTER" spacing="15" prefWidth="360">
-                        <!-- Progress Track Background -->
-                        <StackPane prefWidth="360" prefHeight="14"
-                            style="-fx-background-color: #2D2D44; -fx-background-radius: 7;">
-                            
-                            <!-- Progress Fill -->
-                            <HBox fx:id="progressFill" prefHeight="14" alignment="CENTER_LEFT">
-                                <StackPane prefWidth="0" prefHeight="14"
-                                    style="-fx-background-color: #7C3AED; -fx-background-radius: 7;"/>
-                            </HBox>
-                        </StackPane>
-                        
-                        <!-- Percentage -->
-                        <Label fx:id="percentLabel" text="0%"
-                            style="-fx-font-size: 14px; -fx-text-fill: #A78BFA; -fx-font-weight: bold;"/>
-                    </VBox>
-                    
-                    <!-- Loading Text -->
-                    <Label fx:id="loadingLabel" text="Initializing..."
-                        style="-fx-font-size: 15px; -fx-text-fill: #E2E8F0; -fx-font-weight: 500;"/>
-                </VBox>
-            </VBox>
+        <!-- Logo -->
+        <StackPane prefWidth="150" prefHeight="150"
+                   style="-fx-background-color: linear-gradient(to bottom right, #7C3AED, #5B21B6);
+                          -fx-background-radius: 75;">
+            <effect>
+                <DropShadow radius="20" offsetY="8" color="rgba(124,58,237,0.5)"/>
+            </effect>
+            <Label text="UG"
+                   style="-fx-font-size: 56px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        </StackPane>
 
+        <!-- Title -->
+        <VBox alignment="CENTER" spacing="8">
+            <Label text="UniGrade"
+                   style="-fx-font-size: 48px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Academic Performance Tracker"
+                   style="-fx-font-size: 16px; -fx-text-fill: #A78BFA; -fx-font-weight: 500;"/>
         </VBox>
-    </center>
 
-    <bottom>
-        <!-- Developer Info -->
-        <VBox alignment="CENTER" spacing="15" BorderPane.alignment="CENTER">
-            <padding>
-                <Insets bottom="35"/>
-            </padding>
-            
-            <VBox alignment="CENTER" spacing="10"
-                style="-fx-background-color: #1F1F3350; -fx-background-radius: 12; -fx-padding: 18 40;">
+        <!-- Loading Section -->
+        <VBox alignment="CENTER" spacing="16" prefWidth="380">
+            <!-- Custom Progress Bar -->
+            <StackPane prefWidth="360" prefHeight="12"
+                style="-fx-background-color: #2D2D44; -fx-background-radius: 6;">
                 
-                <Label text="Developed by Haseeb"
-                    style="-fx-font-size: 14px; -fx-text-fill: #E2E8F0; -fx-font-weight: 600;"/>
-                
-                <Label text="github.com/haseeb"
-                    style="-fx-font-size: 13px; -fx-text-fill: #A78BFA; -fx-font-weight: 500;"/>
-            </VBox>
+                <HBox fx:id="progressFill" prefHeight="12" alignment="CENTER_LEFT">
+                    <StackPane prefWidth="0" prefHeight="12"
+                        style="-fx-background-color: #7C3AED; -fx-background-radius: 6;"/>
+                </HBox>
+            </StackPane>
             
-            <Label text="Version 1.0.0"
-                style="-fx-font-size: 11px; -fx-text-fill: #7D7A9C;"/>
+            <Label fx:id="percentLabel" text="0%"
+                   style="-fx-text-fill: #A78BFA; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+            <Label fx:id="loadingLabel" text="Initializing..."
+                   style="-fx-text-fill: #E2E8F0; -fx-font-size: 14px;"/>
         </VBox>
-    </bottom>
+    </VBox>
 
-</BorderPane>
+    <!-- Footer -->
+    <VBox alignment="BOTTOM_CENTER" spacing="8" StackPane.alignment="BOTTOM_CENTER">
+        <padding><Insets bottom="20"/></padding>
+        <Label text="Developed by Haseeb" 
+            style="-fx-text-fill: #E2E8F0; -fx-font-weight: bold; -fx-font-size: 13px;"/>
+        <Label text="github.com/haseeb" 
+            style="-fx-text-fill: #A78BFA; -fx-font-size: 12px;"/>
+        <Label text="Version 1.0.0" 
+            style="-fx-text-fill: #7D7A9C; -fx-font-size: 11px;"/>
+    </VBox>
+
+</StackPane>
