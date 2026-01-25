@@ -151,6 +151,11 @@ public class DashboardController {
         }
     }
 
+    @FXML
+    private void handleSettings() {
+        SceneManager.loadCenter("Settings.fxml");
+    }
+
     private void loadSemesters() {
         // Clear existing items
         semesterListContainer.getChildren().clear();

@@ -53,7 +53,10 @@
                     <Button text="📊 Analysis"
                             onAction="#handleViewReport"
                             style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 12; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 6 18;"/>
-                    
+                    <!-- Add this next to the Analysis button -->
+                    <Button text="⚙️ Settings"
+                            onAction="#handleSettings"
+                            style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 12; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 6 18;"/>
                     <Button fx:id="addSemesterButton"
                             text="+ Add Semester"
                             onAction="#handleAddSemester"

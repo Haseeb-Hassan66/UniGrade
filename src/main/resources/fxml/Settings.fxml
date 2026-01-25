@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.SettingsController"
+           alignment="CENTER"
+           style="-fx-background-color: linear-gradient(to bottom right, #141423, #4C1D95);">
+
+    <!-- Main Container -->
+    <VBox alignment="TOP_CENTER" spacing="20" prefWidth="750" VBox.vgrow="ALWAYS">
+        
+        <padding>
+            <Insets top="30" bottom="30" left="20" right="20"/>
+        </padding>
+
+        <!-- Header Card -->
+        <VBox alignment="CENTER_LEFT" spacing="15"
+              style="-fx-background-color: #1F1F33; -fx-padding: 20 30; -fx-background-radius: 18;">
+            
+            <effect>
+                <DropShadow radius="20" offsetY="8" color="#00000066"/>
+            </effect>
+
+            <HBox alignment="CENTER_LEFT" spacing="15">
+                <Button fx:id="backButton"
+                        text="← Back"
+                        onAction="#handleBack"
+                        style="-fx-background-color: transparent; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <Label text="⚙️ Settings"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+            </HBox>
+        </VBox>
+
+        <!-- Settings Content -->
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                    style="-fx-background: transparent; -fx-background-color: transparent;">
+            
+            <VBox spacing="20">
+                
+                <!-- Profile Information Section -->
+                <VBox spacing="15"
+                      style="-fx-background-color: #1F1F33; -fx-padding: 25; -fx-background-radius: 18;">
+                    
+                    <effect>
+                        <DropShadow radius="15" offsetY="6" color="#00000044"/>
+                    </effect>
+
+                    <Label text="👤 Profile Information"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    
+                    <Separator style="-fx-background-color: #2D2D44;"/>
+
+                    <!-- Name -->
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label text="Name:" prefWidth="120"
+                               style="-fx-text-fill: #A5A3C7; -fx-font-size: 14px;"/>
+                        <Label fx:id="nameLabel" text="Loading..."
+                               style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Edit" onAction="#handleEditProfile"
+                                style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 6 16;"/>
+                    </HBox>
+
+                    <!-- Department -->
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label text="Department:" prefWidth="120"
+                               style="-fx-text-fill: #A5A3C7; -fx-font-size: 14px;"/>
+                        <Label fx:id="departmentLabel" text="Loading..."
+                               style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                    </HBox>
+
+                </VBox>
+
+                <!-- University & Grading Section -->
+                <VBox spacing="15"
+                      style="-fx-background-color: #1F1F33; -fx-padding: 25; -fx-background-radius: 18;">
+                    
+                    <effect>
+                        <DropShadow radius="15" offsetY="6" color="#00000044"/>
+                    </effect>
+
+                    <Label text="🏛️ University &amp; Grading"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                    
+                    <Separator style="-fx-background-color: #2D2D44;"/>
+
+                    <!-- Current University -->
+                    <VBox spacing="8">
+                        <Label text="Current University"
+                               style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px;"/>
+                        <Label fx:id="universityLabel" text="Loading..."
+                               style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    </VBox>
+
+                    <!-- Action Buttons -->
+                    <VBox spacing="12">
+                        <Button text="Change University" onAction="#handleChangeUniversity"
+                                prefWidth="250"
+                                style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #A78BFA; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 20;"/>
+                        
+                        <Button text="Edit Grading Policy" onAction="#handleEditGradingPolicy"
+                                prefWidth="250"
+                                style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #A78BFA; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 20;"/>
+                        
+                        <Button text="Edit Assessment Components" onAction="#handleEditAssessment"
+                                prefWidth="250"
+                                style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #A78BFA; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 20;"/>
+                    </VBox>
+                </VBox>
+
+                <!-- Danger Zone -->
+                <VBox spacing="15"
+                      style="-fx-background-color: #1F1F33; -fx-padding: 25; -fx-background-radius: 18; -fx-border-color: #EF4444; -fx-border-width: 2; -fx-border-radius: 18;">
+                    
+                    <effect>
+                        <DropShadow radius="15" offsetY="6" color="#00000044"/>
+                    </effect>
+
+                    <Label text="⚠️ Danger Zone"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #EF4444;"/>
+                    
+                    <Separator style="-fx-background-color: #EF444450;"/>
+
+                    <Label text="Resetting will delete all your data including semesters, subjects, and marks. This cannot be undone."
+                           wrapText="true"
+                           style="-fx-text-fill: #F87171; -fx-font-size: 13px;"/>
+
+                    <Button text="Reset All Data" onAction="#handleResetData"
+                            prefWidth="200"
+                            style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 20;"/>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+
+    </VBox>
+
+</StackPane>
