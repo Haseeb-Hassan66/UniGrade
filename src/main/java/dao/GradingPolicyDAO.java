@@ -14,10 +14,10 @@ public class GradingPolicyDAO {
     // Save a grading policy
     public void save(GradingPolicy policy) {
         String sql = "INSERT INTO GradingPolicy(universityId, category, gradeName, gradePoint, minMarks, maxMarks) "
-                   + "VALUES(?, ?, ?, ?, ?, ?)";
-        
+                + "VALUES(?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, policy.getUniversityId());
             ps.setString(2, policy.getCategory());
@@ -45,9 +45,9 @@ public class GradingPolicyDAO {
     public List<GradingPolicy> getByUniversityAndCategory(int universityId, String category) {
         List<GradingPolicy> policies = new ArrayList<>();
         String sql = "SELECT * FROM GradingPolicy WHERE universityId = ? AND category = ? ORDER BY maxMarks DESC";
-        
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, universityId);
             ps.setString(2, category);
@@ -60,8 +60,8 @@ public class GradingPolicyDAO {
                 double minMarks = rs.getDouble("minMarks");
                 double maxMarks = rs.getDouble("maxMarks");
 
-                policies.add(new GradingPolicy(id, universityId, category, gradeName, 
-                                              gradePoint, minMarks, maxMarks));
+                policies.add(new GradingPolicy(id, universityId, category, gradeName,
+                        gradePoint, minMarks, maxMarks));
             }
 
         } catch (SQLException e) {
@@ -74,9 +74,9 @@ public class GradingPolicyDAO {
     public List<GradingPolicy> getByUniversity(int universityId) {
         List<GradingPolicy> policies = new ArrayList<>();
         String sql = "SELECT * FROM GradingPolicy WHERE universityId = ? ORDER BY category, maxMarks DESC";
-        
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, universityId);
             ResultSet rs = ps.executeQuery();
@@ -89,8 +89,8 @@ public class GradingPolicyDAO {
                 double minMarks = rs.getDouble("minMarks");
                 double maxMarks = rs.getDouble("maxMarks");
 
-                policies.add(new GradingPolicy(id, universityId, category, gradeName, 
-                                              gradePoint, minMarks, maxMarks));
+                policies.add(new GradingPolicy(id, universityId, category, gradeName,
+                        gradePoint, minMarks, maxMarks));
             }
 
         } catch (SQLException e) {
@@ -102,11 +102,11 @@ public class GradingPolicyDAO {
     // Find grade for given marks and category
     public GradingPolicy findGradeForMarks(int universityId, String category, double marks) {
         String sql = "SELECT * FROM GradingPolicy "
-                   + "WHERE universityId = ? AND category = ? AND minMarks <= ? AND maxMarks >= ? "
-                   + "LIMIT 1";
-        
+                + "WHERE universityId = ? AND category = ? AND minMarks <= ? AND maxMarks >= ? "
+                + "LIMIT 1";
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, universityId);
             ps.setString(2, category);
@@ -121,13 +121,30 @@ public class GradingPolicyDAO {
                 double minMarks = rs.getDouble("minMarks");
                 double maxMarks = rs.getDouble("maxMarks");
 
-                return new GradingPolicy(id, universityId, category, gradeName, 
-                                        gradePoint, minMarks, maxMarks);
+                return new GradingPolicy(id, universityId, category, gradeName,
+                        gradePoint, minMarks, maxMarks);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;  // No grade found (marks out of range)
+        return null; // No grade found (marks out of range)
+    }
+
+    // Delete all grading policies for a university and category
+    public void deleteByUniversityAndCategory(int universityId, String category) {
+        String sql = "DELETE FROM GradingPolicy WHERE universityId = ? AND category = ?";
+        try (Connection conn = DBUtil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, universityId);
+            ps.setString(2, category);
+            ps.executeUpdate();
+
+            System.out.println("DAO: Grading policies deleted for category: " + category);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

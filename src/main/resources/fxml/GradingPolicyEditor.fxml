@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.GradingPolicyEditorController"
+           style="-fx-background-color: rgba(0, 0, 0, 0.4);">
+
+    <!-- Dialog Card -->
+    <VBox spacing="20" maxWidth="700" maxHeight="750"
+          style="-fx-background-color: #1F1F33; -fx-padding: 30; -fx-background-radius: 20;">
+        
+        <effect>
+            <DropShadow radius="40" offsetY="15" color="#00000099"/>
+        </effect>
+
+        <!-- Header -->
+        <VBox spacing="10">
+            <Label text="📊 Edit Grading Policy"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label fx:id="universityNameLabel" text="University Name"
+                   style="-fx-text-fill: #A5A3C7; -fx-font-size: 14px;"/>
+        </VBox>
+        
+        <Separator style="-fx-background-color: #2D2D44;"/>
+
+        <!-- Category Selector with Radio Buttons -->
+        <VBox spacing="12">
+            <Label text="Select Category"
+                   style="-fx-text-fill: #A5A3C7; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+            <HBox spacing="15">
+                <ToggleButton fx:id="theoryButton" text="📚 Theory" 
+                              style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24; -fx-cursor: hand;"/>
+                <ToggleButton fx:id="labButton" text="🔬 Practical" 
+                              style="-fx-background-color: #2D2D44; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24; -fx-cursor: hand;"/>
+            </HBox>
+        </VBox>
+
+        <!-- Grading Table with ScrollPane -->
+        <VBox spacing="10" VBox.vgrow="ALWAYS">
+            <Label text="Grading Ranges"
+                   style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                        style="-fx-background: transparent; -fx-background-color: transparent;">
+                <TableView fx:id="gradingTable" editable="true" minHeight="300" maxHeight="350"
+                           style="-fx-background-color: #2D2D44; -fx-background-radius: 10;">
+                    <columns>
+                        <TableColumn fx:id="gradeNameCol" text="Grade" prefWidth="100" editable="true"/>
+                        <TableColumn fx:id="minMarksCol" text="Min Marks" prefWidth="120"/>
+                        <TableColumn fx:id="maxMarksCol" text="Max Marks" prefWidth="120"/>
+                        <TableColumn fx:id="gradePointCol" text="Grade Point" prefWidth="120"/>
+                        <TableColumn fx:id="actionsCol" text="Actions" prefWidth="100"/>
+                    </columns>
+                </TableView>
+            </ScrollPane>
+
+            <Button text="+ Add Grade" onAction="#handleAddGrade"
+                    style="-fx-background-color: #2D2D44; -fx-text-fill: #7C3AED; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20; -fx-cursor: hand;"/>
+        </VBox>
+
+        <!-- Warning -->
+        <HBox spacing="10" alignment="CENTER_LEFT"
+              style="-fx-background-color: rgba(251, 146, 60, 0.1); -fx-padding: 12; -fx-background-radius: 10;">
+            <Label text="⚠️" style="-fx-font-size: 18px;"/>
+            <VBox spacing="5">
+                <Label text="Important: Changing grading ranges will affect all existing grades."
+                       wrapText="true"
+                       style="-fx-text-fill: #FFA366; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                <Label text="All subject grades and GPAs will be recalculated automatically."
+                       wrapText="true"
+                       style="-fx-text-fill: #FFA366; -fx-font-size: 11px;"/>
+            </VBox>
+        </HBox>
+
+        <!-- Validation Info -->
+        <VBox spacing="5" fx:id="validationBox" visible="false" managed="false"
+              style="-fx-background-color: rgba(239, 68, 68, 0.1); -fx-padding: 12; -fx-background-radius: 10;">
+            <Label text="❌ Validation Errors:" style="-fx-text-fill: #EF4444; -fx-font-weight: bold;"/>
+            <Label fx:id="validationLabel" wrapText="true" style="-fx-text-fill: #EF4444; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <!-- Buttons -->
+        <HBox spacing="12" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10"/>
+            </padding>
+            
+            <Button text="Cancel" onAction="#handleCancel"
+                    style="-fx-background-color: transparent; -fx-border-color: #7D7A9C; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #7D7A9C; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 24;"/>
+            
+            <Button text="Save Changes" onAction="#handleSave"
+                    style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 24;"/>
+        </HBox>
+
+    </VBox>
+
+</StackPane>
