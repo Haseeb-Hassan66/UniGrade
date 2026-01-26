@@ -14,10 +14,10 @@ public class AssessmentPolicyDAO {
     // Save an assessment policy
     public void save(AssessmentPolicy policy) {
         String sql = "INSERT INTO AssessmentPolicy(universityId, category, componentName, maxMarks) "
-                   + "VALUES(?, ?, ?, ?)";
-        
+                + "VALUES(?, ?, ?, ?)";
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, policy.getUniversityId());
             ps.setString(2, policy.getCategory());
@@ -39,13 +39,13 @@ public class AssessmentPolicyDAO {
         }
     }
 
-    // Get all assessment policies for a university by category
+    // Get assessment policies by university and category
     public List<AssessmentPolicy> getByUniversityAndCategory(int universityId, String category) {
         List<AssessmentPolicy> policies = new ArrayList<>();
-        String sql = "SELECT * FROM AssessmentPolicy WHERE universityId = ? AND category = ?";
-        
+        String sql = "SELECT * FROM AssessmentPolicy WHERE universityId = ? AND category = ? ORDER BY id";
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, universityId);
             ps.setString(2, category);
@@ -65,13 +65,30 @@ public class AssessmentPolicyDAO {
         return policies;
     }
 
+    // Delete all assessment policies for a university and category
+    public void deleteByUniversityAndCategory(int universityId, String category) {
+        String sql = "DELETE FROM AssessmentPolicy WHERE universityId = ? AND category = ?";
+        try (Connection conn = DBUtil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, universityId);
+            ps.setString(2, category);
+            ps.executeUpdate();
+
+            System.out.println("DAO: Assessment policies deleted for category: " + category);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Get ALL assessment policies for a university (both Theory and Practical)
     public List<AssessmentPolicy> getByUniversity(int universityId) {
         List<AssessmentPolicy> policies = new ArrayList<>();
         String sql = "SELECT * FROM AssessmentPolicy WHERE universityId = ? ORDER BY category";
-        
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, universityId);
             ResultSet rs = ps.executeQuery();
@@ -91,13 +108,14 @@ public class AssessmentPolicyDAO {
         return policies;
     }
 
-    // Calculate total marks for a category (Theory should = 100, Practical should = 50)
+    // Calculate total marks for a category (Theory should = 100, Practical should =
+    // 50)
     public double getTotalMarksByCategory(int universityId, String category) {
         String sql = "SELECT SUM(maxMarks) as total FROM AssessmentPolicy "
-                   + "WHERE universityId = ? AND category = ?";
-        
+                + "WHERE universityId = ? AND category = ?";
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, universityId);
             ps.setString(2, category);
