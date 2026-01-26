@@ -68,10 +68,51 @@ public class SettingsController {
 
     @FXML
     private void handleEditProfile() {
-        util.DialogUtil.showInfo(
-                (javafx.stage.Stage) backButton.getScene().getWindow(),
-                "Coming Soon",
-                "Profile editor will be available in the next update!");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/fxml/EditProfile.fxml"));
+            javafx.scene.Parent root = loader.load();
+
+            EditProfileController controller = loader.getController();
+
+            javafx.stage.Stage dialogStage = new javafx.stage.Stage();
+            dialogStage.setTitle("Edit Profile");
+            dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialogStage.initOwner(backButton.getScene().getWindow());
+            dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+
+            controller.setDialogStage(dialogStage);
+
+            // Apply blur
+            javafx.stage.Stage ownerStage = (javafx.stage.Stage) backButton.getScene().getWindow();
+            javafx.scene.Node ownerRoot = ownerStage.getScene().getRoot();
+            util.UIUtil.applyModalBlur(ownerRoot);
+
+            dialogStage.setOnHidden(e -> util.UIUtil.removeModalBlur(ownerRoot));
+
+            dialogStage.showAndWait();
+
+            // If saved, reload data
+            if (controller.isSaveClicked()) {
+                loadUserData();
+                util.DialogUtil.showInfo(
+                        (javafx.stage.Stage) backButton.getScene().getWindow(),
+                        "Success",
+                        "Profile updated successfully!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            util.DialogUtil.showError(
+                    (javafx.stage.Stage) backButton.getScene().getWindow(),
+                    "Error",
+                    "Failed to open profile editor: " + e.getMessage());
+        }
     }
 
     @FXML

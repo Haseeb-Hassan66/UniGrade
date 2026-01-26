@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.EditProfileController"
+           style="-fx-background-color: rgba(0, 0, 0, 0.4);">
+
+    <!-- Dialog Card -->
+    <VBox spacing="20" maxWidth="450"
+          style="-fx-background-color: #1F1F33; -fx-padding: 30; -fx-background-radius: 20;">
+        
+        <effect>
+            <DropShadow radius="40" offsetY="15" color="#00000099"/>
+        </effect>
+
+        <!-- Header -->
+        <Label text="✏️ Edit Profile"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        
+        <Separator style="-fx-background-color: #2D2D44;"/>
+
+        <!-- Name Field -->
+        <VBox spacing="8">
+            <Label text="Name *"
+                   style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            <TextField fx:id="nameField" promptText="Enter your name"
+                       style="-fx-background-color: #2D2D44; -fx-text-fill: white; -fx-prompt-text-fill: #7D7A9C; -fx-background-radius: 10; -fx-padding: 12;"/>
+        </VBox>
+
+        <!-- Department Field -->
+        <VBox spacing="8">
+            <Label text="Department *"
+                   style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            <TextField fx:id="departmentField" promptText="Enter your department"
+                       style="-fx-background-color: #2D2D44; -fx-text-fill: white; -fx-prompt-text-fill: #7D7A9C; -fx-background-radius: 10; -fx-padding: 12;"/>
+        </VBox>
+
+        <!-- Buttons -->
+        <HBox spacing="12" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10"/>
+            </padding>
+            
+            <Button text="Cancel" onAction="#handleCancel"
+                    style="-fx-background-color: transparent; -fx-border-color: #7D7A9C; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #7D7A9C; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 24;"/>
+            
+            <Button text="Save Changes" onAction="#handleSave"
+                    style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 24;"/>
+        </HBox>
+
+    </VBox>
+
+</StackPane>

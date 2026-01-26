@@ -88,6 +88,24 @@ public class UserProfileDAO {
         return user;
     }
 
+    public void update(UserProfile user) {
+        String sql = "UPDATE UserProfile SET name = ?, department = ?, universityId = ? WHERE id = ?";
+        try (Connection conn = DBUtil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getDepartment());
+            ps.setInt(3, user.getUniversityId());
+            ps.setInt(4, user.getId());
+
+            ps.executeUpdate();
+            System.out.println("DAO: User profile updated");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // ← ADD THIS NEW METHOD (for Phase 2)
     public void updateUniversityId(int userId, int universityId) {
         String sql = "UPDATE UserProfile SET universityId = ? WHERE id = ?";
