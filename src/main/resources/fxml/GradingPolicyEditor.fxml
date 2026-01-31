@@ -20,7 +20,7 @@
 
         <!-- Header -->
         <VBox spacing="10">
-            <Label text="📊 Edit Grading Policy"
+            <Label text="%settings.grading.title"
                    style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
             <Label fx:id="universityNameLabel" text="University Name"
                    style="-fx-text-fill: #A5A3C7; -fx-font-size: 14px;"/>
@@ -30,19 +30,19 @@
 
         <!-- Category Selector with Radio Buttons -->
         <VBox spacing="12">
-            <Label text="Select Category"
+            <Label text="%dialog.field.select_category"
                    style="-fx-text-fill: #A5A3C7; -fx-font-size: 14px; -fx-font-weight: bold;"/>
             <HBox spacing="15">
-                <ToggleButton fx:id="theoryButton" text="📚 Theory" 
+                <ToggleButton fx:id="theoryButton" text="%settings.btn.theory" 
                               style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24; -fx-cursor: hand;"/>
-                <ToggleButton fx:id="labButton" text="🔬 Practical" 
+                <ToggleButton fx:id="labButton" text="%settings.btn.practical" 
                               style="-fx-background-color: #2D2D44; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 12 24; -fx-cursor: hand;"/>
             </HBox>
         </VBox>
 
         <!-- Grading Table with ScrollPane -->
         <VBox spacing="10" VBox.vgrow="ALWAYS">
-            <Label text="Grading Ranges"
+            <Label text="%settings.grading.ranges"
                    style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;"/>
             
             <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
@@ -50,16 +50,16 @@
                 <TableView fx:id="gradingTable" editable="true" minHeight="300" maxHeight="350"
                            style="-fx-background-color: #2D2D44; -fx-background-radius: 10;">
                     <columns>
-                        <TableColumn fx:id="gradeNameCol" text="Grade" prefWidth="100" editable="true"/>
-                        <TableColumn fx:id="minMarksCol" text="Min Marks" prefWidth="120"/>
-                        <TableColumn fx:id="maxMarksCol" text="Max Marks" prefWidth="120"/>
-                        <TableColumn fx:id="gradePointCol" text="Grade Point" prefWidth="120"/>
-                        <TableColumn fx:id="actionsCol" text="Actions" prefWidth="100"/>
+                        <TableColumn fx:id="gradeNameCol" text="%report.table.grade" prefWidth="100" editable="true"/>
+                        <TableColumn fx:id="minMarksCol" text="%marks.table.min" prefWidth="120"/>
+                        <TableColumn fx:id="maxMarksCol" text="%marks.table.max" prefWidth="120"/>
+                        <TableColumn fx:id="gradePointCol" text="%report.table.gpa" prefWidth="120"/>
+                        <TableColumn fx:id="actionsCol" text="%report.table.actions" prefWidth="100"/>
                     </columns>
                 </TableView>
             </ScrollPane>
 
-            <Button text="+ Add Grade" onAction="#handleAddGrade"
+            <Button text="%settings.grading.btn.add" onAction="#handleAddGrade"
                     style="-fx-background-color: #2D2D44; -fx-text-fill: #7C3AED; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 10 20; -fx-cursor: hand;"/>
         </VBox>
 
@@ -90,10 +90,10 @@
                 <Insets top="10"/>
             </padding>
             
-            <Button text="Cancel" onAction="#handleCancel"
+            <Button text="%dialog.btn.cancel" onAction="#handleCancel"
                     style="-fx-background-color: transparent; -fx-border-color: #7D7A9C; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #7D7A9C; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 24;"/>
             
-            <Button text="Save Changes" onAction="#handleSave"
+            <Button text="%dialog.btn.save" onAction="#handleSave"
                     style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 24;"/>
         </HBox>
 

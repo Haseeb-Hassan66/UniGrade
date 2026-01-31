@@ -2,12 +2,16 @@ package ui;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+import java.text.MessageFormat;
 
 import dao.AssessmentPolicyDAO;
 import dao.GradingPolicyDAO;
 import dao.MarksDAO;
 import dao.SemesterDAO;
+import dao.SubjectDAO;
 import dao.UserProfileDAO;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -62,6 +66,7 @@ public class MarksEntryController {
     private final GradingPolicyDAO gradingDAO = new GradingPolicyDAO();
     private final SemesterDAO semesterDAO = new SemesterDAO();
     private final UserProfileDAO userDAO = new UserProfileDAO();
+    private final SubjectDAO subjectDAO = new SubjectDAO();
 
     // Map to store text fields for saving later: Category -> Component -> TextField
     private final Map<String, Map<String, TextField>> inputsMap = new HashMap<>();
@@ -77,7 +82,8 @@ public class MarksEntryController {
 
         // Create loading overlay (but don't add to scene yet - will be added when
         // dialog shows)
-        loadingOverlay = util.LoadingIndicator.createLoadingOverlay("Saving marks...");
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+        loadingOverlay = util.LoadingIndicator.createLoadingOverlay(messages.getString("settings.label.loading"));
     }
 
     public void setDialogStage(Stage dialogStage) {
@@ -86,18 +92,37 @@ public class MarksEntryController {
 
     public void setSubject(Subject subject) {
         this.currentSubject = subject;
-        subjectNameLabel.setText(subject.getSubjectName() + " (" + subject.getCreditHoursDisplay() + ")");
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+        subjectNameLabel.setText(
+                java.text.MessageFormat.format("{0} ({1})", subject.getSubjectName(), subject.getCreditHoursDisplay()));
 
-        ltc1qs49erv7pzeczp5qlnxd46aufzapsmzpa7y73ct();
+        loadUniversityIdAsync();
     }
 
-    private void ltc1qs49erv7pzeczp5qlnxd46aufzapsmzpa7y73ct() {
-        // Fetch University ID chain: Subject -> Semester -> User -> University
-        Semester semester = semesterDAO.getById(currentSubject.getSemesterId());
-        if (semester != null) {
-            UserProfile user = userDAO.getById(semester.getUserId());
-            if (user != null) {
-                this.universityId = user.getUniversityId();
+    /**
+     * Load university ID asynchronously to prevent UI thread blocking.
+     * Fetches: Subject -> Semester -> User -> University
+     */
+    private void loadUniversityIdAsync() {
+        javafx.concurrent.Task<Integer> task = new javafx.concurrent.Task<>() {
+            @Override
+            protected Integer call() throws Exception {
+                // Database operations in background thread
+                Semester semester = semesterDAO.getById(currentSubject.getSemesterId());
+                if (semester != null) {
+                    UserProfile user = userDAO.getById(semester.getUserId());
+                    if (user != null) {
+                        return user.getUniversityId();
+                    }
+                }
+                return 0;
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            // Update UI on JavaFX Application Thread
+            this.universityId = task.getValue();
+            if (this.universityId > 0) {
                 loadDynamicFields();
                 isDataLoaded = true;
                 // Force recalculation after data load
@@ -106,7 +131,14 @@ public class MarksEntryController {
                     calculateTotals("Practical");
                 }
             }
-        }
+        });
+
+        task.setOnFailed(e -> {
+            System.err.println("Failed to load university ID: " + task.getException().getMessage());
+            task.getException().printStackTrace();
+        });
+
+        new Thread(task).start();
     }
 
     private void loadDynamicFields() {
@@ -183,14 +215,17 @@ public class MarksEntryController {
 
         // Validation & Live Calculation Listener
         inputField.textProperty().addListener((obs, oldVal, newVal) -> {
-            if (!newVal.matches("\\d*(\\.\\d*)?")) {
-                inputField.setText(oldVal); // Enforce numeric
+            // Allow empty string or valid number with max 2 decimal places
+            // Regex: ^\d+(\.\d{0,2})?$ -> Start with digits, optional dot, max 2 decimals
+            if (!newVal.isEmpty() && !newVal.matches("^\\d+(\\.\\d{0,2})?$")) {
+                inputField.setText(oldVal); // Revert invalid input
             } else {
                 handleInputChange(inputField, category, componentName, maxMarks);
             }
         });
 
         // Max Marks Label
+        java.util.ResourceBundle messages = SceneManager.getBundle();
         Label maxLabel = new Label("/ " + maxMarks);
         maxLabel.setStyle("-fx-text-fill: #7D7A9C; -fx-font-size: 14px;");
 
@@ -256,8 +291,9 @@ public class MarksEntryController {
             }
         }
 
+        java.util.ResourceBundle messages = SceneManager.getBundle();
         if (totalMax == 0) {
-            updateLabels(category, 0, 0, "N/A", 0.0);
+            updateLabels(category, 0, 0, messages.getString("dashboard.gpa.na"), 0.0);
             return;
         }
 
@@ -271,14 +307,16 @@ public class MarksEntryController {
         Double gradePoint = (gradePolicy != null) ? gradePolicy.getGradePoint() : 0.0;
 
         if (hasError)
-            grade = "Error";
+            grade = messages.getString("dialog.error.title"); // Using Error as grade name if there's an error
 
         updateLabels(category, totalObtained, totalMax, grade, gradePoint);
     }
 
     private void updateLabels(String category, double obtained, double max, String grade, double gradePoint) {
+        java.util.ResourceBundle messages = SceneManager.getBundle();
         String gradeDisplay = grade;
-        if (!"Error".equals(grade) && !"N/A".equals(grade)) {
+        if (!messages.getString("dialog.error.title").equals(grade)
+                && !messages.getString("dashboard.gpa.na").equals(grade)) {
             gradeDisplay += String.format(" (%.2f)", gradePoint);
         }
 
@@ -309,27 +347,37 @@ public class MarksEntryController {
         // Show loading
         util.LoadingIndicator.show(loadingOverlay);
 
-        // Run save operation in background
+        // Run save operation in background with transaction-style error handling
         javafx.concurrent.Task<Void> saveTask = new javafx.concurrent.Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                // Save Theory
-                saveCategory("Theory");
+                // TRANSACTION MANAGEMENT: All operations must succeed or fail together
+                // to prevent data inconsistency (e.g., marks saved but subject grade not
+                // updated)
+                try {
+                    // Step 1: Save Theory marks
+                    saveCategory("Theory");
 
-                // Save Practical
-                if (currentSubject.isHasPractical()) {
-                    saveCategory("Practical");
+                    // Step 2: Save Practical marks (if applicable)
+                    if (currentSubject.isHasPractical()) {
+                        saveCategory("Practical");
+                    }
+
+                    // Step 3: Update Subject's grades in database
+                    updateSubjectGrades();
+
+                    // Step 4: Calculate and update semester GPA
+                    semesterDAO.calculateAndUpdateGPA(currentSubject.getSemesterId());
+
+                    Thread.sleep(300); // Small delay for smooth UX
+
+                    return null;
+
+                } catch (Exception e) {
+                    // If any step fails, propagate the exception to trigger rollback behavior
+                    System.err.println("Transaction-style save failed, operation aborted");
+                    throw new RuntimeException("Save operation failed: " + e.getMessage(), e);
                 }
-
-                // Update Subject's grades in database
-                updateSubjectGrades();
-
-                // Calculate GPA
-                semesterDAO.calculateAndUpdateGPA(currentSubject.getSemesterId());
-
-                Thread.sleep(300); // Small delay for smooth UX
-
-                return null;
             }
         };
 
@@ -337,7 +385,9 @@ public class MarksEntryController {
             util.LoadingIndicator.hide(loadingOverlay);
 
             javafx.application.Platform.runLater(() -> {
-                DialogUtil.showInfo(dialogStage, "Success", "Marks saved and GPA calculated successfully!");
+                java.util.ResourceBundle messages = SceneManager.getBundle();
+                DialogUtil.showInfo(dialogStage, messages.getString("dialog.success.title"),
+                        messages.getString("message.marks.saved"));
                 dialogStage.close();
             });
         });
@@ -346,8 +396,10 @@ public class MarksEntryController {
             util.LoadingIndicator.hide(loadingOverlay);
 
             javafx.application.Platform.runLater(() -> {
-                DialogUtil.showError(dialogStage, "Error",
-                        "Failed to save marks: " + saveTask.getException().getMessage());
+                java.util.ResourceBundle messages = SceneManager.getBundle();
+                String errorMsg = java.text.MessageFormat.format(messages.getString("message.save.failed"),
+                        saveTask.getException().getMessage());
+                DialogUtil.showError(dialogStage, messages.getString("dialog.error.title"), errorMsg);
             });
         });
 
@@ -364,11 +416,14 @@ public class MarksEntryController {
         String tGrade = extractGradeLetter(tLabel);
         String pGrade = extractGradeLetter(pLabel);
 
-        if ("Error".equals(tLabel) || "N/A".equals(tLabel)) {
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+        if (messages.getString("dialog.error.title").equals(tLabel)
+                || messages.getString("dashboard.gpa.na").equals(tLabel)) {
             tGrade = null;
             tPoint = null;
         }
-        if ("Error".equals(pLabel) || "N/A".equals(pLabel)) {
+        if (messages.getString("dialog.error.title").equals(pLabel)
+                || messages.getString("dashboard.gpa.na").equals(pLabel)) {
             pGrade = null;
             pPoint = null;
         }
@@ -380,11 +435,13 @@ public class MarksEntryController {
         currentSubject.setPracticalGradePoint(pPoint);
 
         // Persist to database
-        new dao.SubjectDAO().updateGrades(currentSubject.getId(), tGrade, pGrade, tPoint, pPoint);
+        subjectDAO.updateGrades(currentSubject.getId(), tGrade, pGrade, tPoint, pPoint);
     }
 
     private String extractGradeLetter(String labelText) {
-        if (labelText == null || labelText.contains("N/A") || labelText.contains("Error"))
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+        if (labelText == null || labelText.contains(messages.getString("dashboard.gpa.na"))
+                || labelText.contains(messages.getString("dialog.error.title")))
             return null;
         if (labelText.contains(" (")) {
             return labelText.substring(0, labelText.indexOf(" ("));
@@ -416,10 +473,12 @@ public class MarksEntryController {
     }
 
     private boolean validateBeforeSave() {
+        java.util.ResourceBundle messages = SceneManager.getBundle();
         for (Map<String, TextField> map : inputsMap.values()) {
             for (TextField tf : map.values()) {
                 if (tf.getStyle().contains("#451a1a")) {
-                    DialogUtil.showError(dialogStage, "Invalid Input", "Please correct the highlighted fields.");
+                    DialogUtil.showError(dialogStage, messages.getString("dialog.error.title"),
+                            "Please correct the highlighted fields.");
                     return false;
                 }
             }

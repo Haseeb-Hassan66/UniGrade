@@ -30,7 +30,9 @@ public class GradingPolicyDAO {
             System.out.println("DAO: Grading policy saved - " + policy.getGradeName());
 
         } catch (SQLException e) {
+            System.err.println("Database error in GradingPolicyDAO.save: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to save grading policy: " + e.getMessage(), e);
         }
     }
 
@@ -65,7 +67,9 @@ public class GradingPolicyDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in GradingPolicyDAO.getAllByUniversity: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve grading policies: " + e.getMessage(), e);
         }
         return policies;
     }
@@ -94,7 +98,9 @@ public class GradingPolicyDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in GradingPolicyDAO.getGradePoint: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to get grade point: " + e.getMessage(), e);
         }
         return policies;
     }
@@ -126,7 +132,9 @@ public class GradingPolicyDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in GradingPolicyDAO.exists: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to check grading policy existence: " + e.getMessage(), e);
         }
         return null; // No grade found (marks out of range)
     }
@@ -144,7 +152,9 @@ public class GradingPolicyDAO {
             System.out.println("DAO: Grading policies deleted for category: " + category);
 
         } catch (SQLException e) {
+            System.err.println("Database error in GradingPolicyDAO.count: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to count grading policies: " + e.getMessage(), e);
         }
     }
 }

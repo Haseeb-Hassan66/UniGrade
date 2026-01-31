@@ -28,7 +28,9 @@ public class AssessmentPolicyDAO {
             System.out.println("DAO: Assessment policy saved - " + policy.getComponentName());
 
         } catch (SQLException e) {
+            System.err.println("Database error in AssessmentPolicyDAO.save: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to save assessment policy: " + e.getMessage(), e);
         }
     }
 
@@ -60,7 +62,9 @@ public class AssessmentPolicyDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in AssessmentPolicyDAO.getAllByUniversity: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve assessment policies: " + e.getMessage(), e);
         }
         return policies;
     }
@@ -78,7 +82,9 @@ public class AssessmentPolicyDAO {
             System.out.println("DAO: Assessment policies deleted for category: " + category);
 
         } catch (SQLException e) {
+            System.err.println("Database error in AssessmentPolicyDAO.exists: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to check assessment policy existence: " + e.getMessage(), e);
         }
     }
 
@@ -103,7 +109,9 @@ public class AssessmentPolicyDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in AssessmentPolicyDAO.getByCategory: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve assessment policy: " + e.getMessage(), e);
         }
         return policies;
     }
@@ -126,7 +134,9 @@ public class AssessmentPolicyDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in AssessmentPolicyDAO.deleteByCategory: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to delete assessment policy: " + e.getMessage(), e);
         }
         return 0.0;
     }

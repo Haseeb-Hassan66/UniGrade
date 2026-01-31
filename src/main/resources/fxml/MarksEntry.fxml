@@ -15,7 +15,7 @@
       <!-- Header -->
       <VBox style="-fx-padding: 24 24 16 24;">
          <children>
-            <Label text="Marks Entry" textFill="WHITE">
+            <Label text="%dialog.marks_entry.title_plain" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="22.0" />
                </font>
@@ -44,7 +44,7 @@
                   <!-- Theory Section -->
                   <VBox fx:id="theorySection" spacing="12.0">
                      <children>
-                        <Label text="Theory Marks" textFill="#a78bfa">
+                        <Label text="%report.chart.gpa" textFill="#a78bfa">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -54,10 +54,10 @@
                         <!-- Theory Summary -->
                         <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #2D2D44; -fx-background-radius: 8; -fx-padding: 12;">
                            <children>
-                               <Label text="Total:" textFill="#a5a3c7" />
+                               <Label text="%report.label.credits" textFill="#a5a3c7" />
                                <Label fx:id="theoryTotalLabel" text="0.0 / 100.0" textFill="WHITE" style="-fx-font-weight: bold;" />
                                <Region HBox.hgrow="ALWAYS" />
-                               <Label text="Grade:" textFill="#a5a3c7" />
+                               <Label text="%report.table.gpa" textFill="#a5a3c7" />
                                <Label fx:id="theoryGradeLabel" text="N/A" textFill="#10b981" style="-fx-font-weight: bold;" />
                            </children>
                         </HBox>
@@ -67,7 +67,7 @@
                   <!-- Practical Section (Dynamically shown) -->
                   <VBox fx:id="practicalSection" spacing="12.0">
                      <children>
-                        <Label text="Practical Marks" textFill="#a78bfa">
+                        <Label text="%report.chart.gpa" textFill="#a78bfa">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -77,10 +77,10 @@
                         <!-- Practical Summary -->
                          <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-background-color: #2D2D44; -fx-background-radius: 8; -fx-padding: 12;">
                            <children>
-                               <Label text="Total:" textFill="#a5a3c7" />
+                               <Label text="%report.label.credits" textFill="#a5a3c7" />
                                <Label fx:id="practicalTotalLabel" text="0.0 / 50.0" textFill="WHITE" style="-fx-font-weight: bold;" />
                                <Region HBox.hgrow="ALWAYS" />
-                               <Label text="Grade:" textFill="#a5a3c7" />
+                               <Label text="%report.table.gpa" textFill="#a5a3c7" />
                                <Label fx:id="practicalGradeLabel" text="N/A" textFill="#10b981" style="-fx-font-weight: bold;" />
                            </children>
                         </HBox>
@@ -94,8 +94,8 @@
       <!-- Footer Buttons -->
       <HBox alignment="CENTER_RIGHT" spacing="12.0" style="-fx-padding: 16 24 24 24; -fx-background-color: #1F1F33; -fx-background-radius: 0 0 20 20;">
          <children>
-            <Button mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: transparent; -fx-text-fill: #A5A3C7; -fx-font-size: 14px; -fx-cursor: hand;" text="Cancel" />
-            <Button mnemonicParsing="false" onAction="#handleSave" style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 8; -fx-padding: 8 24; -fx-cursor: hand;" text="Save Marks" />
+            <Button mnemonicParsing="false" onAction="#handleCancel" style="-fx-background-color: transparent; -fx-text-fill: #A5A3C7; -fx-font-size: 14px; -fx-cursor: hand;" text="%dialog.btn.cancel" />
+            <Button mnemonicParsing="false" onAction="#handleSave" style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 8; -fx-padding: 8 24; -fx-cursor: hand;" text="%dialog.btn.save" />
          </children>
       </HBox>
    </children>

@@ -26,12 +26,12 @@
                 <DropShadow radius="20" offsetY="8" color="#00000066"/>
             </effect>
 
-            <Label fx:id="welcomeLabel" text="Welcome, User!"
+            <Label fx:id="welcomeLabel" text="%dashboard.welcome"
                    style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
             
             <!-- CGPA Display -->
             <HBox alignment="CENTER" spacing="8">
-                <Label text="Overall CGPA:"
+                <Label text="%dashboard.cgpa.label"
                        style="-fx-font-size: 15px; -fx-text-fill: #A5A3C7;"/>
                 <Label fx:id="cgpaLabel" text="0.00"
                        style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #A78BFA;"/>
@@ -43,22 +43,22 @@
             
             <!-- Section Header -->
             <HBox alignment="CENTER_LEFT" spacing="15">
-                <Label text="My Semesters"
+                <Label text="%dashboard.semesters.title"
                        style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
                 
                 <Region HBox.hgrow="ALWAYS"/>
                 
                 <!-- Actions -->
                 <HBox spacing="10" alignment="CENTER_RIGHT">
-                    <Button text="📊 Analysis"
+                    <Button text="%dashboard.btn.analysis"
                             onAction="#handleViewReport"
                             style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 12; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 6 18;"/>
                     <!-- Add this next to the Analysis button -->
-                    <Button text="⚙️ Settings"
+                    <Button text="%dashboard.btn.settings"
                             onAction="#handleSettings"
                             style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 12; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 6 18;"/>
                     <Button fx:id="addSemesterButton"
-                            text="+ Add Semester"
+                            text="%dashboard.btn.add_semester"
                             onAction="#handleAddSemester"
                             style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 8 20;"/>
                 </HBox>
@@ -80,11 +80,11 @@
                             <DropShadow radius="15" offsetY="6" color="#00000044"/>
                         </effect>
                         
-                        <Label text="📚"
+                        <Label text="%dashboard.empty.emoji"
                                style="-fx-font-size: 48px;"/>
-                        <Label text="No semesters yet!"
+                        <Label text="%dashboard.empty.title"
                                style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #A5A3C7;"/>
-                        <Label text="Click 'Add Semester' to get started"
+                        <Label text="%dashboard.empty.subtitle"
                                style="-fx-font-size: 14px; -fx-text-fill: #7D7A9C;"/>
                     </VBox>
                 </VBox>

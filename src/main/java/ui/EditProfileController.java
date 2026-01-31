@@ -43,14 +43,18 @@ public class EditProfileController {
         String name = nameField.getText().trim();
         String department = departmentField.getText().trim();
 
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+
         // Validation
         if (name.isEmpty()) {
-            util.DialogUtil.showError(dialogStage, "Validation Error", "Name cannot be empty!");
+            util.DialogUtil.showError(dialogStage, messages.getString("dialog.error.title"),
+                    messages.getString("dialog.error.name_empty"));
             return;
         }
 
         if (department.isEmpty()) {
-            util.DialogUtil.showError(dialogStage, "Validation Error", "Department cannot be empty!");
+            util.DialogUtil.showError(dialogStage, messages.getString("dialog.error.title"),
+                    messages.getString("dialog.error.department_empty"));
             return;
         }
 

@@ -24,6 +24,8 @@ import javafx.scene.paint.Color;
 import model.Semester;
 import model.UserProfile;
 import util.ResultCalculator;
+import java.util.ResourceBundle;
+import java.text.MessageFormat;
 
 public class DashboardController {
 
@@ -52,7 +54,10 @@ public class DashboardController {
         currentUser = userDAO.getUser();
 
         if (currentUser != null) {
-            welcomeLabel.setText("Welcome, " + currentUser.getName() + " from " + currentUser.getDepartment() + "!");
+            ResourceBundle messages = SceneManager.getBundle();
+            String welcomeMsg = MessageFormat.format(messages.getString("dashboard.welcome"),
+                    currentUser.getName(), currentUser.getDepartment());
+            welcomeLabel.setText(welcomeMsg);
         }
 
         // Initialize DAO
@@ -76,15 +81,15 @@ public class DashboardController {
 
     @FXML
     private void handleAddSemester() {
+        ResourceBundle messages = SceneManager.getBundle();
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/AddSemesterDialog.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/AddSemesterDialog.fxml");
             javafx.scene.Parent root = loader.load();
 
             AddSemesterDialogController dialogController = loader.getController();
 
             javafx.stage.Stage dialogStage = new javafx.stage.Stage();
-            dialogStage.setTitle("Add Semester");
+            dialogStage.setTitle(messages.getString("dialog.add_semester.title"));
             dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialogStage.initOwner(addSemesterButton.getScene().getWindow());
             dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
@@ -109,7 +114,7 @@ public class DashboardController {
 
             if (semesterName != null) {
                 if (semesterDAO.exists(currentUser.getId(), semesterName)) {
-                    showError("A semester with this name already exists!");
+                    showError(messages.getString("semester.exists"));
                     return;
                 }
 
@@ -118,27 +123,28 @@ public class DashboardController {
 
                 if (semesterId != -1) {
                     semester.setId(semesterId);
-                    showInfo("Semester '" + semesterName + "' created successfully!");
+                    String msg = MessageFormat.format(messages.getString("semester.created"), semesterName);
+                    showInfo(msg);
 
                     loadSemesters();
                     updateCGPA();
                 } else {
-                    showError("Failed to create semester. Please try again.");
+                    showError(messages.getString("semester.create.failed"));
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Failed to open dialog: " + e.getMessage());
+            showError(messages.getString("dialog.error.title") + ": " + e.getMessage());
         }
     }
 
     // ===== PHASE 7 PART 2: VIEW ACADEMIC REPORT =====
     @FXML
     private void handleViewReport() {
+        ResourceBundle messages = SceneManager.getBundle();
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/AcademicReport.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/AcademicReport.fxml");
             javafx.scene.Parent root = loader.load();
 
             AcademicReportController controller = loader.getController();
@@ -147,7 +153,7 @@ public class DashboardController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            showError("Failed to open academic report: " + e.getMessage());
+            showError(messages.getString("report.view.failed") + ": " + e.getMessage());
         }
     }
 
@@ -188,13 +194,15 @@ public class DashboardController {
         shadow.setColor(Color.rgb(0, 0, 0, 0.27));
         emptyBox.setEffect(shadow);
 
-        Label emoji = new Label("📚");
+        ResourceBundle messages = SceneManager.getBundle();
+
+        Label emoji = new Label(messages.getString("dashboard.empty.emoji"));
         emoji.setStyle("-fx-font-size: 48px;");
 
-        Label title = new Label("No semesters yet!");
+        Label title = new Label(messages.getString("dashboard.empty.title"));
         title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #A5A3C7;");
 
-        Label subtitle = new Label("Click 'Add Semester' to get started");
+        Label subtitle = new Label(messages.getString("dashboard.empty.subtitle"));
         subtitle.setStyle("-fx-font-size: 14px; -fx-text-fill: #7D7A9C;");
 
         emptyBox.getChildren().addAll(emoji, title, subtitle);
@@ -231,12 +239,14 @@ public class DashboardController {
         HBox actions = new HBox(10);
         actions.setAlignment(Pos.CENTER_RIGHT);
 
-        Button viewButton = new Button("View Subjects");
+        ResourceBundle messages = SceneManager.getBundle();
+
+        Button viewButton = new Button(messages.getString("dashboard.btn.view_subjects"));
         viewButton.setStyle(
                 "-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 6 16;");
         viewButton.setOnAction(e -> handleViewSemester(semester));
 
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button(messages.getString("dashboard.btn.delete"));
         deleteButton.setStyle(
                 "-fx-background-color: transparent; -fx-border-color: #F87171; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #F87171; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 6 16;");
         deleteButton.setOnAction(e -> handleDeleteSemester(semester));
@@ -250,8 +260,7 @@ public class DashboardController {
     private void handleViewSemester(Semester semester) {
         try {
             // Load Semester Detail screen
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/SemesterDetail.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/SemesterDetail.fxml");
             javafx.scene.Parent root = loader.load();
 
             // Get controller and pass semester data
@@ -268,15 +277,17 @@ public class DashboardController {
     }
 
     private void handleDeleteSemester(Semester semester) {
+        ResourceBundle messages = SceneManager.getBundle();
+        String msg = MessageFormat.format(messages.getString("semester.delete.message"), semester.getSemesterName());
+
         boolean confirmed = util.DialogUtil.showConfirmation(
                 (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
-                "Delete Semester",
-                "Are you sure you want to delete '" + semester.getSemesterName() + "'?\n\n" +
-                        "This will delete all subjects and marks in this semester.\nThis action cannot be undone.");
+                messages.getString("semester.delete.title"),
+                msg);
 
         if (confirmed) {
             semesterDAO.delete(semester.getId());
-            showInfo("Semester deleted successfully!");
+            showInfo(messages.getString("dashboard.semester.delete.success"));
             loadSemesters();
             updateCGPA();
         }
@@ -296,31 +307,35 @@ public class DashboardController {
             // You can add a tooltip or secondary label to show classification
             // For now, just display the number
         } else {
-            cgpaLabel.setText("N/A");
+            ResourceBundle messages = SceneManager.getBundle();
+            cgpaLabel.setText(messages.getString("dashboard.gpa.na"));
             cgpaLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #7D7A9C;");
         }
     }
 
     // Helper to format GPA display
     private String formatGPA(Double gpa) {
+        ResourceBundle messages = SceneManager.getBundle();
         if (gpa != null) {
-            return String.format("GPA: %.2f", gpa);
+            return MessageFormat.format("{0}: {1}", messages.getString("report.table.gpa"), String.format("%.2f", gpa));
         } else {
-            return "GPA: Not Calculated";
+            return messages.getString("report.table.gpa") + ": " + messages.getString("dashboard.gpa.na");
         }
     }
 
     private void showError(String message) {
+        ResourceBundle messages = SceneManager.getBundle();
         util.DialogUtil.showError(
                 (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
-                "Error",
+                messages.getString("dialog.error.title"),
                 message);
     }
 
     private void showInfo(String message) {
+        ResourceBundle messages = SceneManager.getBundle();
         util.DialogUtil.showInfo(
                 (javafx.stage.Stage) welcomeLabel.getScene().getWindow(),
-                "Success",
+                messages.getString("dialog.success.title"),
                 message);
     }
 }

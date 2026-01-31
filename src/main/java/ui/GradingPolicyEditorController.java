@@ -256,12 +256,11 @@ public class GradingPolicyEditorController {
             return;
         }
 
+        java.util.ResourceBundle messages = SceneManager.getBundle();
         // Confirm with user
         boolean confirmed = util.DialogUtil.showConfirmation(dialogStage,
-                "⚠️ Confirm Changes",
-                "Changing grading ranges will recalculate all existing grades and GPAs.\n\n" +
-                        "This action will affect all your semesters and subjects.\n\n" +
-                        "Do you want to continue?");
+                messages.getString("settings.grading.confirm.title"),
+                messages.getString("settings.grading.confirm.message"));
 
         if (!confirmed) {
             return;

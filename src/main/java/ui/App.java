@@ -25,7 +25,8 @@ public class App extends Application {
 
     private void showSplashScreen() throws Exception {
         // Load splash screen
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SplashScreen.fxml"));
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("Messages");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SplashScreen.fxml"), bundle);
         StackPane splashRoot = loader.load(); // Changed back to StackPane
 
         SplashScreenController controller = loader.getController();
@@ -55,7 +56,8 @@ public class App extends Application {
     public static void loadMainApplication(Stage stage) {
         try {
             // Load root layout
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/RootLayout.fxml"));
+            java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("Messages");
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/RootLayout.fxml"), bundle);
             BorderPane root = loader.load();
 
             // Register root layout

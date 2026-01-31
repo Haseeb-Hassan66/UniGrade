@@ -16,7 +16,7 @@ public class UniversityDAO {
     public int save(University university) {
         String sql = "INSERT INTO University(name) VALUES(?)";
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, university.getName());
             ps.executeUpdate();
@@ -30,19 +30,21 @@ public class UniversityDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in UniversityDAO.save: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to save university: " + e.getMessage(), e);
         }
-        return -1;  // Return -1 if save failed
+        return -1; // Return -1 if save failed
     }
 
     // Get all universities
     public List<University> getAll() {
         List<University> universities = new ArrayList<>();
         String sql = "SELECT * FROM University ORDER BY name";
-        
+
         try (Connection conn = DBUtil.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -51,7 +53,9 @@ public class UniversityDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in UniversityDAO.getAll: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve universities: " + e.getMessage(), e);
         }
         return universities;
     }
@@ -59,9 +63,9 @@ public class UniversityDAO {
     // Get university by ID
     public University getById(int id) {
         String sql = "SELECT * FROM University WHERE id = ?";
-        
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -72,7 +76,9 @@ public class UniversityDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in UniversityDAO.getById: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve university: " + e.getMessage(), e);
         }
         return null;
     }
@@ -80,9 +86,9 @@ public class UniversityDAO {
     // Check if university name already exists
     public boolean exists(String name) {
         String sql = "SELECT COUNT(*) FROM University WHERE name = ?";
-        
+
         try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
@@ -92,7 +98,9 @@ public class UniversityDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in UniversityDAO.exists: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to check university existence: " + e.getMessage(), e);
         }
         return false;
     }
@@ -100,17 +108,19 @@ public class UniversityDAO {
     // Count total universities (useful for checking if DB is seeded)
     public int count() {
         String sql = "SELECT COUNT(*) FROM University";
-        
+
         try (Connection conn = DBUtil.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
 
             if (rs.next()) {
                 return rs.getInt(1);
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in UniversityDAO.count: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to count universities: " + e.getMessage(), e);
         }
         return 0;
     }

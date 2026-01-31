@@ -90,11 +90,13 @@ public class AcademicReportController {
         if (currentUser == null)
             return;
 
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+
         // Student Info
         studentNameLabel.setText(currentUser.getName());
 
         // Get university name
-        String universityName = "Unknown University";
+        String universityName = messages.getString("semester.label.university.unknown");
         dao.UniversityDAO universityDAO = new dao.UniversityDAO();
         model.University university = universityDAO.getById(currentUser.getUniversityId());
         if (university != null) {
@@ -112,7 +114,13 @@ public class AcademicReportController {
             cgpaLabel.setText(String.format("%.2f", cgpa));
 
             String gradeClass = ResultCalculator.getGradeClass(cgpa);
-            cgpaClassLabel.setText(gradeClass);
+            if ("First Class".equals(gradeClass)) {
+                cgpaClassLabel.setText(messages.getString("report.label.excellent"));
+            } else if ("Second Class".equals(gradeClass)) {
+                cgpaClassLabel.setText(messages.getString("report.label.good"));
+            } else {
+                cgpaClassLabel.setText(messages.getString("report.label.fair"));
+            }
 
             // Color based on performance
             if (cgpa >= 3.7) {
@@ -125,8 +133,8 @@ public class AcademicReportController {
                 cgpaClassLabel.setStyle("-fx-text-fill: #EF4444; -fx-font-size: 14px; -fx-font-weight: bold;");
             }
         } else {
-            cgpaLabel.setText("N/A");
-            cgpaClassLabel.setText("No Data");
+            cgpaLabel.setText(messages.getString("dashboard.gpa.na"));
+            cgpaClassLabel.setText(messages.getString("report.label.na"));
         }
 
         // Total Credits
@@ -134,7 +142,9 @@ public class AcademicReportController {
         totalCreditsLabel.setText(String.valueOf(totalCredits));
 
         // Semester Count
-        semesterCountLabel.setText(semesters.size() + " Semester" + (semesters.size() != 1 ? "s" : ""));
+        semesterCountLabel.setText(
+                semesters.size() + " " + (semesters.size() != 1 ? messages.getString("report.table.semester") + "s"
+                        : messages.getString("report.table.semester")));
 
         // Calculate statistics
         calculateStatistics(semesters);
@@ -147,10 +157,12 @@ public class AcademicReportController {
     }
 
     private void calculateStatistics(List<Semester> semesters) {
+        java.util.ResourceBundle messages = SceneManager.getBundle();
         if (semesters.isEmpty()) {
-            bestSemesterNameLabel.setText("N/A");
-            bestSemesterGPALabel.setText("GPA: N/A");
-            avgGPALabel.setText("N/A");
+            bestSemesterNameLabel.setText(messages.getString("dashboard.gpa.na"));
+            bestSemesterGPALabel
+                    .setText(messages.getString("semester.label.gpa") + " " + messages.getString("dashboard.gpa.na"));
+            avgGPALabel.setText(messages.getString("dashboard.gpa.na"));
             completedSemestersLabel.setText("0/0");
             return;
         }
@@ -179,10 +191,12 @@ public class AcademicReportController {
         // Best Semester
         if (bestSemester != null) {
             bestSemesterNameLabel.setText(bestSemester.getSemesterName());
-            bestSemesterGPALabel.setText(String.format("GPA: %.2f", bestGPA));
+            bestSemesterGPALabel.setText(java.text.MessageFormat.format("{0} {1,number,0.00}",
+                    messages.getString("semester.label.gpa"), bestGPA));
         } else {
-            bestSemesterNameLabel.setText("N/A");
-            bestSemesterGPALabel.setText("GPA: N/A");
+            bestSemesterNameLabel.setText(messages.getString("dashboard.gpa.na"));
+            bestSemesterGPALabel
+                    .setText(messages.getString("semester.label.gpa") + " " + messages.getString("dashboard.gpa.na"));
         }
 
         // Average GPA
@@ -190,7 +204,7 @@ public class AcademicReportController {
             double avgGPA = totalGPA / gpaCount;
             avgGPALabel.setText(String.format("%.2f", avgGPA));
         } else {
-            avgGPALabel.setText("N/A");
+            avgGPALabel.setText(messages.getString("dashboard.gpa.na"));
         }
 
         // Completed Semesters
@@ -227,14 +241,17 @@ public class AcademicReportController {
         creditsLabel.setStyle("-fx-text-fill: #BDB7E2; -fx-font-size: 14px;");
 
         // GPA
-        String gpaText = semester.getGpa() != null ? String.format("%.2f", semester.getGpa()) : "N/A";
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+        String gpaText = semester.getGpa() != null ? String.format("%.2f", semester.getGpa())
+                : messages.getString("dashboard.gpa.na");
         Label gpaLabel = new Label(gpaText);
         gpaLabel.setPrefWidth(80);
         gpaLabel.setAlignment(Pos.CENTER);
         gpaLabel.setStyle("-fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold;");
 
         // Status
-        String status = semester.getGpa() != null ? "✓ Completed" : "⏳ In Progress";
+        String status = semester.getGpa() != null ? "✓ " + messages.getString("report.status.completed")
+                : "⏳ " + messages.getString("report.status.in_progress");
         String statusColor = semester.getGpa() != null ? "#10B981" : "#F59E0B";
         Label statusLabel = new Label(status);
         statusLabel.setPrefWidth(120);
@@ -242,7 +259,8 @@ public class AcademicReportController {
         statusLabel.setStyle("-fx-text-fill: " + statusColor + "; -fx-font-size: 13px; -fx-font-weight: bold;");
 
         // View Button
-        Button viewButton = new Button("View Details");
+        Button viewButton = new Button(messages.getString("dashboard.btn.view_subjects")); // Or "View Details" if I add
+                                                                                           // a key
         viewButton.setPrefWidth(100);
         viewButton.setStyle(
                 "-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 6 12;");
@@ -308,8 +326,7 @@ public class AcademicReportController {
 
     private void handleViewSemester(Semester semester) {
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/SemesterDetail.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/SemesterDetail.fxml");
             javafx.scene.Parent root = loader.load();
 
             SemesterDetailController controller = loader.getController();
@@ -319,9 +336,10 @@ public class AcademicReportController {
 
         } catch (Exception e) {
             e.printStackTrace();
+            java.util.ResourceBundle messages = SceneManager.getBundle();
             util.DialogUtil.showError(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Error",
+                    messages.getString("dialog.error.title"),
                     "Failed to open semester details: " + e.getMessage());
         }
     }

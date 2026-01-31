@@ -28,13 +28,13 @@
 
             <HBox alignment="CENTER_LEFT" spacing="15">
                 <Button fx:id="backButton"
-                        text="← Back"
+                        text="%settings.btn.back"
                         onAction="#handleBack"
                         style="-fx-background-color: transparent; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand;"/>
                 
                 <Region HBox.hgrow="ALWAYS"/>
                 
-                <Label text="⚙️ Settings"
+                <Label text="%settings.title"
                        style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
                 
                 <Region HBox.hgrow="ALWAYS"/>
@@ -55,27 +55,27 @@
                         <DropShadow radius="15" offsetY="6" color="#00000044"/>
                     </effect>
 
-                    <Label text="👤 Profile Information"
+                    <Label text="%settings.section.profile"
                            style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
                     
                     <Separator style="-fx-background-color: #2D2D44;"/>
 
                     <!-- Name -->
                     <HBox alignment="CENTER_LEFT" spacing="15">
-                        <Label text="Name:" prefWidth="120"
+                        <Label text="%settings.label.name" prefWidth="120"
                                style="-fx-text-fill: #A5A3C7; -fx-font-size: 14px;"/>
-                        <Label fx:id="nameLabel" text="Loading..."
+                        <Label fx:id="nameLabel" text="%settings.label.loading"
                                style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="Edit" onAction="#handleEditProfile"
+                        <Button text="%settings.btn.edit" onAction="#handleEditProfile"
                                 style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 6 16;"/>
                     </HBox>
 
                     <!-- Department -->
                     <HBox alignment="CENTER_LEFT" spacing="15">
-                        <Label text="Department:" prefWidth="120"
+                        <Label text="%settings.label.department" prefWidth="120"
                                style="-fx-text-fill: #A5A3C7; -fx-font-size: 14px;"/>
-                        <Label fx:id="departmentLabel" text="Loading..."
+                        <Label fx:id="departmentLabel" text="%settings.label.loading"
                                style="-fx-text-fill: white; -fx-font-size: 14px;"/>
                     </HBox>
 
@@ -89,30 +89,30 @@
                         <DropShadow radius="15" offsetY="6" color="#00000044"/>
                     </effect>
 
-                    <Label text="🏛️ University &amp; Grading"
+                    <Label text="%settings.section.university_grading"
                            style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
                     
                     <Separator style="-fx-background-color: #2D2D44;"/>
 
                     <!-- Current University -->
                     <VBox spacing="8">
-                        <Label text="Current University"
+                        <Label text="%settings.label.current_university"
                                style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px;"/>
-                        <Label fx:id="universityLabel" text="Loading..."
+                        <Label fx:id="universityLabel" text="%settings.label.loading"
                                style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
                     </VBox>
 
                     <!-- Action Buttons -->
                     <VBox spacing="12">
-                        <Button text="Change University" onAction="#handleChangeUniversity"
+                        <Button text="%settings.btn.change_university" onAction="#handleChangeUniversity"
                                 prefWidth="250"
                                 style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #A78BFA; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 20;"/>
                         
-                        <Button text="Edit Grading Policy" onAction="#handleEditGradingPolicy"
+                        <Button text="%settings.btn.edit_grading" onAction="#handleEditGradingPolicy"
                                 prefWidth="250"
                                 style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #A78BFA; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 20;"/>
                         
-                        <Button text="Edit Assessment Components" onAction="#handleEditAssessment"
+                        <Button text="%settings.btn.edit_assessment" onAction="#handleEditAssessment"
                                 prefWidth="250"
                                 style="-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #A78BFA; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 20;"/>
                     </VBox>
@@ -126,16 +126,16 @@
                         <DropShadow radius="15" offsetY="6" color="#00000044"/>
                     </effect>
 
-                    <Label text="⚠️ Danger Zone"
+                    <Label text="%settings.section.danger"
                            style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #EF4444;"/>
                     
                     <Separator style="-fx-background-color: #EF444450;"/>
 
-                    <Label text="Resetting will delete all your data including semesters, subjects, and marks. This cannot be undone."
+                    <Label text="%settings.danger.desc"
                            wrapText="true"
                            style="-fx-text-fill: #F87171; -fx-font-size: 13px;"/>
 
-                    <Button text="Reset All Data" onAction="#handleResetData"
+                    <Button text="%settings.btn.reset" onAction="#handleResetData"
                             prefWidth="200"
                             style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 20;"/>
                 </VBox>

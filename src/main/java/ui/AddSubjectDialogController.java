@@ -67,14 +67,16 @@ public class AddSubjectDialogController {
     private void handleCreate() {
         String name = subjectNameField.getText().trim();
 
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+
         if (name.isEmpty()) {
-            errorLabel.setText("Subject name cannot be empty!");
+            errorLabel.setText(messages.getString("subject.label.name.empty"));
             return;
         }
 
         Integer theoryCredits = theoryCreditsCombo.getValue();
         if (theoryCredits == null) {
-            errorLabel.setText("Please select theory credit hours!");
+            errorLabel.setText(messages.getString("subject.label.theory.empty"));
             return;
         }
 
@@ -84,7 +86,7 @@ public class AddSubjectDialogController {
         if (hasPractical) {
             practicalCredits = practicalCreditsCombo.getValue();
             if (practicalCredits == null) {
-                errorLabel.setText("Please select practical credit hours!");
+                errorLabel.setText(messages.getString("subject.label.practical.empty"));
                 return;
             }
         }
@@ -94,8 +96,7 @@ public class AddSubjectDialogController {
                 name,
                 hasPractical,
                 theoryCredits,
-                practicalCredits
-        );
+                practicalCredits);
 
         dialogStage.close();
     }
@@ -113,11 +114,10 @@ public class AddSubjectDialogController {
     private <T> void styleComboBox(ComboBox<T> comboBox) {
         comboBox.setStyle(
                 "-fx-background-color: #2B2B44;" +
-                "-fx-background-radius: 10;" +
-                "-fx-border-radius: 10;" +
-                "-fx-font-size: 14px;" +
-                "-fx-text-fill: white;"
-        );
+                        "-fx-background-radius: 10;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-text-fill: white;");
 
         comboBox.setCellFactory(lv -> new ListCell<T>() {
             @Override

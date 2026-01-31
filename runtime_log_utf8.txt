@@ -1,0 +1,390 @@
+﻿? Database initialized with all tables.
+Checking university templates...
+Sukkur IBA already exists. Skipping...
+General/Standard already exists. Skipping...
+University template check complete.
+java : javafx.fxml.Lo
+adException: 
+At line:1 char:1
++ java --module-path 
+"$env:PATH_TO_FX" 
+--add-modules 
+javafx.controls,ja 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (javafx.   
+ fxml.LoadExcepti    
+on: :String) [],     
+RemoteException
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+/C:/Users/User/OneDri
+ve/Desktop/Haseeb/Pro
+jects/Java%20Projects
+/UniGrade/bin/fxml/Ac
+ademicReport.fxml
+
+	at javafx.fxml@25.0.
+1/javafx.fxml.FXMLLoa
+der.constructLoadExce
+ption(FXMLLoader.java
+:2692)
+	at javafx.fxml@25.0.
+1/javafx.fxml.FXMLLoa
+der.loadImpl(FXMLLoad
+er.java:2662)
+	at javafx.fxml@25.0.
+1/javafx.fxml.FXMLLoa
+der.loadImpl(FXMLLoad
+er.java:2533)
+	at javafx.fxml@25.0.
+1/javafx.fxml.FXMLLoa
+der.load(FXMLLoader.j
+ava:2503)
+	at ui.DashboardContr
+oller.handleViewRepor
+t(DashboardController
+.java:148)
+	at java.base/jdk.int
+ernal.reflect.DirectM
+ethodHandleAccessor.i
+nvoke(DirectMethodHan
+dleAccessor.java:103)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:580)
+	at com.sun.javafx.re
+flect.Trampoline.invo
+ke(MethodUtil.java:65
+)
+	at java.base/jdk.int
+ernal.reflect.DirectM
+ethodHandleAccessor.i
+nvoke(DirectMethodHan
+dleAccessor.java:103)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:580)
+	at javafx.base@25.0.
+1/com.sun.javafx.refl
+ect.MethodUtil.invoke
+(MethodUtil.java:112)
+	at javafx.fxml@25.0.
+1/com.sun.javafx.fxml
+.MethodHelper.invoke(
+MethodHelper.java:78)
+	at javafx.fxml@25.0.
+1/javafx.fxml.FXMLLoa
+der$MethodHandler.inv
+oke(FXMLLoader.java:1
+847)
+	at javafx.fxml@25.0.
+1/javafx.fxml.FXMLLoa
+der$ControllerMethodE
+ventHandler.handle(FX
+MLLoader.java:1718)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.CompositeEventHandl
+er.dispatchBubblingEv
+ent(CompositeEventHan
+dler.java:86)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventHandlerManager
+.dispatchBubblingEven
+t(EventHandlerManager
+.java:232)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventHandlerManager
+.dispatchBubblingEven
+t(EventHandlerManager
+.java:189)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.CompositeEventDispa
+tcher.dispatchBubblin
+gEvent(CompositeEvent
+Dispatcher.java:59)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.BasicEventDispatche
+r.dispatchEvent(Basic
+EventDispatcher.java:
+58)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventDispatchChainI
+mpl.dispatchEvent(Eve
+ntDispatchChainImpl.j
+ava:114)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.BasicEventDispatche
+r.dispatchEvent(Basic
+EventDispatcher.java:
+56)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventDispatchChainI
+mpl.dispatchEvent(Eve
+ntDispatchChainImpl.j
+ava:114)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.BasicEventDispatche
+r.dispatchEvent(Basic
+EventDispatcher.java:
+56)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventDispatchChainI
+mpl.dispatchEvent(Eve
+ntDispatchChainImpl.j
+ava:114)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventUtil.fireEvent
+Impl(EventUtil.java:7
+4)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventUtil.fireEvent
+(EventUtil.java:49)
+	at javafx.base@25.0.
+1/javafx.event.Event.
+fireEvent(Event.java:
+199)
+	at javafx.graphics@2
+5.0.1/javafx.scene.No
+de.fireEvent(Node.jav
+a:9026)
+	at javafx.controls@2
+5.0.1/javafx.scene.co
+ntrol.Button.fire(But
+ton.java:203)
+	at javafx.controls@2
+5.0.1/com.sun.javafx.
+scene.control.behavio
+r.ButtonBehavior.mous
+eReleased(ButtonBehav
+ior.java:207)
+	at javafx.controls@2
+5.0.1/com.sun.javafx.
+scene.control.inputma
+p.InputMap.handle(Inp
+utMap.java:274)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.CompositeEventHandl
+er$NormalEventHandler
+Record.handleBubbling
+Event(CompositeEventH
+andler.java:247)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.CompositeEventHandl
+er.dispatchBubblingEv
+ent(CompositeEventHan
+dler.java:80)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventHandlerManager
+.dispatchBubblingEven
+t(EventHandlerManager
+.java:232)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventHandlerManager
+.dispatchBubblingEven
+t(EventHandlerManager
+.java:189)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.CompositeEventDispa
+tcher.dispatchBubblin
+gEvent(CompositeEvent
+Dispatcher.java:59)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.BasicEventDispatche
+r.dispatchEvent(Basic
+EventDispatcher.java:
+58)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventDispatchChainI
+mpl.dispatchEvent(Eve
+ntDispatchChainImpl.j
+ava:114)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.BasicEventDispatche
+r.dispatchEvent(Basic
+EventDispatcher.java:
+56)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventDispatchChainI
+mpl.dispatchEvent(Eve
+ntDispatchChainImpl.j
+ava:114)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.BasicEventDispatche
+r.dispatchEvent(Basic
+EventDispatcher.java:
+56)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventDispatchChainI
+mpl.dispatchEvent(Eve
+ntDispatchChainImpl.j
+ava:114)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventUtil.fireEvent
+Impl(EventUtil.java:7
+4)
+	at javafx.base@25.0.
+1/com.sun.javafx.even
+t.EventUtil.fireEvent
+(EventUtil.java:54)
+	at javafx.base@25.0.
+1/javafx.event.Event.
+fireEvent(Event.java:
+199)
+	at javafx.graphics@2
+5.0.1/javafx.scene.Sc
+ene$MouseHandler.proc
+ess(Scene.java:4061)
+	at javafx.graphics@2
+5.0.1/javafx.scene.Sc
+ene.processMouseEvent
+(Scene.java:1947)
+	at javafx.graphics@2
+5.0.1/javafx.scene.Sc
+ene$ScenePeerListener
+.mouseEvent(Scene.jav
+a:2784)
+	at javafx.graphics@2
+5.0.1/com.sun.javafx.
+tk.quantum.GlassViewE
+ventHandler$MouseEven
+tNotification.get(Gla
+ssViewEventHandler.ja
+va:353)
+	at javafx.graphics@2
+5.0.1/com.sun.javafx.
+tk.quantum.GlassViewE
+ventHandler$MouseEven
+tNotification.get(Gla
+ssViewEventHandler.ja
+va:255)
+	at javafx.graphics@2
+5.0.1/com.sun.javafx.
+tk.quantum.QuantumToo
+lkit.runWithoutRender
+Lock(QuantumToolkit.j
+ava:424)
+	at javafx.graphics@2
+5.0.1/com.sun.javafx.
+tk.quantum.GlassViewE
+ventHandler.handleMou
+seEvent(GlassViewEven
+tHandler.java:387)
+	at javafx.graphics@2
+5.0.1/com.sun.glass.u
+i.View.handleMouseEve
+nt(View.java:573)
+	at javafx.graphics@2
+5.0.1/com.sun.glass.u
+i.View.notifyMouse(Vi
+ew.java:975)
+	at javafx.graphics@2
+5.0.1/com.sun.glass.u
+i.win.WinApplication.
+_runLoop(Native 
+Method)
+	at javafx.graphics@2
+5.0.1/com.sun.glass.u
+i.win.WinApplication.
+lambda$runLoop$0(WinA
+pplication.java:168)
+	at java.base/java.la
+ng.Thread.run(Thread.
+java:1575)
+Caused by: java.lang.
+reflect.InvocationTar
+getException
+	at java.base/jdk.int
+ernal.reflect.DirectM
+ethodHandleAccessor.i
+nvoke(DirectMethodHan
+dleAccessor.java:118)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:580)
+	at com.sun.javafx.re
+flect.Trampoline.invo
+ke(MethodUtil.java:65
+)
+	at java.base/jdk.int
+ernal.reflect.DirectM
+ethodHandleAccessor.i
+nvoke(DirectMethodHan
+dleAccessor.java:103)
+	at java.base/java.la
+ng.reflect.Method.inv
+oke(Method.java:580)
+	at javafx.base@25.0.
+1/com.sun.javafx.refl
+ect.MethodUtil.invoke
+(MethodUtil.java:112)
+	at javafx.fxml@25.0.
+1/com.sun.javafx.fxml
+.MethodHelper.invoke(
+MethodHelper.java:78)
+	at javafx.fxml@25.0.
+1/javafx.fxml.FXMLLoa
+der.loadImpl(FXMLLoad
+er.java:2658)
+	... 55 more
+Caused by: java.util.
+MissingResourceExcept
+ion: Can't find 
+resource for bundle j
+ava.util.PropertyReso
+urceBundle, key 
+report.label.na
+	at java.base/java.ut
+il.ResourceBundle.get
+Object(ResourceBundle
+.java:566)
+	at java.base/java.ut
+il.ResourceBundle.get
+String(ResourceBundle
+.java:522)
+	at ui.AcademicReport
+Controller.loadAcadem
+icReport(AcademicRepo
+rtController.java:137
+)
+	at ui.AcademicReport
+Controller.initialize
+(AcademicReportContro
+ller.java:86)
+	at java.base/jdk.int
+ernal.reflect.DirectM
+ethodHandleAccessor.i
+nvoke(DirectMethodHan
+dleAccessor.java:103)
+	... 62 more

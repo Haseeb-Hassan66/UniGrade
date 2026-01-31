@@ -29,7 +29,7 @@
             <!-- Back Button + Semester Name + GPA -->
             <HBox alignment="CENTER_LEFT" spacing="15" prefWidth="690">
                 <Button fx:id="backButton"
-                        text="← Back"
+                        text="%settings.btn.back"
                         onAction="#handleBack"
                         style="-fx-background-color: transparent; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand;"/>
                 
@@ -41,7 +41,7 @@
                 <Region HBox.hgrow="ALWAYS"/>
                 
                 <HBox alignment="CENTER" spacing="8">
-                    <Label text="GPA:"
+                    <Label text="%semester.label.gpa"
                            style="-fx-font-size: 15px; -fx-text-fill: #A5A3C7;"/>
                     <Label fx:id="gpaLabel" text="0.00"
                            style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #A78BFA;"/>
@@ -50,11 +50,11 @@
 
             <!-- Total Credits Display -->
             <HBox alignment="CENTER" spacing="8">
-                <Label text="Total Credits:"
+                <Label text="%semester.label.total_credits"
                        style="-fx-font-size: 14px; -fx-text-fill: #A5A3C7;"/>
                 <Label fx:id="totalCreditsLabel" text="0"
                        style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #DDD6FE;"/>
-                <Label fx:id="creditsBreakdownLabel" text="(0 Theory + 0 Practical)"
+                <Label fx:id="creditsBreakdownLabel" text="%settings.label.loading"
                        style="-fx-font-size: 13px; -fx-text-fill: #7D7A9C;"/>
             </HBox>
         </VBox>
@@ -64,19 +64,19 @@
             
             <!-- Section Header -->
             <HBox alignment="CENTER_LEFT" spacing="15">
-                <Label text="Subjects"
+                <Label text="%semester.subjects.title"
                        style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
                 
                 <Region HBox.hgrow="ALWAYS"/>
                 
                 <!-- ===== PHASE 7: VIEW RESULT BUTTON ===== -->
-                <Button text="📊 View Result"
+                <Button text="%semester.btn.view_result"
                         onAction="#handleViewResult"
                         style="-fx-background-color: #10B981; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 8 20; -fx-cursor: hand;"/>
                 
                 <!-- Add Subject Button -->
                 <Button fx:id="addSubjectButton"
-                        text="+ Add Subject"
+                        text="%semester.btn.add_subject"
                         onAction="#handleAddSubject"
                         style="-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 12; -fx-padding: 8 20;"/>
             </HBox>

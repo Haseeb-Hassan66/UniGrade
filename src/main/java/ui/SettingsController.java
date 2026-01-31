@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import model.University;
 import model.UserProfile;
+import java.util.ResourceBundle;
+import java.text.MessageFormat;
 
 public class SettingsController {
 
@@ -56,7 +58,8 @@ public class SettingsController {
             if (university != null) {
                 universityLabel.setText(university.getName());
             } else {
-                universityLabel.setText("No University Selected");
+                ResourceBundle messages = SceneManager.getBundle();
+                universityLabel.setText(messages.getString("settings.university.none"));
             }
         }
     }
@@ -68,15 +71,15 @@ public class SettingsController {
 
     @FXML
     private void handleEditProfile() {
+        ResourceBundle messages = SceneManager.getBundle();
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/EditProfile.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/EditProfile.fxml");
             javafx.scene.Parent root = loader.load();
 
             EditProfileController controller = loader.getController();
 
             javafx.stage.Stage dialogStage = new javafx.stage.Stage();
-            dialogStage.setTitle("Edit Profile");
+            dialogStage.setTitle(messages.getString("settings.profile.edit.title"));
             dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialogStage.initOwner(backButton.getScene().getWindow());
             dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
@@ -102,38 +105,39 @@ public class SettingsController {
                 loadUserData();
                 util.DialogUtil.showInfo(
                         (javafx.stage.Stage) backButton.getScene().getWindow(),
-                        "Success",
-                        "Profile updated successfully!");
+                        messages.getString("dialog.success.title"),
+                        messages.getString("settings.profile.success"));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             util.DialogUtil.showError(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Error",
+                    messages.getString("dialog.error.title"),
                     "Failed to open profile editor: " + e.getMessage());
         }
     }
 
     @FXML
     private void handleChangeUniversity() {
+        ResourceBundle messages = SceneManager.getBundle();
         util.DialogUtil.showInfo(
                 (javafx.stage.Stage) backButton.getScene().getWindow(),
-                "Coming Soon",
+                messages.getString("dialog.coming.soon"),
                 "University switcher will be available in the next update!");
     }
 
     @FXML
     private void handleEditGradingPolicy() {
+        ResourceBundle messages = SceneManager.getBundle();
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/GradingPolicyEditor.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/GradingPolicyEditor.fxml");
             javafx.scene.Parent root = loader.load();
 
             GradingPolicyEditorController controller = loader.getController();
 
             javafx.stage.Stage dialogStage = new javafx.stage.Stage();
-            dialogStage.setTitle("Edit Grading Policy");
+            dialogStage.setTitle(messages.getString("settings.grading.edit.title"));
             dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialogStage.initOwner(backButton.getScene().getWindow());
             dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
@@ -158,30 +162,30 @@ public class SettingsController {
             if (controller.isSaveClicked()) {
                 util.DialogUtil.showInfo(
                         (javafx.stage.Stage) backButton.getScene().getWindow(),
-                        "Success",
-                        "Grading policy updated successfully!\nAll grades will be recalculated in the next update.");
+                        messages.getString("dialog.success.title"),
+                        messages.getString("settings.policy.success"));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             util.DialogUtil.showError(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Error",
+                    messages.getString("dialog.error.title"),
                     "Failed to open grading policy editor: " + e.getMessage());
         }
     }
 
     @FXML
     private void handleEditAssessment() {
+        ResourceBundle messages = SceneManager.getBundle();
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/AssessmentPolicyEditor.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/AssessmentPolicyEditor.fxml");
             javafx.scene.Parent root = loader.load();
 
             AssessmentPolicyEditorController controller = loader.getController();
 
             javafx.stage.Stage dialogStage = new javafx.stage.Stage();
-            dialogStage.setTitle("Edit Assessment Policy");
+            dialogStage.setTitle(messages.getString("settings.assessment.edit.title"));
             dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialogStage.initOwner(backButton.getScene().getWindow());
             dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
@@ -206,38 +210,33 @@ public class SettingsController {
             if (controller.isSaveClicked()) {
                 util.DialogUtil.showInfo(
                         (javafx.stage.Stage) backButton.getScene().getWindow(),
-                        "Success",
-                        "Assessment policy updated successfully!");
+                        messages.getString("dialog.success.title"),
+                        messages.getString("settings.assessment.success"));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             util.DialogUtil.showError(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Error",
+                    messages.getString("dialog.error.title"),
                     "Failed to open assessment policy editor: " + e.getMessage());
         }
     }
 
     @FXML
     private void handleResetData() {
+        ResourceBundle messages = SceneManager.getBundle();
         boolean confirmed = util.DialogUtil.showConfirmation(
                 (javafx.stage.Stage) backButton.getScene().getWindow(),
-                "⚠️ Reset All Data",
-                "This will permanently delete ALL your data including:\n" +
-                        "• All semesters\n" +
-                        "• All subjects\n" +
-                        "• All marks\n" +
-                        "• Your profile\n\n" +
-                        "This action CANNOT be undone!\n\n" +
-                        "Are you absolutely sure?");
+                messages.getString("settings.reset.title"),
+                messages.getString("settings.reset.message"));
 
         if (confirmed) {
             // TODO: Implement reset logic
             util.DialogUtil.showInfo(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Not Implemented",
-                    "Reset functionality will be implemented soon.");
+                    messages.getString("dialog.coming.soon"),
+                    messages.getString("settings.reset.not_implemented"));
         }
     }
 }

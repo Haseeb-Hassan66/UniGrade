@@ -2,7 +2,9 @@ package ui;
 
 import java.net.URL;
 import java.util.List;
+
 import java.util.ResourceBundle;
+import java.text.MessageFormat;
 
 import dao.UniversityDAO;
 import dao.UserProfileDAO;
@@ -51,25 +53,28 @@ public class UniversitySelectionController implements Initializable {
 
         // Validation
         if (selected == null) {
-            errorLabel.setText("Please select a university!");
+            ResourceBundle messages = ResourceBundle.getBundle("Messages");
+            errorLabel.setText(messages.getString("university.select.error"));
             return;
         }
 
         // Link university to user profile
         UserProfileDAO userDAO = new UserProfileDAO();
         UserProfile user = userDAO.getUser();
-        
+
         if (user != null) {
             userDAO.updateUniversityId(user.getId(), selected.getId());
-            System.out.println("University linked: " + selected.getName());
-            
+            ResourceBundle messages = ResourceBundle.getBundle("Messages");
+            System.out.println(MessageFormat.format(messages.getString("university.linked"), selected.getName()));
+
             // Clear error
             errorLabel.setText("");
-            
+
             // Navigate to dashboard
             SceneManager.loadCenter("Dashboard.fxml");
         } else {
-            errorLabel.setText("User profile not found! Please restart registration.");
+            ResourceBundle messages = ResourceBundle.getBundle("Messages");
+            errorLabel.setText(messages.getString("university.user.not.found"));
         }
     }
 
@@ -77,7 +82,8 @@ public class UniversitySelectionController implements Initializable {
     private void handleCreateNew() {
         // Navigate to University Creation screen
         // TODO: Create UniversityCreation.fxml in next step
-        errorLabel.setText("University creation coming soon!");
+        ResourceBundle messages = ResourceBundle.getBundle("Messages");
+        errorLabel.setText(messages.getString("university.create.soon"));
         // SceneManager.loadCenter("UniversityCreation.fxml");
     }
 
@@ -85,12 +91,11 @@ public class UniversitySelectionController implements Initializable {
         // Style the editor (input area)
         universityCombo.getEditor().setStyle(
                 "-fx-background-color: #2B2B44;" +
-                "-fx-text-fill: white;" +
-                "-fx-background-radius: 10;" +
-                "-fx-border-radius: 10;" +
-                "-fx-padding: 0 12;" +
-                "-fx-font-size: 14px;"
-        );
+                        "-fx-text-fill: white;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-padding: 0 12;" +
+                        "-fx-font-size: 14px;");
 
         // Style dropdown items
         universityCombo.setCellFactory(new Callback<ListView<University>, ListCell<University>>() {
@@ -103,7 +108,7 @@ public class UniversitySelectionController implements Initializable {
                         if (empty || item == null) {
                             setText(null);
                         } else {
-                            setText(item.getName());  // Display university name
+                            setText(item.getName()); // Display university name
                         }
                         setStyle("-fx-background-color: #2B2B44; -fx-text-fill: white;");
                     }
@@ -114,13 +119,12 @@ public class UniversitySelectionController implements Initializable {
         // Style the ComboBox itself
         universityCombo.setStyle(
                 "-fx-background-color: #2B2B44;" +
-                "-fx-background-radius: 10;" +
-                "-fx-border-radius: 10;" +
-                "-fx-font-size: 14px;" +
-                "-fx-text-fill: white;" +
-                "-fx-padding: 0 12;" +
-                "-fx-background-insets: 0;"
-        );
+                        "-fx-background-radius: 10;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-text-fill: white;" +
+                        "-fx-padding: 0 12;" +
+                        "-fx-background-insets: 0;");
 
         // Force the arrow button to blend with background
         universityCombo.skinProperty().addListener((obs, oldSkin, newSkin) -> {

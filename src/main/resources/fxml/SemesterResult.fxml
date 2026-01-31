@@ -12,12 +12,12 @@
     <top>
         <HBox alignment="CENTER_LEFT" spacing="15"
             style="-fx-background-color: #1F1F33; -fx-padding: 20;">
-            <Button fx:id="backButton" text="← Back" onAction="#handleBack"
+            <Button fx:id="backButton" text="%settings.btn.back" onAction="#handleBack"
                 style="-fx-background-color: transparent; -fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand;" />
 
             <Region HBox.hgrow="ALWAYS" />
 
-            <Label text="Semester Result Card"
+            <Label text="%result.title"
                 style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
 
             <Region HBox.hgrow="ALWAYS" />
@@ -35,7 +35,7 @@
                     
                     <HBox alignment="CENTER" spacing="30">
                         <VBox spacing="8" alignment="CENTER_LEFT">
-                            <Label text="Student Information"
+                            <Label text="%result.student_info"
                                 style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px; -fx-font-weight: bold;" />
                             <Label fx:id="studentNameLabel" text="Student Name"
                                 style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" />
@@ -46,7 +46,7 @@
                         <Region HBox.hgrow="ALWAYS" />
 
                         <VBox spacing="8" alignment="CENTER">
-                            <Label text="Semester"
+                            <Label text="%semester.title"
                                 style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px; -fx-font-weight: bold;" />
                             <Label fx:id="semesterNameLabel" text="Fall 2024"
                                 style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" />
@@ -55,7 +55,7 @@
                         <Region HBox.hgrow="ALWAYS" />
 
                         <VBox spacing="8" alignment="CENTER_RIGHT">
-                            <Label text="GPA"
+                            <Label text="%report.table.gpa"
                                 style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px; -fx-font-weight: bold;" />
                             <Label fx:id="gpaLabel" text="0.00"
                                 style="-fx-text-fill: #A78BFA; -fx-font-size: 32px; -fx-font-weight: bold;" />
@@ -69,23 +69,23 @@
                 <VBox spacing="15"
                     style="-fx-background-color: #1F1F33; -fx-padding: 25; -fx-background-radius: 18;">
                     
-                    <Label text="Subject-wise Performance"
+                    <Label text="%result.performance"
                         style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" />
 
                     <!-- Table Header -->
                     <HBox spacing="10" style="-fx-padding: 10 0;">
-                        <Label text="Subject" prefWidth="200"
+                        <Label text="%report.table.subject" prefWidth="200"
                             style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Label text="Credits" prefWidth="60" alignment="CENTER"
+                        <Label text="%report.table.credits" prefWidth="60" alignment="CENTER"
                             style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
-                        <Label text="Theory" prefWidth="80" alignment="CENTER"
+                        <Label text="%marks.table.theory" prefWidth="80" alignment="CENTER"
                             style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
-                        <Label text="Practical" prefWidth="80" alignment="CENTER"
+                        <Label text="%marks.table.practical" prefWidth="80" alignment="CENTER"
                             style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
-                        <Label text="Grade" prefWidth="60" alignment="CENTER"
+                        <Label text="%marks.label.grade" prefWidth="60" alignment="CENTER"
                             style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
-                        <Label text="Points" prefWidth="60" alignment="CENTER"
+                        <Label text="%result.label.points" prefWidth="60" alignment="CENTER"
                             style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;" />
                     </HBox>
 
@@ -100,7 +100,7 @@
 
                     <!-- Summary Row -->
                     <HBox spacing="10" style="-fx-padding: 15 0 0 0;">
-                        <Label text="Total" prefWidth="200"
+                        <Label text="%report.label.total" prefWidth="200"
                             style="-fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold;" />
                         <Region HBox.hgrow="ALWAYS" />
                         <Label fx:id="totalCreditsLabel" text="0" prefWidth="60" alignment="CENTER"
@@ -120,7 +120,7 @@
                 <HBox spacing="20" alignment="CENTER">
                     <VBox spacing="5" alignment="CENTER"
                         style="-fx-background-color: #1F1F33; -fx-padding: 15 30; -fx-background-radius: 12;">
-                        <Label text="Total Credit Hours"
+                        <Label text="%report.label.total_credits"
                             style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px;" />
                         <Label fx:id="footerCreditsLabel" text="0"
                             style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" />
@@ -128,7 +128,7 @@
 
                     <VBox spacing="5" alignment="CENTER"
                         style="-fx-background-color: #1F1F33; -fx-padding: 15 30; -fx-background-radius: 12;">
-                        <Label text="Quality Points"
+                        <Label text="%result.label.points_total"
                             style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px;" />
                         <Label fx:id="footerQualityPointsLabel" text="0.00"
                             style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" />
@@ -136,7 +136,7 @@
 
                     <VBox spacing="5" alignment="CENTER"
                         style="-fx-background-color: #1F1F33; -fx-padding: 15 30; -fx-background-radius: 12;">
-                        <Label text="Semester GPA"
+                        <Label text="%result.label.semester_gpa"
                             style="-fx-text-fill: #A5A3C7; -fx-font-size: 12px;" />
                         <Label fx:id="footerGPALabel" text="0.00"
                             style="-fx-text-fill: #A78BFA; -fx-font-size: 20px; -fx-font-weight: bold;" />

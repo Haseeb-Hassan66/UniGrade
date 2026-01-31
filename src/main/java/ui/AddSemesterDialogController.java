@@ -45,7 +45,11 @@ public class AddSemesterDialogController {
 
         // Validation
         if (input.isEmpty()) {
-            errorLabel.setText("Semester name cannot be empty!");
+            java.util.ResourceBundle messages = SceneManager.getBundle();
+            errorLabel.setText(messages.getString("semester.exists")); // Reusing semester.exists or adding new one
+            // Let's use a more specific key if I added it, otherwise I'll add one.
+            // I'll check Messages.properties again or just add a generic one.
+            errorLabel.setText(messages.getString("semester.label.name.empty")); // I'll add this key
             return;
         }
 

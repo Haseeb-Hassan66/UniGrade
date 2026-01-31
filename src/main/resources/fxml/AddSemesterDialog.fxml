@@ -22,15 +22,15 @@
           prefWidth="400"
           style="-fx-background-color: #1F1F33; -fx-padding: 36 30; -fx-background-radius: 22; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0, 0, 8);">
         <!-- HEADING -->
-        <Label text="Add New Semester"
+        <Label text="%dialog.add_semester.title"
                style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
 
         <!-- INPUT GROUP -->
         <VBox spacing="8" alignment="CENTER">
-            <Label text="Semester Name" 
+            <Label text="%dialog.field.semester_name" 
                    style="-fx-text-fill: #BDB7E2; -fx-font-size: 13px;"/>
             <TextField fx:id="semesterNameField"
-                       promptText="e.g., Fall 2024, 1st Semester"
+                       promptText="%dialog.prompt.semester_name"
                        prefHeight="40"
                        prefWidth="320"
                        style="-fx-background-color: #2B2B44; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-padding: 0 12; -fx-font-size: 14px;"/>
@@ -47,7 +47,7 @@
         <HBox spacing="12" alignment="CENTER">
             <!-- Cancel Button -->
             <Button fx:id="cancelButton"
-                    text="Cancel"
+                    text="%dialog.btn.cancel"
                     prefHeight="40"
                     prefWidth="150"
                     onAction="#handleCancel"
@@ -55,7 +55,7 @@
             
             <!-- Create Button -->
             <Button fx:id="createButton"
-                    text="Create"
+                    text="%dialog.btn.add"
                     prefHeight="40"
                     prefWidth="150"
                     onAction="#handleCreate"

@@ -43,7 +43,9 @@ public class MarksDAO {
                 return rs.getInt("id");
             }
         } catch (SQLException e) {
+            System.err.println("Database error in MarksDAO.getMarksId: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to check marks existence: " + e.getMessage(), e);
         }
         return -1;
     }
@@ -70,7 +72,9 @@ public class MarksDAO {
             System.out.println("DAO: Marks inserted for " + marks.getComponentName());
 
         } catch (SQLException e) {
+            System.err.println("Database error in MarksDAO.insert: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to insert marks: " + e.getMessage(), e);
         }
     }
 
@@ -93,7 +97,9 @@ public class MarksDAO {
             System.out.println("DAO: Marks updated for ID " + id);
 
         } catch (SQLException e) {
+            System.err.println("Database error in MarksDAO.update: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to update marks: " + e.getMessage(), e);
         }
     }
 
@@ -115,7 +121,9 @@ public class MarksDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in MarksDAO.getMarksBySubject: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve marks: " + e.getMessage(), e);
         }
         return list;
     }
@@ -150,7 +158,13 @@ public class MarksDAO {
         String category = rs.getString("category");
         String componentName = rs.getString("componentName");
 
-        Double obtainedMarks = (Double) rs.getObject("obtainedMarks"); // Handle null safely
+        // Type-safe null handling for obtainedMarks
+        Double obtainedMarks = null;
+        double obtainedValue = rs.getDouble("obtainedMarks");
+        if (!rs.wasNull()) {
+            obtainedMarks = obtainedValue;
+        }
+
         double maxMarks = rs.getDouble("maxMarks");
 
         return new Marks(id, subjectId, category, componentName, obtainedMarks, maxMarks);

@@ -67,7 +67,7 @@ public class EditSubjectDialogController {
             if (subject.getPracticalCreditHours() != null) {
                 practicalCreditsCombo.setValue(subject.getPracticalCreditHours());
             } else {
-                practicalCreditsCombo.setValue(1);  // Default
+                practicalCreditsCombo.setValue(1); // Default
             }
         }
     }
@@ -79,7 +79,7 @@ public class EditSubjectDialogController {
         practicalCreditsBox.setVisible(hasPractical);
 
         if (hasPractical && practicalCreditsCombo.getValue() == null) {
-            practicalCreditsCombo.setValue(1);  // Set default
+            practicalCreditsCombo.setValue(1); // Set default
         }
     }
 
@@ -87,15 +87,17 @@ public class EditSubjectDialogController {
     private void handleSave() {
         String name = subjectNameField.getText().trim();
 
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+
         // Validation
         if (name.isEmpty()) {
-            errorLabel.setText("Subject name cannot be empty!");
+            errorLabel.setText(messages.getString("subject.label.name.empty"));
             return;
         }
 
         Integer theoryCredits = theoryCreditsCombo.getValue();
         if (theoryCredits == null) {
-            errorLabel.setText("Please select theory credit hours!");
+            errorLabel.setText(messages.getString("subject.label.theory.empty"));
             return;
         }
 
@@ -105,7 +107,7 @@ public class EditSubjectDialogController {
         if (hasPractical) {
             practicalCredits = practicalCreditsCombo.getValue();
             if (practicalCredits == null) {
-                errorLabel.setText("Please select practical credit hours!");
+                errorLabel.setText(messages.getString("subject.label.practical.empty"));
                 return;
             }
         }
@@ -133,11 +135,10 @@ public class EditSubjectDialogController {
     private <T> void styleComboBox(ComboBox<T> comboBox) {
         comboBox.setStyle(
                 "-fx-background-color: #2B2B44;" +
-                "-fx-background-radius: 10;" +
-                "-fx-border-radius: 10;" +
-                "-fx-font-size: 14px;" +
-                "-fx-text-fill: white;"
-        );
+                        "-fx-background-radius: 10;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-text-fill: white;");
 
         comboBox.setCellFactory(lv -> new ListCell<T>() {
             @Override

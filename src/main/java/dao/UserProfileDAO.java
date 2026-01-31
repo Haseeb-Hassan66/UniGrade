@@ -23,7 +23,9 @@ public class UserProfileDAO {
             System.out.println("DAO: User inserted into DB");
 
         } catch (SQLException e) {
+            System.err.println("Database error in UserProfileDAO.save: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to save user profile: " + e.getMessage(), e);
         }
     }
 
@@ -37,7 +39,9 @@ public class UserProfileDAO {
                 return rs.getInt(1) > 0;
             }
         } catch (SQLException e) {
+            System.err.println("Database error in UserProfileDAO.getById: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve user profile: " + e.getMessage(), e);
         }
         return false;
     }
@@ -58,7 +62,9 @@ public class UserProfileDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in UserProfileDAO.update: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to update user profile: " + e.getMessage(), e);
         }
         return user;
     }
@@ -83,7 +89,9 @@ public class UserProfileDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in UserProfileDAO.exists: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to check user existence: " + e.getMessage(), e);
         }
         return user;
     }
@@ -102,7 +110,9 @@ public class UserProfileDAO {
             System.out.println("DAO: User profile updated");
 
         } catch (SQLException e) {
+            System.err.println("Database error in UserProfileDAO.getCount: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to count users: " + e.getMessage(), e);
         }
     }
 
@@ -119,7 +129,9 @@ public class UserProfileDAO {
             System.out.println("DAO: University linked to user");
 
         } catch (SQLException e) {
+            System.err.println("Database error in UserProfileDAO.delete: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to delete user profile: " + e.getMessage(), e);
         }
     }
 }

@@ -7,6 +7,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.CustomDialogController;
+import ui.SceneManager;
 
 public class DialogUtil {
 
@@ -44,8 +45,7 @@ public class DialogUtil {
      */
     private static boolean showDialog(Stage owner, String title, String message, String icon, String... buttons) {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    DialogUtil.class.getResource("/fxml/CustomDialog.fxml"));
+            FXMLLoader loader = SceneManager.getLoader("/fxml/CustomDialog.fxml");
             Parent root = loader.load();
 
             CustomDialogController controller = loader.getController();

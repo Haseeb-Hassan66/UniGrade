@@ -24,6 +24,12 @@ public class SubjectDAO {
             ps.setInt(3, subject.isHasPractical() ? 1 : 0); // Boolean to int
             ps.setInt(4, subject.getTheoryCreditHours());
 
+            // Validate Foreign Key: Check if Semester exists
+            if (!semesterExists(conn, subject.getSemesterId())) {
+                throw new IllegalArgumentException(
+                        "Invalid Semester ID: " + subject.getSemesterId() + " does not exist.");
+            }
+
             // Handle nullable practicalCreditHours
             if (subject.getPracticalCreditHours() != null) {
                 ps.setInt(5, subject.getPracticalCreditHours());
@@ -33,16 +39,19 @@ public class SubjectDAO {
 
             ps.executeUpdate();
 
-            // Get generated ID
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                int generatedId = rs.getInt(1);
-                System.out.println("DAO: Subject saved with ID: " + generatedId);
-                return generatedId;
+            // Get generated ID - use try-with-resources to prevent memory leak
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    int generatedId = rs.getInt(1);
+                    System.out.println("DAO: Subject saved with ID: " + generatedId);
+                    return generatedId;
+                }
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in SubjectDAO.save: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to save subject: " + e.getMessage(), e);
         }
         return -1;
     }
@@ -64,7 +73,9 @@ public class SubjectDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in SubjectDAO.getAllBySemester: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve subjects: " + e.getMessage(), e);
         }
         return subjects;
     }
@@ -84,7 +95,9 @@ public class SubjectDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in SubjectDAO.getById: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve subject: " + e.getMessage(), e);
         }
         return null;
     }
@@ -144,7 +157,9 @@ public class SubjectDAO {
             System.out.println("DAO: Subject grades updated for ID: " + subjectId);
 
         } catch (SQLException e) {
+            System.err.println("Database error in SubjectDAO.updateGrades: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to update subject grades: " + e.getMessage(), e);
         }
     }
 
@@ -288,5 +303,16 @@ public class SubjectDAO {
                 theoryCreditHours, practicalCreditHours,
                 theoryGrade, practicalGrade,
                 theoryGradePoint, practicalGradePoint);
+    }
+
+    // Helper to validate foreign key existence
+    private boolean semesterExists(Connection conn, int semesterId) throws SQLException {
+        String query = "SELECT 1 FROM Semester WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, semesterId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
     }
 }

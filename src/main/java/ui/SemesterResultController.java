@@ -84,11 +84,13 @@ public class SemesterResultController {
         if (currentSemester == null || currentUser == null)
             return;
 
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+
         // Student Info
         studentNameLabel.setText(currentUser.getName());
 
         // Get university name
-        String universityName = "Unknown University";
+        String universityName = messages.getString("semester.label.university.unknown");
         model.University university = universityDAO.getById(currentUser.getUniversityId());
         if (university != null) {
             universityName = university.getName();
@@ -107,7 +109,13 @@ public class SemesterResultController {
 
             // Grade Classification
             String gradeClass = ResultCalculator.getGradeClass(gpa);
-            gradeClassLabel.setText(gradeClass);
+            if ("First Class".equals(gradeClass)) {
+                gradeClassLabel.setText(messages.getString("report.label.excellent"));
+            } else if ("Second Class".equals(gradeClass)) {
+                gradeClassLabel.setText(messages.getString("report.label.good"));
+            } else {
+                gradeClassLabel.setText(messages.getString("report.label.fair"));
+            }
 
             // Color based on performance
             if (gpa >= 3.7) {
@@ -120,9 +128,9 @@ public class SemesterResultController {
                 gradeClassLabel.setStyle("-fx-text-fill: #EF4444; -fx-font-size: 12px; -fx-font-weight: bold;");
             }
         } else {
-            gpaLabel.setText("N/A");
-            footerGPALabel.setText("N/A");
-            gradeClassLabel.setText("Not Calculated");
+            gpaLabel.setText(messages.getString("report.label.na"));
+            footerGPALabel.setText(messages.getString("report.label.na"));
+            gradeClassLabel.setText(messages.getString("report.label.na"));
         }
 
         // Load Subjects

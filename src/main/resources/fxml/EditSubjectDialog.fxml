@@ -22,7 +22,7 @@
           prefWidth="450"
           style="-fx-background-color: #1F1F33; -fx-padding: 36 30; -fx-background-radius: 22; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0, 0, 8);">
         <!-- HEADING -->
-        <Label text="Edit Subject"
+        <Label text="%dialog.edit_subject.title"
                style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
 
         <!-- INPUT GROUPS -->
@@ -30,20 +30,20 @@
 
             <!-- Subject Name -->
             <VBox spacing="6" alignment="CENTER_LEFT" prefWidth="360">
-                <Label text="Subject Name" 
+                <Label text="%dialog.field.subject_name" 
                        style="-fx-text-fill: #BDB7E2; -fx-font-size: 13px;"/>
                 <TextField fx:id="subjectNameField"
-                           promptText="e.g., Data Structures"
+                           promptText="%dialog.prompt.subject_name"
                            prefHeight="38"
                            style="-fx-background-color: #2B2B44; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-padding: 0 12; -fx-font-size: 14px;"/>
             </VBox>
 
             <!-- Theory Credit Hours -->
             <VBox spacing="6" alignment="CENTER_LEFT" prefWidth="360">
-                <Label text="Theory Credit Hours" 
+                <Label text="%dialog.field.credit_hours" 
                        style="-fx-text-fill: #BDB7E2; -fx-font-size: 13px;"/>
                 <ComboBox fx:id="theoryCreditsCombo"
-                          promptText="Select credit hours"
+                          promptText="%dialog.prompt.credits"
                           prefHeight="38"
                           prefWidth="360"
                           style="-fx-background-color: #2B2B44; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 14px;"/>
@@ -52,7 +52,7 @@
             <!-- Has Practical Checkbox -->
             <HBox spacing="10" alignment="CENTER_LEFT" prefWidth="360">
                 <CheckBox fx:id="hasPracticalCheckbox"
-                          text="Has Practical Component"
+                          text="%dialog.field.has_practical"
                           style="-fx-text-fill: #BDB7E2; -fx-font-size: 14px;"
                           onAction="#handlePracticalToggle"/>
             </HBox>
@@ -60,10 +60,10 @@
             <!-- Practical Credit Hours (initially hidden) -->
             <VBox fx:id="practicalCreditsBox" spacing="6" alignment="CENTER_LEFT" prefWidth="360"
                   managed="false" visible="false">
-                <Label text="Practical Credit Hours" 
+                <Label text="%dialog.field.credit_hours" 
                        style="-fx-text-fill: #BDB7E2; -fx-font-size: 13px;"/>
                 <ComboBox fx:id="practicalCreditsCombo"
-                          promptText="Select credit hours"
+                          promptText="%dialog.prompt.credits"
                           prefHeight="38"
                           prefWidth="360"
                           style="-fx-background-color: #2B2B44; -fx-text-fill: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-font-size: 14px;"/>
@@ -82,7 +82,7 @@
         <HBox spacing="12" alignment="CENTER">
             <!-- Cancel Button -->
             <Button fx:id="cancelButton"
-                    text="Cancel"
+                    text="%dialog.btn.cancel"
                     prefHeight="40"
                     prefWidth="170"
                     onAction="#handleCancel"
@@ -90,7 +90,7 @@
             
             <!-- Save Button -->
             <Button fx:id="saveButton"
-                    text="Save Changes"
+                    text="%dialog.btn.save"
                     prefHeight="40"
                     prefWidth="170"
                     onAction="#handleSave"

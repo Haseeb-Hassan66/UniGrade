@@ -14,6 +14,8 @@ import util.ResultCalculator;
 
 public class SemesterDAO {
 
+    private final SubjectDAO subjectDAO = new SubjectDAO();
+
     // Save a new semester
     public int save(Semester semester) {
         String sql = "INSERT INTO Semester(userId, semesterName, gpa) VALUES(?, ?, ?)";
@@ -32,16 +34,19 @@ public class SemesterDAO {
 
             ps.executeUpdate();
 
-            // Get generated ID
-            ResultSet rs = ps.getGeneratedKeys();
-            if (rs.next()) {
-                int generatedId = rs.getInt(1);
-                System.out.println("DAO: Semester saved with ID: " + generatedId);
-                return generatedId;
+            // Get generated ID - use try-with-resources to prevent memory leak
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    int generatedId = rs.getInt(1);
+                    System.out.println("DAO: Semester saved with ID: " + generatedId);
+                    return generatedId;
+                }
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in SemesterDAO.save: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to save semester: " + e.getMessage(), e);
         }
         return -1; // Return -1 if save failed
     }
@@ -63,7 +68,9 @@ public class SemesterDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in SemesterDAO.getAllByUser: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve semesters: " + e.getMessage(), e);
         }
         return semesters;
     }
@@ -83,7 +90,9 @@ public class SemesterDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in SemesterDAO.getById: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to retrieve semester: " + e.getMessage(), e);
         }
         return null;
     }
@@ -106,7 +115,9 @@ public class SemesterDAO {
             System.out.println("DAO: Semester GPA updated to " + gpa);
 
         } catch (SQLException e) {
+            System.err.println("Database error in SemesterDAO.updateGPA: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to update semester GPA: " + e.getMessage(), e);
         }
     }
 
@@ -118,7 +129,6 @@ public class SemesterDAO {
      */
     public void calculateAndUpdateGPA(int semesterId) {
         // Get all subjects for this semester
-        SubjectDAO subjectDAO = new SubjectDAO();
         List<Subject> subjects = subjectDAO.getAllBySemester(semesterId);
 
         // Calculate GPA using ResultCalculator
@@ -134,23 +144,38 @@ public class SemesterDAO {
      * Get CGPA (Cumulative GPA) for a user across all semesters
      * Weighted average of all semester GPAs
      */
+    /**
+     * Get CGPA (Cumulative GPA) for a user across all semesters
+     * Weighted average of all semester GPAs
+     * Optimized to use single query
+     */
     public Double getCGPA(int userId) {
-        List<Semester> semesters = getAllByUser(userId);
-
         List<Double> gpaList = new ArrayList<>();
         List<Integer> creditHoursList = new ArrayList<>();
 
-        SubjectDAO subjectDAO = new SubjectDAO();
+        String sql = "SELECT s.gpa, SUM(sub.theoryCreditHours + COALESCE(sub.practicalCreditHours, 0)) as totalCredits "
+                +
+                "FROM Semester s " +
+                "JOIN Subject sub ON s.id = sub.semesterId " +
+                "WHERE s.userId = ? AND s.gpa IS NOT NULL " +
+                "GROUP BY s.id " +
+                "HAVING totalCredits > 0";
 
-        for (Semester semester : semesters) {
-            // Only include semesters with calculated GPA
-            if (semester.getGpa() != null) {
-                int totalCredits = subjectDAO.getTotalCreditHours(semester.getId());
-                if (totalCredits > 0) {
-                    gpaList.add(semester.getGpa());
-                    creditHoursList.add(totalCredits);
-                }
+        try (Connection conn = DBUtil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                gpaList.add(rs.getDouble("gpa"));
+                creditHoursList.add(rs.getInt("totalCredits"));
             }
+
+        } catch (SQLException e) {
+            System.err.println("Database error in SemesterDAO.getCGPA: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to calculate CGPA: " + e.getMessage(), e);
         }
 
         // Calculate CGPA using ResultCalculator
@@ -159,20 +184,30 @@ public class SemesterDAO {
 
     /**
      * Get total credit hours completed by a user (across all semesters)
+     * Optimized to use a single query instead of N+1 pattern
      */
     public int getTotalCreditHoursCompleted(int userId) {
-        List<Semester> semesters = getAllByUser(userId);
-        SubjectDAO subjectDAO = new SubjectDAO();
+        String sql = "SELECT SUM(s.theoryCreditHours + COALESCE(s.practicalCreditHours, 0)) " +
+                "FROM Subject s " +
+                "JOIN Semester sem ON s.semesterId = sem.id " +
+                "WHERE sem.userId = ? AND sem.gpa IS NOT NULL";
 
-        int totalCredits = 0;
-        for (Semester semester : semesters) {
-            // Only count semesters with GPA (completed semesters)
-            if (semester.getGpa() != null) {
-                totalCredits += subjectDAO.getTotalCreditHours(semester.getId());
+        try (Connection conn = DBUtil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
             }
-        }
 
-        return totalCredits;
+        } catch (SQLException e) {
+            System.err.println("Database error in SemesterDAO.getTotalCreditHoursCompleted: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to calculate total credit hours: " + e.getMessage(), e);
+        }
+        return 0;
     }
 
     // Delete semester
@@ -188,7 +223,9 @@ public class SemesterDAO {
             System.out.println("DAO: Semester deleted with ID: " + semesterId);
 
         } catch (SQLException e) {
+            System.err.println("Database error in SemesterDAO.delete: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to delete semester: " + e.getMessage(), e);
         }
     }
 
@@ -208,7 +245,9 @@ public class SemesterDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in SemesterDAO.exists: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to check semester existence: " + e.getMessage(), e);
         }
         return false;
     }
@@ -228,7 +267,9 @@ public class SemesterDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Database error in SemesterDAO.countByUser: " + e.getMessage());
             e.printStackTrace();
+            throw new RuntimeException("Failed to count semesters: " + e.getMessage(), e);
         }
         return 0;
     }

@@ -16,6 +16,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.Semester;
 import model.Subject;
+import java.util.ResourceBundle;
+import java.text.MessageFormat;
 
 public class SemesterDetailController {
 
@@ -91,7 +93,8 @@ public class SemesterDetailController {
             gpaLabel.setText(String.format("%.2f", updatedSemester.getGpa()));
             gpaLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #A78BFA;");
         } else {
-            gpaLabel.setText("N/A");
+            ResourceBundle messages = SceneManager.getBundle();
+            gpaLabel.setText(messages.getString("dashboard.gpa.na"));
             gpaLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #7D7A9C;");
         }
     }
@@ -102,7 +105,9 @@ public class SemesterDetailController {
         int practicalCredits = subjectDAO.getPracticalCreditHours(currentSemester.getId());
 
         totalCreditsLabel.setText(String.valueOf(totalCredits));
-        creditsBreakdownLabel.setText("(" + theoryCredits + " Theory + " + practicalCredits + " Practical)");
+        ResourceBundle messages = SceneManager.getBundle();
+        creditsBreakdownLabel.setText(MessageFormat.format(messages.getString("semester.credits_breakdown"),
+                theoryCredits, practicalCredits));
     }
 
     private void loadSubjects() {
@@ -135,13 +140,15 @@ public class SemesterDetailController {
         shadow.setColor(Color.rgb(0, 0, 0, 0.27));
         emptyBox.setEffect(shadow);
 
-        Label emoji = new Label("📖");
+        ResourceBundle messages = SceneManager.getBundle();
+
+        Label emoji = new Label(messages.getString("semester.empty.emoji"));
         emoji.setStyle("-fx-font-size: 48px;");
 
-        Label title = new Label("No subjects yet!");
+        Label title = new Label(messages.getString("semester.empty.title"));
         title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #A5A3C7;");
 
-        Label subtitle = new Label("Click 'Add Subject' to get started");
+        Label subtitle = new Label(messages.getString("semester.empty.subtitle"));
         subtitle.setStyle("-fx-font-size: 14px; -fx-text-fill: #7D7A9C;");
 
         emptyBox.getChildren().addAll(emoji, title, subtitle);
@@ -172,14 +179,19 @@ public class SemesterDetailController {
         HBox infoBox = new HBox(20);
         infoBox.setAlignment(Pos.CENTER_LEFT);
 
-        Label creditsLabel = new Label("Credits: " + subject.getCreditHoursDisplay() +
-                (subject.isHasPractical() ? " (Theory + Practical)" : " (Theory Only)"));
+        ResourceBundle messages = SceneManager.getBundle();
+
+        String typeStr = subject.isHasPractical() ? messages.getString("subject.type.theory_practical")
+                : messages.getString("subject.type.theory");
+        Label creditsLabel = new Label(MessageFormat.format(messages.getString("subject.label.credits"),
+                subject.getCreditHoursDisplay(), typeStr));
         creditsLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #BDB7E2;");
 
         Region spacer1 = new Region();
         HBox.setHgrow(spacer1, Priority.ALWAYS);
 
-        Label gradeLabel = new Label("Grade: " + subject.getGradeDisplay());
+        Label gradeLabel = new Label(
+                MessageFormat.format(messages.getString("subject.label.grade"), subject.getGradeDisplay()));
         gradeLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #A78BFA;");
 
         infoBox.getChildren().addAll(creditsLabel, spacer1, gradeLabel);
@@ -188,17 +200,17 @@ public class SemesterDetailController {
         HBox actions = new HBox(10);
         actions.setAlignment(Pos.CENTER_RIGHT);
 
-        Button viewMarksButton = new Button("View Marks");
+        Button viewMarksButton = new Button(messages.getString("subject.btn.view_marks"));
         viewMarksButton.setStyle(
                 "-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 6 16;");
         viewMarksButton.setOnAction(e -> handleViewMarks(subject));
 
-        Button editButton = new Button("Edit");
+        Button editButton = new Button(messages.getString("subject.btn.edit"));
         editButton.setStyle(
                 "-fx-background-color: transparent; -fx-border-color: #A78BFA; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #A78BFA; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 6 16;");
         editButton.setOnAction(e -> handleEditSubject(subject));
 
-        Button deleteButton = new Button("Delete");
+        Button deleteButton = new Button(messages.getString("subject.btn.delete"));
         deleteButton.setStyle(
                 "-fx-background-color: transparent; -fx-border-color: #F87171; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #F87171; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 6 16;");
         deleteButton.setOnAction(e -> handleDeleteSubject(subject));
@@ -216,15 +228,15 @@ public class SemesterDetailController {
 
     @FXML
     private void handleAddSubject() {
+        ResourceBundle messages = SceneManager.getBundle();
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/AddSubjectDialog.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/AddSubjectDialog.fxml");
             javafx.scene.Parent root = loader.load();
 
             AddSubjectDialogController dialogController = loader.getController();
 
             javafx.stage.Stage dialogStage = new javafx.stage.Stage();
-            dialogStage.setTitle("Add Subject");
+            dialogStage.setTitle(messages.getString("dialog.add_subject.title"));
             dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialogStage.initOwner(backButton.getScene().getWindow());
             dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
@@ -255,16 +267,16 @@ public class SemesterDetailController {
                     newSubject.setId(subjectId);
                     util.DialogUtil.showInfo(
                             (javafx.stage.Stage) backButton.getScene().getWindow(),
-                            "Success",
-                            "Subject '" + newSubject.getSubjectName() + "' created successfully!");
+                            messages.getString("dialog.success.title"),
+                            MessageFormat.format(messages.getString("subject.created"), newSubject.getSubjectName()));
 
                     loadSubjects();
                     updateCreditHoursDisplay();
                 } else {
                     util.DialogUtil.showError(
                             (javafx.stage.Stage) backButton.getScene().getWindow(),
-                            "Error",
-                            "Failed to create subject. Please try again.");
+                            messages.getString("dialog.error.title"),
+                            messages.getString("subject.create.failed"));
                 }
             }
 
@@ -272,21 +284,22 @@ public class SemesterDetailController {
             e.printStackTrace();
             util.DialogUtil.showError(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Error",
+                    messages.getString("dialog.error.title"),
                     "Failed to open dialog: " + e.getMessage());
         }
     }
 
     private void handleViewMarks(Subject subject) {
+        ResourceBundle messages = SceneManager.getBundle();
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/MarksEntry.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/MarksEntry.fxml");
             javafx.scene.Parent root = loader.load();
 
             MarksEntryController controller = loader.getController();
 
             javafx.stage.Stage dialogStage = new javafx.stage.Stage();
-            dialogStage.setTitle("Marks Entry - " + subject.getSubjectName());
+            dialogStage.setTitle(
+                    MessageFormat.format(messages.getString("dialog.marks_entry.title"), subject.getSubjectName()));
             dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialogStage.initOwner(backButton.getScene().getWindow());
             dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
@@ -320,21 +333,21 @@ public class SemesterDetailController {
             e.printStackTrace();
             util.DialogUtil.showError(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Error",
+                    messages.getString("dialog.error.title"),
                     "Failed to open marks entry: " + e.getMessage());
         }
     }
 
     private void handleEditSubject(Subject subject) {
+        ResourceBundle messages = SceneManager.getBundle();
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/EditSubjectDialog.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/EditSubjectDialog.fxml");
             javafx.scene.Parent root = loader.load();
 
             EditSubjectDialogController dialogController = loader.getController();
 
             javafx.stage.Stage dialogStage = new javafx.stage.Stage();
-            dialogStage.setTitle("Edit Subject");
+            dialogStage.setTitle(messages.getString("dialog.edit_subject.title"));
             dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialogStage.initOwner(backButton.getScene().getWindow());
             dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
@@ -361,8 +374,8 @@ public class SemesterDetailController {
 
                 util.DialogUtil.showInfo(
                         (javafx.stage.Stage) backButton.getScene().getWindow(),
-                        "Success",
-                        "Subject '" + subject.getSubjectName() + "' updated successfully!");
+                        messages.getString("dialog.success.title"),
+                        MessageFormat.format(messages.getString("subject.updated"), subject.getSubjectName()));
 
                 loadSubjects();
                 updateCreditHoursDisplay();
@@ -372,24 +385,24 @@ public class SemesterDetailController {
             e.printStackTrace();
             util.DialogUtil.showError(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Error",
+                    messages.getString("dialog.error.title"),
                     "Failed to open dialog: " + e.getMessage());
         }
     }
 
     private void handleDeleteSubject(Subject subject) {
+        ResourceBundle messages = SceneManager.getBundle();
         boolean confirmed = util.DialogUtil.showConfirmation(
                 (javafx.stage.Stage) backButton.getScene().getWindow(),
-                "Delete Subject",
-                "Are you sure you want to delete '" + subject.getSubjectName() + "'?\n\n" +
-                        "This will delete all marks for this subject.\nThis action cannot be undone.");
+                messages.getString("subject.delete.title"),
+                MessageFormat.format(messages.getString("subject.delete.message"), subject.getSubjectName()));
 
         if (confirmed) {
             subjectDAO.delete(subject.getId());
             util.DialogUtil.showInfo(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Success",
-                    "Subject deleted successfully!");
+                    messages.getString("dialog.success.title"),
+                    messages.getString("subject.deleted"));
             loadSubjects();
             updateCreditHoursDisplay();
 
@@ -400,9 +413,9 @@ public class SemesterDetailController {
 
     @FXML
     private void handleViewResult() {
+        ResourceBundle messages = SceneManager.getBundle();
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/fxml/SemesterResult.fxml"));
+            javafx.fxml.FXMLLoader loader = SceneManager.getLoader("/fxml/SemesterResult.fxml");
             javafx.scene.Parent root = loader.load();
 
             SemesterResultController controller = loader.getController();
@@ -414,7 +427,7 @@ public class SemesterDetailController {
             e.printStackTrace();
             util.DialogUtil.showError(
                     (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    "Error",
+                    messages.getString("dialog.error.title"),
                     "Failed to open result view: " + e.getMessage());
         }
     }

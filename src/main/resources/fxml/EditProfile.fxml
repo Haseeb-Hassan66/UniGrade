@@ -19,24 +19,24 @@
         </effect>
 
         <!-- Header -->
-        <Label text="✏️ Edit Profile"
+        <Label text="%dialog.edit_profile.title"
                style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
         
         <Separator style="-fx-background-color: #2D2D44;"/>
 
         <!-- Name Field -->
         <VBox spacing="8">
-            <Label text="Name *"
+            <Label text="%dialog.field.name"
                    style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;"/>
-            <TextField fx:id="nameField" promptText="Enter your name"
+            <TextField fx:id="nameField" promptText="%dialog.prompt.name"
                        style="-fx-background-color: #2D2D44; -fx-text-fill: white; -fx-prompt-text-fill: #7D7A9C; -fx-background-radius: 10; -fx-padding: 12;"/>
         </VBox>
 
         <!-- Department Field -->
         <VBox spacing="8">
-            <Label text="Department *"
+            <Label text="%dialog.field.department"
                    style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;"/>
-            <TextField fx:id="departmentField" promptText="Enter your department"
+            <TextField fx:id="departmentField" promptText="%dialog.prompt.department"
                        style="-fx-background-color: #2D2D44; -fx-text-fill: white; -fx-prompt-text-fill: #7D7A9C; -fx-background-radius: 10; -fx-padding: 12;"/>
         </VBox>
 
@@ -46,10 +46,10 @@
                 <Insets top="10"/>
             </padding>
             
-            <Button text="Cancel" onAction="#handleCancel"
+            <Button text="%dialog.btn.cancel" onAction="#handleCancel"
                     style="-fx-background-color: transparent; -fx-border-color: #7D7A9C; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #7D7A9C; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 24;"/>
             
-            <Button text="Save Changes" onAction="#handleSave"
+            <Button text="%dialog.btn.save" onAction="#handleSave"
                     style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 24;"/>
         </HBox>
 

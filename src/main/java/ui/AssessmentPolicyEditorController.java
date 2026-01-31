@@ -191,7 +191,9 @@ public class AssessmentPolicyEditorController {
                 .mapToDouble(AssessmentPolicyRow::getMaxMarks)
                 .sum();
 
-        totalLabel.setText(String.format("Total: %.0f / 100", total));
+        java.util.ResourceBundle messages = SceneManager.getBundle();
+        totalLabel.setText(
+                java.text.MessageFormat.format("{0} {1} / 100", messages.getString("report.label.total"), total));
 
         // Update total label color
         if (total == 100) {
@@ -212,8 +214,10 @@ public class AssessmentPolicyEditorController {
         for (int i = 0; i < assessmentData.size(); i++) {
             AssessmentPolicyRow row = assessmentData.get(i);
 
+            java.util.ResourceBundle messages = SceneManager.getBundle();
             if (row.getComponentName().trim().isEmpty()) {
-                errors.append("• Row ").append(i + 1).append(": Component name cannot be empty\n");
+                errors.append("• ").append(messages.getString("report.table.subject")).append(" ").append(i + 1)
+                        .append(": ").append(messages.getString("subject.label.name.empty")).append("\n");
             }
 
             if (row.getMaxMarks() <= 0) {
@@ -244,9 +248,10 @@ public class AssessmentPolicyEditorController {
                 .mapToDouble(AssessmentPolicyRow::getMaxMarks)
                 .sum();
 
+        java.util.ResourceBundle messages = SceneManager.getBundle();
         if (total != 100 && errors.length() == 0) {
-            warningLabel.setText(String.format(
-                    "Total marks is %.0f instead of 100. This is allowed but may cause confusion.", total));
+            warningLabel.setText(
+                    java.text.MessageFormat.format(messages.getString("settings.assessment.warning.total"), total));
             warningBox.setVisible(true);
             warningBox.setManaged(true);
         } else {
@@ -273,12 +278,11 @@ public class AssessmentPolicyEditorController {
             return;
         }
 
+        java.util.ResourceBundle messages = SceneManager.getBundle();
         // Confirm with user
         boolean confirmed = util.DialogUtil.showConfirmation(dialogStage,
-                "💾 Confirm Changes",
-                "Changes to assessment policy will only affect newly created subjects.\n\n" +
-                        "Existing subjects will keep their current assessment structure.\n\n" +
-                        "Do you want to continue?");
+                messages.getString("settings.assessment.confirm.title"),
+                messages.getString("settings.assessment.confirm.message"));
 
         if (!confirmed) {
             return;

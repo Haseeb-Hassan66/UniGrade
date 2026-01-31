@@ -169,15 +169,17 @@ public class Subject {
             tDisplay += " (" + String.format("%.2f", theoryGradePoint) + ")";
         }
 
-        if (hasPractical && practicalGrade != null) {
-            String pDisplay = practicalGrade;
-            if (practicalGradePoint != null) {
-                pDisplay += " (" + String.format("%.2f", practicalGradePoint) + ")";
-            }
-            return tDisplay + " / " + pDisplay;
-        } else {
+        if (!hasPractical) {
             return tDisplay;
         }
+
+        // Handle practical part
+        String pDisplay = (practicalGrade == null) ? "Not Graded" : practicalGrade;
+        if (practicalGrade != null && practicalGradePoint != null) {
+            pDisplay += " (" + String.format("%.2f", practicalGradePoint) + ")";
+        }
+
+        return tDisplay + " / " + pDisplay;
     }
 
     public boolean isGraded() {

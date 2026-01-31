@@ -6,10 +6,8 @@ import java.sql.Statement;
 
 public class DBInitializer {
 
-    private static final String DB_URL = "jdbc:sqlite:unigrade.db";
-
     public static void initialize() {
-        try (Connection conn = DriverManager.getConnection(DB_URL);
+        try (Connection conn = DBUtil.getConnection();
                 Statement stmt = conn.createStatement()) {
 
             // ==========================================
@@ -117,6 +115,13 @@ public class DBInitializer {
                     + "FOREIGN KEY(subjectId) REFERENCES Subject(id) ON DELETE CASCADE"
                     + ")";
             stmt.execute(marksTable);
+
+            // ==========================================
+            // CREATE INDEXES (PHASE 8 fix - Issue #11)
+            // ==========================================
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_semester_userId ON Semester(userId)");
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_subject_semesterId ON Subject(semesterId)");
+            stmt.execute("CREATE INDEX IF NOT EXISTS idx_marks_subjectId ON Marks(subjectId)");
 
             System.out.println("✅ Database initialized with all tables.");
 
