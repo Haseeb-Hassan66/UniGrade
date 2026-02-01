@@ -225,18 +225,70 @@ public class SettingsController {
 
     @FXML
     private void handleResetData() {
-        ResourceBundle messages = SceneManager.getBundle();
         boolean confirmed = util.DialogUtil.showConfirmation(
                 (javafx.stage.Stage) backButton.getScene().getWindow(),
-                messages.getString("settings.reset.title"),
-                messages.getString("settings.reset.message"));
+                "⚠️ Reset All Data",
+                "This will permanently delete ALL your data including:\n" +
+                        "• All semesters\n" +
+                        "• All subjects\n" +
+                        "• All marks\n" +
+                        "• Your profile\n\n" +
+                        "University templates and grading policies will be kept.\n\n" +
+                        "This action CANNOT be undone!\n\n" +
+                        "Are you absolutely sure?");
 
-        if (confirmed) {
-            // TODO: Implement reset logic
-            util.DialogUtil.showInfo(
-                    (javafx.stage.Stage) backButton.getScene().getWindow(),
-                    messages.getString("dialog.coming.soon"),
-                    messages.getString("settings.reset.not_implemented"));
+        if (!confirmed) {
+            return;
         }
+
+        // Run reset in background thread
+        javafx.concurrent.Task<util.ResetDataService.ResetResult> resetTask = new javafx.concurrent.Task<>() {
+            @Override
+            protected util.ResetDataService.ResetResult call() {
+                return util.ResetDataService.resetAllData();
+            }
+        };
+
+        resetTask.setOnSucceeded(e -> {
+            util.ResetDataService.ResetResult result = resetTask.getValue();
+
+            if (result.isSuccess()) {
+                util.DialogUtil.showInfo(
+                        (javafx.stage.Stage) backButton.getScene().getWindow(),
+                        "✅ Data Reset Complete",
+                        "All data has been deleted:\n" +
+                                "• " + result.getSemestersDeleted() + " semester(s)\n" +
+                                "• " + result.getSubjectsDeleted() + " subject(s)\n" +
+                                "• " + result.getMarksDeleted() + " mark entries\n\n" +
+                                "You will now be taken to the setup screen.");
+
+                // Navigate to FirstRun screen after short delay
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(1500);
+                    } catch (InterruptedException ignored) {
+                    }
+                    javafx.application.Platform.runLater(() -> {
+                        SceneManager.loadCenter("FirstRun.fxml");
+                    });
+                }).start();
+
+            } else {
+                util.DialogUtil.showError(
+                        (javafx.stage.Stage) backButton.getScene().getWindow(),
+                        "❌ Reset Failed",
+                        "Failed to reset data: " + result.getErrorMessage() +
+                                "\n\nPlease try again.");
+            }
+        });
+
+        resetTask.setOnFailed(e -> {
+            util.DialogUtil.showError(
+                    (javafx.stage.Stage) backButton.getScene().getWindow(),
+                    "❌ Reset Failed",
+                    "An unexpected error occurred: " + resetTask.getException().getMessage());
+        });
+
+        new Thread(resetTask).start();
     }
 }
