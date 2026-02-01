@@ -120,11 +120,51 @@ public class SettingsController {
 
     @FXML
     private void handleChangeUniversity() {
-        ResourceBundle messages = SceneManager.getBundle();
-        util.DialogUtil.showInfo(
-                (javafx.stage.Stage) backButton.getScene().getWindow(),
-                messages.getString("dialog.coming.soon"),
-                "University switcher will be available in the next update!");
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/fxml/UniversitySwitcher.fxml"));
+            javafx.scene.Parent root = loader.load();
+
+            UniversitySwitcherController controller = loader.getController();
+
+            javafx.stage.Stage dialogStage = new javafx.stage.Stage();
+            dialogStage.setTitle("Change University");
+            dialogStage.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialogStage.initOwner(backButton.getScene().getWindow());
+            dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+
+            controller.setDialogStage(dialogStage);
+
+            // Apply blur
+            javafx.stage.Stage ownerStage = (javafx.stage.Stage) backButton.getScene().getWindow();
+            javafx.scene.Node ownerRoot = ownerStage.getScene().getRoot();
+            util.UIUtil.applyModalBlur(ownerRoot);
+
+            dialogStage.setOnHidden(e -> util.UIUtil.removeModalBlur(ownerRoot));
+
+            dialogStage.showAndWait();
+
+            // If saved, reload data and show success
+            if (controller.isSaveClicked()) {
+                loadUserData();
+                util.DialogUtil.showInfo(
+                        (javafx.stage.Stage) backButton.getScene().getWindow(),
+                        "Success",
+                        "University changed successfully!\nAll grades have been recalculated.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            util.DialogUtil.showError(
+                    (javafx.stage.Stage) backButton.getScene().getWindow(),
+                    "Error",
+                    "Failed to open university switcher: " + e.getMessage());
+        }
     }
 
     @FXML

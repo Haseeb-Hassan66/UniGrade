@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.DropShadow?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="ui.UniversitySwitcherController"
+           style="-fx-background-color: rgba(0, 0, 0, 0.4);">
+
+    <!-- Dialog Card -->
+    <VBox spacing="20" maxWidth="520" maxHeight="700"
+          style="-fx-background-color: #1F1F33; -fx-padding: 30; -fx-background-radius: 20;">
+
+        <effect>
+            <DropShadow radius="40" offsetY="15" color="#00000099"/>
+        </effect>
+
+        <!-- Header -->
+        <VBox spacing="6">
+            <Label text="🎓 Change University"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Select a university to use for grading"
+                   style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px;"/>
+        </VBox>
+
+        <Separator style="-fx-background-color: #2D2D44;"/>
+
+        <!-- Current University Display -->
+        <VBox spacing="6">
+            <Label text="Current University"
+                   style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            <HBox alignment="CENTER_LEFT" spacing="10"
+                  style="-fx-background-color: #2D2D44; -fx-padding: 12 16; -fx-background-radius: 10;">
+                <Label text="🏛️" style="-fx-font-size: 16px;"/>
+                <Label fx:id="currentUniversityLabel" text="None"
+                       style="-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+            </HBox>
+        </VBox>
+
+        <!-- University List -->
+        <VBox spacing="8">
+            <Label text="Available Universities"
+                   style="-fx-text-fill: #A5A3C7; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+
+            <ScrollPane fitToWidth="true" maxHeight="250"
+                        style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: transparent;">
+                <VBox fx:id="universityListContainer" spacing="8">
+                    <padding>
+                        <Insets bottom="5"/>
+                    </padding>
+                </VBox>
+            </ScrollPane>
+        </VBox>
+
+        <!-- Warning -->
+        <HBox spacing="10" alignment="TOP_LEFT"
+              style="-fx-background-color: rgba(251, 146, 60, 0.1); -fx-padding: 12; -fx-background-radius: 10;">
+            <Label text="⚠️" style="-fx-font-size: 16px;"/>
+            <Label text="Switching university will recalculate all your existing grades and GPAs using the new university's grading policy."
+                   wrapText="true"
+                   style="-fx-text-fill: #FFA366; -fx-font-size: 12px;"/>
+        </HBox>
+
+        <!-- Buttons -->
+        <HBox spacing="12" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="5"/>
+            </padding>
+
+            <Button text="Cancel" onAction="#handleCancel"
+                    style="-fx-background-color: transparent; -fx-border-color: #7D7A9C; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10; -fx-text-fill: #7D7A9C; -fx-font-size: 13px; -fx-font-weight: bold; -fx-padding: 10 24;"/>
+
+            <Button fx:id="saveButton" text="Change University" onAction="#handleSave" disable="true"
+                    style="-fx-background-color: #7C3AED; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 10; -fx-padding: 10 24;"/>
+        </HBox>
+
+    </VBox>
+
+</StackPane>
