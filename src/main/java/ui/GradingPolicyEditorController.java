@@ -23,7 +23,7 @@ import javafx.util.converter.DoubleStringConverter;
 import model.GradingPolicy;
 import model.University;
 import model.UserProfile;
-
+import util.RecalculationService;
 import java.util.List;
 
 public class GradingPolicyEditorController {
@@ -278,8 +278,12 @@ public class GradingPolicyEditorController {
                     row.getMaxMarks()));
         }
 
-        System.out.println(
-                "Grading policy saved for " + currentCategory + ". Recalculation will be implemented in Phase 2.5.7");
+        // Trigger recalculation of all grades using new policy
+        RecalculationService service = new RecalculationService();
+        RecalculationService.RecalculationResult result = service.recalculateAll(currentUser.getId(),
+                currentUser.getUniversityId());
+
+        System.out.println("Recalculation after grading policy change: " + result);
 
         saveClicked = true;
         dialogStage.close();
