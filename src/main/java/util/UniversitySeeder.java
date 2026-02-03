@@ -62,12 +62,13 @@ public class UniversitySeeder {
         GradingPolicyDAO gradingDAO = new GradingPolicyDAO();
         List<GradingPolicy> policies = new ArrayList<>();
 
+        // FIXED: No gaps - each range touches the next
         policies.add(new GradingPolicy(universityId, "Theory", "A", 4.00, 93, 100));
         policies.add(new GradingPolicy(universityId, "Theory", "A-", 3.67, 87, 92));
         policies.add(new GradingPolicy(universityId, "Theory", "B+", 3.33, 82, 86));
         policies.add(new GradingPolicy(universityId, "Theory", "B", 3.00, 77, 81));
         policies.add(new GradingPolicy(universityId, "Theory", "B-", 2.67, 72, 76));
-        policies.add(new GradingPolicy(universityId, "Theory", "C+", 2.30, 68, 71));
+        policies.add(new GradingPolicy(universityId, "Theory", "C+", 2.33, 68, 71));
         policies.add(new GradingPolicy(universityId, "Theory", "C", 2.00, 64, 67));
         policies.add(new GradingPolicy(universityId, "Theory", "C-", 1.67, 60, 63));
         policies.add(new GradingPolicy(universityId, "Theory", "F", 0.00, 0, 59));
@@ -77,7 +78,7 @@ public class UniversitySeeder {
         policies.add(new GradingPolicy(universityId, "Practical", "B+", 3.33, 82, 86));
         policies.add(new GradingPolicy(universityId, "Practical", "B", 3.00, 77, 81));
         policies.add(new GradingPolicy(universityId, "Practical", "B-", 2.67, 72, 76));
-        policies.add(new GradingPolicy(universityId, "Practical", "C+", 2.30, 68, 71));
+        policies.add(new GradingPolicy(universityId, "Practical", "C+", 2.33, 68, 71));
         policies.add(new GradingPolicy(universityId, "Practical", "C", 2.00, 64, 67));
         policies.add(new GradingPolicy(universityId, "Practical", "C-", 1.67, 60, 63));
         policies.add(new GradingPolicy(universityId, "Practical", "F", 0.00, 0, 59));
@@ -105,12 +106,13 @@ public class UniversitySeeder {
         GradingPolicyDAO gradingDAO = new GradingPolicyDAO();
         List<GradingPolicy> policies = new ArrayList<>();
 
+        // FIXED: No gaps - each range touches the next
         policies.add(new GradingPolicy(universityId, "Theory", "A", 4.00, 85, 100));
         policies.add(new GradingPolicy(universityId, "Theory", "A-", 3.67, 80, 84));
         policies.add(new GradingPolicy(universityId, "Theory", "B+", 3.33, 75, 79));
         policies.add(new GradingPolicy(universityId, "Theory", "B", 3.00, 70, 74));
         policies.add(new GradingPolicy(universityId, "Theory", "B-", 2.67, 65, 69));
-        policies.add(new GradingPolicy(universityId, "Theory", "C+", 2.30, 61, 64));
+        policies.add(new GradingPolicy(universityId, "Theory", "C+", 2.33, 61, 64));
         policies.add(new GradingPolicy(universityId, "Theory", "C", 2.00, 58, 60));
         policies.add(new GradingPolicy(universityId, "Theory", "C-", 1.67, 55, 57));
         policies.add(new GradingPolicy(universityId, "Theory", "F", 0.00, 0, 54));
@@ -120,7 +122,7 @@ public class UniversitySeeder {
         policies.add(new GradingPolicy(universityId, "Practical", "B+", 3.33, 80, 84));
         policies.add(new GradingPolicy(universityId, "Practical", "B", 3.00, 75, 79));
         policies.add(new GradingPolicy(universityId, "Practical", "B-", 2.67, 70, 74));
-        policies.add(new GradingPolicy(universityId, "Practical", "C+", 2.30, 65, 69));
+        policies.add(new GradingPolicy(universityId, "Practical", "C+", 2.33, 65, 69));
         policies.add(new GradingPolicy(universityId, "Practical", "C", 2.00, 60, 64));
         policies.add(new GradingPolicy(universityId, "Practical", "C-", 1.67, 55, 59));
         policies.add(new GradingPolicy(universityId, "Practical", "F", 0.00, 0, 54));

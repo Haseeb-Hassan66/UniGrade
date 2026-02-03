@@ -105,14 +105,25 @@ public class GradingPolicyDAO {
         return policies;
     }
 
-    // Find grade for given marks and category
+    /**
+     * Find grade for given marks and category.
+     * 
+     * Strategy:
+     * 1. First try to find a grade where marks falls within [minMarks, maxMarks]
+     * 2. If no exact match (gap in policy), find the highest grade whose minMarks
+     * <= marks
+     * 
+     * This handles gaps in grading policies gracefully.
+     */
     public GradingPolicy findGradeForMarks(int universityId, String category, double marks) {
-        String sql = "SELECT * FROM GradingPolicy "
+        // Strategy 1: Try exact range match first
+        String exactMatchSql = "SELECT * FROM GradingPolicy "
                 + "WHERE universityId = ? AND category = ? AND minMarks <= ? AND maxMarks >= ? "
+                + "ORDER BY minMarks DESC "
                 + "LIMIT 1";
 
         try (Connection conn = DBUtil.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+                PreparedStatement ps = conn.prepareStatement(exactMatchSql)) {
 
             ps.setInt(1, universityId);
             ps.setString(2, category);
@@ -121,22 +132,55 @@ public class GradingPolicyDAO {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                int id = rs.getInt("id");
-                String gradeName = rs.getString("gradeName");
-                double gradePoint = rs.getDouble("gradePoint");
-                double minMarks = rs.getDouble("minMarks");
-                double maxMarks = rs.getDouble("maxMarks");
-
-                return new GradingPolicy(id, universityId, category, gradeName,
-                        gradePoint, minMarks, maxMarks);
+                System.out.println("DEBUG: Exact match found for " + marks + "%");
+                return extractGradingPolicy(rs, universityId, category);
             }
 
         } catch (SQLException e) {
-            System.err.println("Database error in GradingPolicyDAO.exists: " + e.getMessage());
+            System.err.println("Database error in GradingPolicyDAO.findGradeForMarks: " + e.getMessage());
             e.printStackTrace();
-            throw new RuntimeException("Failed to check grading policy existence: " + e.getMessage(), e);
         }
-        return null; // No grade found (marks out of range)
+
+        // Strategy 2: No exact match - find closest grade below
+        String closestMatchSql = "SELECT * FROM GradingPolicy "
+                + "WHERE universityId = ? AND category = ? AND minMarks <= ? "
+                + "ORDER BY minMarks DESC "
+                + "LIMIT 1";
+
+        try (Connection conn = DBUtil.getConnection();
+                PreparedStatement ps = conn.prepareStatement(closestMatchSql)) {
+
+            ps.setInt(1, universityId);
+            ps.setString(2, category);
+            ps.setDouble(3, marks);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                GradingPolicy policy = extractGradingPolicy(rs, universityId, category);
+                System.out.println(
+                        "DEBUG: Gap detected! Using closest grade below " + marks + "% -> " + policy.getGradeName());
+                return policy;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Database error in GradingPolicyDAO.findGradeForMarks (fallback): " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println("DEBUG: No grade found for " + marks + "% (not even a fallback)");
+        return null; // Truly no grade available (marks might be negative or policies completely
+                     // missing)
+    }
+
+    // Helper method to extract GradingPolicy from ResultSet (DRY principle)
+    private GradingPolicy extractGradingPolicy(ResultSet rs, int universityId, String category) throws SQLException {
+        int id = rs.getInt("id");
+        String gradeName = rs.getString("gradeName");
+        double gradePoint = rs.getDouble("gradePoint");
+        double minMarks = rs.getDouble("minMarks");
+        double maxMarks = rs.getDouble("maxMarks");
+
+        return new GradingPolicy(id, universityId, category, gradeName, gradePoint, minMarks, maxMarks);
     }
 
     // Delete all grading policies for a university and category
