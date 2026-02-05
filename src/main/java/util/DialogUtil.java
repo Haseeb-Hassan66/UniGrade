@@ -88,4 +88,24 @@ public class DialogUtil {
             return false;
         }
     }
+
+    /**
+     * Show a dialog explaining what to do when university is not listed.
+     * 
+     * @param owner The parent window
+     * @return true if user wants to auto-select General, false otherwise
+     */
+    public static boolean showUniversityNotListedDialog(Stage owner) {
+        String message = "No problem! Here's what you can do:" +
+                "\n\n" +
+                "1. Select 'General/Standard (Customizable)' for now\n" +
+                "2. After setup, go to Settings\n" +
+                "3. Edit grading policies to match your university\n" +
+                "4. Edit assessment components as needed" +
+                "\n\n" +
+                "Would you like me to select 'General/Standard' for you?";
+
+        return showDialog(owner, "🎓 University Not Listed", message, "ℹ️",
+                "No, I'll Choose", "Yes, Select It For Me");
+    }
 }

@@ -27,7 +27,7 @@ public class CustomDialogController {
 
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
-        
+
         // Clip to remove light corners
         if (titleLabel != null && titleLabel.getParent() != null) {
             javafx.scene.Node parent = titleLabel.getParent();
@@ -65,14 +65,20 @@ public class CustomDialogController {
 
             Button button = new Button(label);
             button.setPrefHeight(40);
-            button.setPrefWidth(150);
+            button.setPrefWidth(180);
 
-            // Style based on button type
-            if (label.equalsIgnoreCase("OK") || label.equalsIgnoreCase("Yes") || label.equalsIgnoreCase("Confirm")) {
+            // Style based on button type - check if label CONTAINS positive keywords
+            String labelLower = label.toLowerCase();
+            boolean isPrimaryButton = labelLower.contains("ok") ||
+                    labelLower.contains("yes") ||
+                    labelLower.contains("confirm") ||
+                    labelLower.contains("select");
+
+            if (isPrimaryButton) {
                 // Primary button (gradient)
                 button.setStyle("-fx-background-color: linear-gradient(to right, #7C3AED, #5B21B6); " +
-                              "-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; " +
-                              "-fx-background-radius: 12;");
+                        "-fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; " +
+                        "-fx-background-radius: 12;");
                 button.setOnAction(e -> {
                     confirmed = true;
                     dialogStage.close();
@@ -80,8 +86,8 @@ public class CustomDialogController {
             } else {
                 // Secondary button (outlined)
                 button.setStyle("-fx-background-color: transparent; -fx-border-color: #7C3AED; " +
-                              "-fx-border-width: 2; -fx-border-radius: 12; -fx-background-radius: 12; " +
-                              "-fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold;");
+                        "-fx-border-width: 2; -fx-border-radius: 12; -fx-background-radius: 12; " +
+                        "-fx-text-fill: #A78BFA; -fx-font-size: 14px; -fx-font-weight: bold;");
                 button.setOnAction(e -> {
                     confirmed = false;
                     dialogStage.close();

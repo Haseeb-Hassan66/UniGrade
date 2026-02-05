@@ -8,19 +8,20 @@
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="ui.CustomDialogController"
-           prefWidth="450" prefHeight="280"
+           prefWidth="550" prefHeight="500"
            alignment="CENTER"
            style="-fx-background-color: transparent;">
 
     <!-- Dark overlay behind dialog -->
     <javafx.scene.layout.Region style="-fx-background-color: rgba(0, 0, 0, 0.6); -fx-background-radius: 22;" 
-                                prefWidth="400" prefHeight="280"/>
+                                prefWidth="500" prefHeight="500"/>
 
     <!-- Dialog Card -->
     <VBox alignment="CENTER"
           spacing="24"
-          prefWidth="400"
+          prefWidth="500"
           style="-fx-background-color: #1F1F33; -fx-padding: 36 30; -fx-background-radius: 22; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 20, 0, 0, 8);">
+        
         <!-- ICON (optional, dynamically set) -->
         <Label fx:id="iconLabel"
                style="-fx-font-size: 48px;"
@@ -34,9 +35,9 @@
         <!-- MESSAGE -->
         <Label fx:id="messageLabel" text="Message goes here"
                wrapText="true"
-               maxWidth="350"
-               alignment="CENTER"
-               style="-fx-font-size: 15px; -fx-text-fill: #BDB7E2; -fx-text-alignment: center;"/>
+               maxWidth="440"
+               alignment="TOP_LEFT"
+               style="-fx-font-size: 14px; -fx-text-fill: #BDB7E2; -fx-line-spacing: 4px;"/>
 
         <!-- BUTTONS -->
         <HBox fx:id="buttonBox" spacing="12" alignment="CENTER">

@@ -80,11 +80,40 @@ public class UniversitySelectionController implements Initializable {
 
     @FXML
     private void handleCreateNew() {
-        // Navigate to University Creation screen
-        // TODO: Create UniversityCreation.fxml in next step
         ResourceBundle messages = ResourceBundle.getBundle("Messages");
-        errorLabel.setText(messages.getString("university.create.soon"));
-        // SceneManager.loadCenter("UniversityCreation.fxml");
+
+        // Show informational dialog with auto-select option
+        boolean autoSelect = util.DialogUtil.showUniversityNotListedDialog(
+                (javafx.stage.Stage) createButton.getScene().getWindow());
+
+        if (autoSelect) {
+            // Find "General/Standard" university and select it
+            for (University uni : universityCombo.getItems()) {
+                if (uni.getName().contains("General") || uni.getName().contains("Standard")) {
+                    universityCombo.setValue(uni);
+
+                    // Visual feedback - briefly highlight the combo box
+                    String originalStyle = universityCombo.getStyle();
+                    universityCombo.setStyle(originalStyle +
+                            "-fx-border-color: #7C3AED; -fx-border-width: 2;");
+
+                    // Reset style after 2 seconds
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException ignored) {
+                        }
+                        javafx.application.Platform.runLater(() -> {
+                            universityCombo.setStyle(originalStyle);
+                        });
+                    }).start();
+
+                    // Clear any previous error
+                    errorLabel.setText("");
+                    break;
+                }
+            }
+        }
     }
 
     private void styleComboBox() {
