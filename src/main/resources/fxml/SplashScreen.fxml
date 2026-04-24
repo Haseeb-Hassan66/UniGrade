@@ -43,7 +43,7 @@
         <!-- Loading Section -->
         <VBox alignment="CENTER" spacing="16" prefWidth="380">
             <!-- Custom Progress Bar -->
-            <StackPane prefWidth="360" prefHeight="12"
+            <StackPane prefWidth="360" maxWidth="360" prefHeight="12"
                 style="-fx-background-color: #2D2D44; -fx-background-radius: 6;">
                 
                 <HBox fx:id="progressFill" prefHeight="12" alignment="CENTER_LEFT">

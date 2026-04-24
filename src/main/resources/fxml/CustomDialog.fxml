@@ -36,7 +36,8 @@
         <Label fx:id="messageLabel" text="Message goes here"
                wrapText="true"
                maxWidth="440"
-               alignment="TOP_LEFT"
+               alignment="CENTER"
+               textAlignment="CENTER"
                style="-fx-font-size: 14px; -fx-text-fill: #BDB7E2; -fx-line-spacing: 4px;"/>
 
         <!-- BUTTONS -->
