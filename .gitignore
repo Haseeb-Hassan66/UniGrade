@@ -2,13 +2,21 @@
 bin/
 *.class
 
+# Log files
+*.log
+
 # Database files
 *.db
+*.sqlite
+*.sqlite3
 
 # IDE settings
 .vscode/
 .idea/
 *.iml
+*.iws
+*.ipr
+out/
 
 # OS files
 .DS_Store

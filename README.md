@@ -1,6 +1,11 @@
 <div align="center">
   <h1>🎓 UniGrade</h1>
   <p><b>Real-Time Academic Performance Tracker & Grade Predictor</b></p>
+  
+  ![Java](https://img.shields.io/badge/Java-11%2B-ED8B00?style=for-the-badge&logo=java&logoColor=white)
+  ![JavaFX](https://img.shields.io/badge/JavaFX-UI-007396?style=for-the-badge&logo=java&logoColor=white)
+  ![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+  ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 </div>
 
 <br/>
@@ -53,7 +58,6 @@ UniGrade is built using robust Java enterprise patterns adapted for a desktop en
 ### Project Structure
 ```text
 UniGrade/
-├── bin/                        # Compiled class files
 ├── lib/                        # External dependencies (sqlite-jdbc)
 ├── src/
 │   └── main/
@@ -68,7 +72,8 @@ UniGrade/
 │           ├── icons/          # Visual assets
 │           └── Messages.properties # Translation & i18n keys
 ├── compile_i18n.bat            # Helper script
-└── run.ps1                     # Build & Execution script
+├── run.ps1                     # Build & Execution script
+└── LICENSE                     # MIT License
 ```
 
 ---
@@ -109,6 +114,15 @@ Here is a quick workflow of how to use UniGrade from scratch:
 
 ---
 
+## 👨‍💻 About the Developer
+
+**Haseeb Hassan**  
+*Software Developer & Creator of UniGrade*
+
+UniGrade was created out of a personal need for a better way to track academic performance dynamically. I built this application to empower students like myself to take control of their grades before it's too late. I am passionate about software development and solving real-world problems with elegant code.
+
+---
+
 ## 🤝 Contributing
 
 Contributions to improve UniGrade are welcome!
@@ -119,4 +133,4 @@ Contributions to improve UniGrade are welcome!
 5. Submit a Pull Request.
 
 ## 📄 License
-This project is available under the standard MIT License. Feel free to use, modify, and distribute it.
+This project is available under the standard **MIT License**. Feel free to use, modify, and distribute it. See the [LICENSE](LICENSE) file for more details.
