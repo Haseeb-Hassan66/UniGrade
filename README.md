@@ -64,12 +64,10 @@ UniGrade/
 │       ├── java/               
 │       │   ├── dao/            # Database query layers
 │       │   ├── model/          # Entities (Semester, Subject, Policy)
-│       │   ├── service/        # Business logic (Result calculation)
 │       │   ├── ui/             # JavaFX Controllers 
 │       │   └── util/           # App utilities (DB init, UI helpers)
 │       └── resources/          
 │           ├── fxml/           # User Interface layouts
-│           ├── icons/          # Visual assets
 │           └── Messages.properties # Translation & i18n keys
 ├── compile_i18n.bat            # Helper script
 ├── run.ps1                     # Build & Execution script
