@@ -4,6 +4,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import java.util.ResourceBundle;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class SceneManager {
 
@@ -25,6 +29,7 @@ public class SceneManager {
             loadCenter(node);
         } catch (Exception e) {
             e.printStackTrace();
+            logError(e);
         }
     }
 
@@ -47,5 +52,20 @@ public class SceneManager {
 
     public static ResourceBundle getBundle() {
         return bundle;
+    }
+
+    private static void logError(Exception e) {
+        try {
+            String dir = System.getProperty("user.home") + File.separator + ".unigrade";
+            new File(dir).mkdirs();
+            File logFile = new File(dir, "error.log");
+            try (PrintWriter pw = new PrintWriter(new FileWriter(logFile, true))) {
+                pw.println("Error loading FXML:");
+                e.printStackTrace(pw);
+                pw.println("--------------------------------------------------");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

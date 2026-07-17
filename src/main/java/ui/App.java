@@ -17,6 +17,16 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        try {
+            String dir = System.getProperty("user.home") + java.io.File.separator + ".unigrade";
+            new java.io.File(dir).mkdirs();
+            java.io.PrintStream out = new java.io.PrintStream(new java.io.FileOutputStream(dir + java.io.File.separator + "app.log", true));
+            System.setOut(out);
+            System.setErr(out);
+            System.out.println("--- APP STARTED ---");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         this.primaryStage = stage;
 
         // ===== PHASE 8: SHOW SPLASH SCREEN FIRST =====

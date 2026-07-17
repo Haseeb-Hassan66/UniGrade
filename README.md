@@ -1,134 +1,179 @@
 <div align="center">
-  <h1>🎓 UniGrade</h1>
-  <p><b>Real-Time Academic Performance Tracker & Grade Predictor</b></p>
-  
-  ![Java](https://img.shields.io/badge/Java-11%2B-ED8B00?style=for-the-badge&logo=java&logoColor=white)
-  ![JavaFX](https://img.shields.io/badge/JavaFX-UI-007396?style=for-the-badge&logo=java&logoColor=white)
-  ![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
-  ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
+<img src="assets/unigrade.ico" alt="UniGrade Logo" width="80"/>
+
+# UniGrade
+
+**Real-Time Academic Performance Tracker & Grade Predictor**
+
+[![Version](https://img.shields.io/badge/version-1.0.0-7C3AED?style=for-the-badge)](https://github.com/Haseeb-Hassan66/UniGrade/releases)
+![Java](https://img.shields.io/badge/Java-26-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![JavaFX](https://img.shields.io/badge/JavaFX-26-007396?style=for-the-badge&logo=java&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)
+
 </div>
-
-<br/>
-
-## 🎯 Why UniGrade?
-
-Most university portals and academic systems are completely **static**. They wait until the end of the semester to hand you a transcript, at which point it's entirely too late to change your academic trajectory. 
-
-**UniGrade is built to solve this problem.** 
-
-UniGrade is a highly interactive, real-time application designed to put students back in control *during* the semester. By allowing you to enter your midterm, quiz, and sessional marks as they happen, UniGrade instantly live-calculates your current standing. It eliminates the guesswork, helping you pinpoint exactly how many marks you need in your final exams to secure your target grade. 
-
-Stop waiting for the end of the semester to see how you did. Track your progress, predict your grades, and study smarter.
 
 ---
 
-## ✨ Key Features & Capabilities
+## 🎯 Why UniGrade?
 
-Based entirely on real-time, interactive tracking, UniGrade provides:
+Most university portals are entirely **static**. They hand you a transcript at the end of the semester — when it's already too late to change anything.
 
-### 📊 Real-Time Marks Entry & Live Prediction
-- Enter marks component-by-component (e.g., *Midterm, Sessional, Final, Lab, Viva*).
-- Support for splitting subjects into **Theory** and **Practical** components.
-- Instantly updates your live-calculated percentage, grade letter (e.g., A, B+), and grade points without requiring a completed semester.
+**UniGrade solves this.** It's a desktop application that puts students back in control *during* the semester. Enter your marks as they happen — midterms, quizzes, sessionals — and UniGrade instantly calculates your current standing. It tells you exactly how many marks you need in your finals to reach your target grade.
 
-### ⚙️ Completely Customizable Policies
-Every university is different. UniGrade molds to fit your institution's specific rules:
-- **Assessment Policies:** Define exactly how a subject is graded. If your syllabus states 30% Mids, 20% Sessionals, and 50% Finals, you can configure those exact input fields.
-- **Grading Policies:** Define your university's exact grading scale (e.g., >= 85% equals 'A', which represents a 4.0 GPA).
+**Stop guessing. Start planning.**
 
-### 📁 Comprehensive Academic Management
-- **Semesters & Subjects:** Organize your academic history. Create semesters, populate them with subjects, and assign independent credit hours for Theory and Practical work.
-- **Dynamic Reports:** Instantly generate Semester Results (GPA) and an overall Academic Report (CGPA) the moment you save your marks. 
-- **Multi-University Support:** Seamlessly track academic progress across different universities with completely isolated policies and semesters.
+---
 
-### 🌍 Global & Secure
-- **Internationalization (i18n):** Full multi-language UI support. Interface strings are dynamically loaded via resource bundles.
-- **Local Privacy:** UniGrade uses a local SQLite database. All your academic data is securely stored on your own machine. No cloud, no internet required.
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 📊 **Real-Time Grade Prediction** | See your live grade letter, percentage, and GPA the moment you enter a mark |
+| 🏫 **Multi-University Support** | Isolated grading & assessment policies per institution |
+| ⚙️ **Customizable Policies** | Define your exact grading scale (A = 85%+) and assessment weights (30% Mid, 50% Final) |
+| 📁 **Full Academic History** | Organize semesters, subjects, theory & practical components with credit hours |
+| 📈 **CGPA Report** | Instant cumulative GPA across all semesters |
+| 🌍 **Internationalization** | UI strings fully driven by resource bundles for multi-language support |
+| 🔒 **100% Local & Private** | All data stored in a local SQLite database — no internet, no cloud |
+
+---
+
+## 💾 Installation (For Users)
+
+> **No Java installation required.** The installer bundles everything you need.
+
+1. Go to the **[Releases](https://github.com/Haseeb-Hassan66/UniGrade/releases)** page.
+2. Download the latest **`UniGrade-1.0.0.exe`** installer.
+3. Run the installer and follow the on-screen steps.
+4. Launch **UniGrade** from your Desktop or Start Menu.
+
+> **Note:** Windows SmartScreen may show a security warning for first-time runs since the app is not yet code-signed. Click **"More info" → "Run anyway"** to proceed. This is safe — UniGrade is fully open-source and you can inspect every line of code in this repository.
+
+---
+
+## 📖 First-Time Usage Guide
+
+1. **Create Your Profile** — On first launch, enter your name and department.
+2. **Select Your University** — Choose from built-in universities or configure your own.
+3. **Configure Policies** — In Settings, verify your university's Grading Policy (A, B+, B scales) and Assessment Policy (Mids, Finals, Sessional weights) are correct.
+4. **Add a Semester** — Click "Add Semester" on the Dashboard (e.g., "Fall 2024").
+5. **Add Subjects** — Open the semester and add your enrolled subjects with their credit hours.
+6. **Enter Marks** — Click a subject to enter marks for each assessment component.
+7. **View Your Report** — Click "Analysis" on the Dashboard to see your full GPA & CGPA report.
 
 ---
 
 ## 🏗️ Technical Architecture
 
-UniGrade is built using robust Java enterprise patterns adapted for a desktop environment:
-- **Language:** Java (JDK 11+)
-- **UI Framework:** JavaFX (with FXML for view separation)
-- **Database:** SQLite (via JDBC)
-- **Design Pattern:** Model-View-Controller (MVC) combined with Data Access Objects (DAO) for clean database interactions.
+UniGrade is built using standard Java enterprise patterns adapted for a self-contained desktop environment.
+
+- **Language:** Java 26
+- **UI Framework:** JavaFX 26 (FXML for strict view/logic separation)
+- **Database:** SQLite via JDBC (local, embedded)
+- **Design Pattern:** MVC + Data Access Object (DAO)
+- **Packaging:** `jpackage` (JDK built-in tool) — produces a self-contained native installer with a bundled JRE
 
 ### Project Structure
+
 ```text
 UniGrade/
-├── lib/                        # External dependencies (sqlite-jdbc)
+├── assets/                         # App icon (unigrade.ico, unigrade.png)
+├── lib/                            # External JARs (sqlite-jdbc)
 ├── src/
 │   └── main/
-│       ├── java/               
-│       │   ├── dao/            # Database query layers
-│       │   ├── model/          # Entities (Semester, Subject, Policy)
-│       │   ├── ui/             # JavaFX Controllers 
-│       │   └── util/           # App utilities (DB init, UI helpers)
-│       └── resources/          
-│           ├── fxml/           # User Interface layouts
-│           └── Messages.properties # Translation & i18n keys
-├── compile_i18n.bat            # Helper script
-├── run.ps1                     # Build & Execution script
-└── LICENSE                     # MIT License
+│       ├── java/
+│       │   ├── dao/                # Database access layer (SemesterDAO, SubjectDAO...)
+│       │   ├── model/              # Data entities (Semester, Subject, UserProfile...)
+│       │   ├── ui/                 # JavaFX Controllers & SceneManager
+│       │   └── util/               # DBInitializer, DBUtil, UIUtil, ResultCalculator...
+│       └── resources/
+│           ├── fxml/               # All UI layouts (Dashboard, SplashScreen, Dialogs...)
+│           └── Messages.properties # All translatable UI strings (i18n)
+├── package.ps1                     # Build script → produces dist/UniGrade-1.0.0.exe
+├── run.ps1                         # Dev runner script (for development only)
+├── compile_i18n.bat                # Helper for i18n compilation
+└── LICENSE
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ Developer Setup
 
-### 1. Prerequisites
-To run UniGrade locally, you need the following installed:
-- **Java Development Kit (JDK):** Version 11 or higher.
-- **JavaFX SDK:** Download and extract the JavaFX SDK matching your JDK version.
+To build UniGrade from source, you need the following tools installed:
 
-### 2. Environment Setup
-You must define where your JavaFX libraries are located so the application can compile and run.
-- Set an environment variable named `PATH_TO_FX` pointing to the `lib` folder inside your JavaFX SDK.
-  - *Windows PowerShell Example:* `$env:PATH_TO_FX="C:\path\to\javafx-sdk\lib"`
+### Prerequisites
 
-### 3. Build & Run
-UniGrade includes an automated PowerShell script that cleans the build directory, compiles all Java files, copies resources, and launches the app.
-1. Open Windows PowerShell.
-2. Navigate to the root directory of the project: `cd "path/to/UniGrade"`
-3. Execute the run script:
-   ```powershell
-   .\run.ps1
-   ```
+| Tool | Version | Download |
+|---|---|---|
+| JDK | 26+ | [oracle.com/java](https://www.oracle.com/java/technologies/downloads/) |
+| JavaFX SDK | 26 | [gluonhq.com](https://gluonhq.com/products/javafx/) |
+| JavaFX jmods | 26 | [gluonhq.com](https://gluonhq.com/products/javafx/) |
 
----
+### Environment Variables
 
-## 📖 Usage Guide
+Set these before running any scripts:
 
-Here is a quick workflow of how to use UniGrade from scratch:
+```powershell
+# Point to the /lib folder inside your JavaFX SDK
+$env:PATH_TO_FX = "C:\JavaFX\javafx-sdk-26.0.1\lib"
 
-1. **First Run Setup:** When you launch the app, you will be prompted to create your User Profile and set up your first University.
-2. **Configure Policies (Crucial):** Navigate to Settings. Ensure your University's **Grading Policy** (A, B, C scales) and **Assessment Policy** (Mids, Finals components) are set up correctly. This dictates how your marks are calculated.
-3. **Add Semesters:** Go to the Dashboard and create a new Semester (e.g., "Fall 2024").
-4. **Add Subjects:** Open the semester and add your enrolled subjects, allocating the correct Credit Hours.
-5. **Enter Marks:** Click on a subject to open the interactive Marks Entry dialog. As you take exams during the semester, input your scores here to instantly see your standing.
-6. **View Reports:** Click "Analysis" on the Dashboard to see your semester GPA, total credits earned, and a visual representation of your academic standing.
+# Point to the root of your JavaFX jmods package
+$env:PATH_TO_FX_JMODS = "C:\JavaFX\javafx-jmods-26.0.1"
+```
 
----
+### Run in Development Mode
 
-## 👨‍💻 About the Developer
+```powershell
+.\run.ps1
+```
 
-**Haseeb Hassan**  
-*Software Developer & Creator of UniGrade*
+This compiles all Java source files and launches the app directly — no installer needed.
 
-UniGrade was created out of a personal need for a better way to track academic performance dynamically. I built this application to empower students like myself to take control of their grades before it's too late. I am passionate about software development and solving real-world problems with elegant code.
+### Build the Windows Installer
+
+```powershell
+.\package.ps1
+```
+
+This runs `jpackage` to produce a fully self-contained installer at `dist\UniGrade-1.0.0.exe`. Requires WiX Toolset v3 for the `.exe` packaging format.
+
+> **WiX Toolset:** Download from [wixtoolset.org](https://wixtoolset.org/) or [GitHub Releases](https://github.com/wixtoolset/wix3/releases). After installation, restart PowerShell.
 
 ---
 
 ## 🤝 Contributing
 
-Contributions to improve UniGrade are welcome!
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature/NewFeature`
-3. Commit your changes: `git commit -m 'Add NewFeature'`
-4. Push to the branch: `git push origin feature/NewFeature`
-5. Submit a Pull Request.
+Contributions are welcome! Here's how to get started:
+
+1. **Fork** the repository.
+2. **Create** a feature branch:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. **Commit** your changes with a clear message:
+   ```bash
+   git commit -m "feat: add your feature description"
+   ```
+4. **Push** to your branch:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. **Open** a Pull Request against the `main` branch.
+
+Please follow the existing code style (MVC separation, DAO pattern for all DB queries).
+
+---
+
+## 👨‍💻 Developer
+
+**Haseeb Hassan**
+- GitHub: [@Haseeb-Hassan66](https://github.com/Haseeb-Hassan66)
+
+---
 
 ## 📄 License
-This project is available under the standard **MIT License**. Feel free to use, modify, and distribute it. See the [LICENSE](LICENSE) file for more details.
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
